@@ -7,12 +7,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="chapter1" />
+        <module name="chapter2" />
         <module name="springboot2-learning" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="cahpter1" target="1.8" />
       <module name="chapter1" target="1.8" />
+      <module name="chapter2" target="1.8" />
       <module name="springboot2-learning" target="1.8" />
     </bytecodeTargetLevel>
   </component>

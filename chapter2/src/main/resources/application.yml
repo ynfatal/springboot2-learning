@@ -1,0 +1,24 @@
+#自定义属性值
+fatal:
+  name: fatal${random.uuid}
+  age: 20
+  email: 634136073${fatal.age:0}@qq.com	# 用于测试值注入校验
+
+server:
+  port: 8081
+spring:
+  profiles:
+    active: prod	#指定属于哪个环境
+
+---
+server:
+  port: 8083
+spring:
+  profiles: dev
+
+
+---
+server:
+  port: 8084
+spring:
+  profiles: prod

@@ -22,7 +22,7 @@ import java.net.URL;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ApplicationTests {
+public class Chapter1ApplicationTests {
 
     /**
      * 必须提供真实的Servlet环境，RANDOM_PORT 或者 DEFINED_PORT

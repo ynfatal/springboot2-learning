@@ -1,0 +1,13 @@
+#logging:
+#  pattern:
+#    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+##  path: E:/fatal
+#  file: E:/fatal/fatal.log
+#  level:
+##    com.fatal.Chapter3ApplicationTests: debug # 具体类路径
+#    com.fatal: debug  # 具体包名
+
+spring:
+  output:
+    ansi:
+      enabled: always

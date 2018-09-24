@@ -28,5 +28,4 @@ public class Fatal3 {
 
     @Email
     private String email;
-
 }

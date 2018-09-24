@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+
+    <!-- 指定控制台日志输出格式de配置项consoleLog -->
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                %black(控制台-) %red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger) - %cyan(%msg%n)
+            </pattern>
+        </layout>
+    </appender>
+
+    <!-- 指定日志文件的输位置de配置项fileInfoLog -->
+    <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>     <!-- 设置过滤级别 -->
+            <onMatch>ACCEPT</onMatch>     <!-- 用于配置符合过滤条件的日志的操作 -->
+            <onMismatch>DENY</onMismatch>     <!-- 用于配置不符合过滤条件的日志的操作 -->
+        </filter>
+        <!-- 指定日志文件的输出格式 -->
+        <encoder>
+            <pattern>
+                %msg%n
+            </pattern>
+        </encoder>
+        <!-- 滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 路径 -->
+            <fileNamePattern>E:/fatal/info/info.%d.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 指定日志文件的输位置de配置项fileErrorLog -->
+    <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <!-- 指定日志文件的输出格式 -->
+        <encoder>
+            <pattern>
+                %msg%n
+                stdout    </pattern>
+        </encoder>
+        <!-- 滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 路径 -->
+            <fileNamePattern>E:/fatal/error/error.%d.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 使用配置项 -->
+    <root level="info">
+        <appender-ref ref="consoleLog"/>
+        <appender-ref ref="fileInfoLog"/>
+        <appender-ref ref="fileErrorLog"/>
+    </root>
+
+</configuration>

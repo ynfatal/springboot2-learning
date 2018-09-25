@@ -3,6 +3,15 @@ fatal:
   name: fatal${random.uuid}
   age: 20
   email: 634136073${fatal.age:0}@qq.com	# 用于测试值注入校验
+  fatal6: {name: brother, age: 21}  # 测对象
+  map: {one: 1, two: 2, three: 3} # 测 Map 集合
+  strings: [cat,dog,pig,strings] # 测数组 行内写法
+  list: [cat,dog,pig,list]  # 测 List 集合
+  set: [cat,dog,pig,set]  # 测 Set 集合
+#  strings:
+#    - cat
+#    - dog
+#    - pig
 
 server:
   port: 8081

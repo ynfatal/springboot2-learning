@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>测试 ~{} 表达式</title>
+</head>
+<body>
+    <h1>~{}</h1>
+
+    <h3>~{templatename::fragmentname}:</h3>
+    <!-- 格式: classpath下模板文件的相对路径(具体到模板名，不需要后缀) :: 片段名-->
+    <div th:insert="~{commons/footer :: copy}"></div>
+    <hr>
+    <h3>~{templatename::selector}:</h3>
+    <!-- 格式: classpath下相对路径(具体到模板名，不需要后缀) :: 选择器-->
+    <div th:insert="~{commons/bar :: #side}"></div>
+    <hr>
+    <h3>th:insert一起用,可以省略~{}:</h3>
+    <!--  与th:insert一起用,可以省略~{} -->
+    <div th:insert="commons/footer.html :: copy"></div> <!-- 这里有红线,但不影响正常运行 -->
+    <div th:insert="commons/bar.html :: #side"></div>
+
+</body>
+</html>

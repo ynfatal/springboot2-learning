@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>测试 ~{} 表达式</title>
+</head>
+<body>
+    <h1>~{}</h1>
+
+    <!-- th:insert -->
+    <hr>
+    <div th:insert="commons/footer.html :: copy"></div>
+
+    <!-- th:replace -->
+    <hr>
+    <div th:replace="commons/footer.html :: copy"></div>
+
+    <!-- th:include -->
+    <hr>
+    <div th:include="commons/footer.html :: copy"></div>
+
+</body>
+</html>

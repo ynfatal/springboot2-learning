@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inlining</title>
+</head>
+<body>
+    <!-- 转义 -->
+    <div>[[${hello}]]</div>
+
+    <!-- 不转义 -->
+    <div>[(${hello})]</div>
+</body>
+</html>

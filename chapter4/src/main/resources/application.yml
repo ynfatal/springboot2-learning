@@ -1,0 +1,6 @@
+spring:
+  thymeleaf:
+    cache: false
+  # 配置国际化基础名
+  messages:
+    basename: i18n.login

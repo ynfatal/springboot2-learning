@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>测试 *{} 表达式</title>
+</head>
+<body>
+    <span th:object="${user}">
+        <span th:text="*{name}">这里是静态的名字</span>
+        <span th:text="*{age}">这里是静态的年龄</span>
+    </span>
+</body>
+</html>

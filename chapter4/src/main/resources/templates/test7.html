@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>测试 th:if</title>
+</head>
+<body>
+    <h1>th:if</h1>
+    <!-- 使用简写 -->
+    <div th:if="${age eq 18}">等于18（使用简写）</div>
+    <!-- 使用符号 -->
+    <div th:if="${age == 18}">等于18（使用符号）</div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>测试 @{} 表达式</title>
+    <!-- 使用 @{} 表达式引入 css文件 -->
+    <link rel="stylesheet" th:href="@{http://localhost:8080/css/test3.css}">
+    <!-- @{} 我们只需写classpath下的路径即可 -->
+    <script type="text/javascript" th:src="@{/css/test3.js}"></script>
+</head>
+<body>
+    <div>字体为红色，代表成功</div>
+</body>
+</html>

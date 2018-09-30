@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    # druid \u76F8\u5173\u914D\u7F6E
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      # \u57FA\u672C\u5C5E\u6027
+      url: jdbc:mysql://localhost:3306/chapter6?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+      username: root
+      password: 123456
+  jpa:
+    # \u5F00\u53D1\u73AF\u5883\u4E0B\uFF0C\u9700\u8981\u67E5\u770Bsql
+    show-sql: true
+    # \u6570\u636E\u5E93\u7C7B\u578B
+    database: mysql
+    # JPA \u914D\u7F6E
+    hibernate:
+      ddl-auto: update

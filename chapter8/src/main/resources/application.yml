@@ -1,0 +1,45 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    # druid \u76F8\u5173\u914D\u7F6E
+    druid:
+      # \u76D1\u63A7\u7EDF\u8BA1\u62E6\u622A\u7684 filters
+      filters: stat
+      driver-class-name: com.mysql.jdbc.Driver
+      # \u57FA\u672C\u5C5E\u6027 	allowMultiQueries\uFF1A\u8BBE\u7F6E\u4E3Atrue\u540E\uFF0C\u6570\u636E\u5E93\u90A3\u8FB9\u624D\u5141\u8BB8\u4F60\u6279\u91CF\u66F4\u65B0\u3002\u7F16\u7801\u5C5E\u6027\u8BBE\u7F6E\u4E86\u5B58\u50A8\u6570\u636E\u5230\u6570\u636E\u5E93\u624D\u4E0D\u4F1A\u662F\u4E71\u7801
+      url: jdbc:mysql://localhost:3306/chapter8?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+      username: root
+      password: 123456
+      # \u914D\u7F6E\u521D\u59CB\u5316\u5927\u5C0F/\u6700\u5C0F/\u6700\u5927
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      # \u83B7\u53D6\u8FDE\u63A5\u7B49\u5F85\u8D85\u65F6\u65F6\u95F4
+      max-wait: 60000
+      # \u95F4\u9694\u591A\u4E45\u8FDB\u884C\u4E00\u6B21\u68C0\u6D4B\uFF0C\u68C0\u6D4B\u9700\u8981\u5173\u95ED\u7684\u7A7A\u95F2\u8FDE\u63A5
+      time-between-eviction-runs-millis: 60000
+      # \u4E00\u4E2A\u8FDE\u63A5\u5728\u6C60\u4E2D\u6700\u5C0F\u751F\u5B58\u7684\u65F6\u95F4
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      # \u6253\u5F00 PSCache\uFF0C\u5E76\u6307\u5B9A\u6BCF\u4E2A\u8FDE\u63A5\u4E0A PSCache \u7684\u5927\u5C0F\u3002oracle \u8BBE\u4E3A true\uFF0Cmysql \u8BBE\u4E3A false\u3002\u5206\u5E93\u5206\u8868\u8F83\u591A\u63A8\u8350\u8BBE\u7F6E\u4E3A false
+      pool-prepared-statements: false
+      max-pool-prepared-statement-per-connection-size: 20
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml  # \u6CE8\u610F\uFF1A\u4E00\u5B9A\u8981\u5BF9\u5E94 mapper \u6620\u5C04xml\u6587\u4EF6\u7684\u6240\u5728\u8DEF\u5F84
+  type-aliases-package: com.example.entity  # \u6CE8\u610F\uFF1A\u5BF9\u5E94\u5B9E\u4F53\u7C7B\u7684\u8DEF\u5F84
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # \u53EF\u4EE5\u81EA\u63A7\u5236\u53F0\u4E0A\u8F93\u51FA sql \u8BED\u53E5
+
+#pagehelper
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

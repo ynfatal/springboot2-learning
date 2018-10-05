@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    # druid \u76F8\u5173\u914D\u7F6E
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      # \u57FA\u672C\u5C5E\u6027
+      url: jdbc:mysql://localhost:3306/chapter11?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+      username: root
+      password: 123456
+
+# \u6574\u5408 mybatis
+mybatis:
+  mapper-locations: classpath:mapper/*.xml  # \u6CE8\u610F\uFF1A\u4E00\u5B9A\u8981\u5BF9\u5E94 mapper \u6620\u5C04xml\u6587\u4EF6\u7684\u6240\u5728\u8DEF\u5F84
+  type-aliases-package: com.fatal.entity   # \u6CE8\u610F\uFF1A\u5BF9\u5E94\u5B9E\u4F53\u7C7B\u7684\u8DEF\u5F84
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

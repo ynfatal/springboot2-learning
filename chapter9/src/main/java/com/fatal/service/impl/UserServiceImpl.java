@@ -6,8 +6,10 @@ import com.fatal.service.IUserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.OrderBy;
 import java.util.List;
 
 /**
@@ -36,13 +38,21 @@ public class UserServiceImpl implements IUserService {
     @Override
     public PageInfo<User> pageSearch(int pageNum, int pageSize) {
         // 进行校验...
+
+        // ====================  普通写法   =====================
         // 将参数传进这个方法就可以实现物理分页了，非常简单
         PageHelper.startPage(pageNum,pageSize);
         // 查询出整个 List
         List<User> users = userMapper.selectUsers();
         // 把查询结果给 PageInfo，它会帮我们取出当前页的数据
         PageInfo result = new PageInfo(users);
-        return result;
+
+        // ====================   lambda写法  =====================
+        PageInfo<User> pageInfo = PageHelper.startPage(pageNum, pageSize)
+                .setOrderBy("id desc")
+//                .doSelectPageInfo(() -> this.userMapper.selectAll());
+                .doSelectPageInfo(userMapper::selectAll);
+        return pageInfo;
     }
 
 }

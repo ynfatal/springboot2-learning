@@ -1,0 +1,11 @@
+spring:
+  redis:
+    host: localhost
+    password: 123456
+    #数据库索引
+    database: 1
+    # 连接超时时间
+    timeout: 10000ms
+
+# 把这里边用到的API解释下，然后将整合篇做笔记。整合完毕后，再次复习下redis，回头来做详情篇
+# 还有学习 spring-data-redis

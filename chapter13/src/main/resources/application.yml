@@ -1,0 +1,18 @@
+spring:
+  redis:
+    host: localhost
+    password: 123456
+    # 数据库索引（默认为0）
+    database: 1
+    jedis:
+      pool:
+        # 最大等待时间 -1代表无限
+        max-wait: -1ms
+        # 最大连接数量
+        max-active: 8
+        # 最大空闲数量
+        max-idle: 8
+        # 最小空闲数量
+        min-idle: 0
+    # 连接超时时间
+    timeout: 10000ms

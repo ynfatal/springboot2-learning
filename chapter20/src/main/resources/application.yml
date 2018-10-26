@@ -1,0 +1,9 @@
+spring:
+  thymeleaf:
+    cache: false
+  servlet:
+    multipart:
+      # 设置单个文件最大值
+      max-file-size: 10MB
+      # 设置总上传数据最大值
+      max-request-size: 10MB

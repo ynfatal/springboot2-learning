@@ -62,8 +62,9 @@ public class Task {
         log.info("[测试异步方法(Future<String>)中处理异常,parameter={}]", param);
         Future<String> future;
         try {
+            // Thread.sleep(10000); // 测试Future的get(x,y)方法
             throw new RuntimeException(param);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             log.info("success to catch: [{}]", param);
             future = new AsyncResult<String>(param);
         }

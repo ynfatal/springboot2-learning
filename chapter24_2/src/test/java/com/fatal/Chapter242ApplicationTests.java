@@ -10,6 +10,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -54,9 +56,16 @@ public class Chapter242ApplicationTests {
      * 测试Future<String>处理异常
      */
     @Test
-    public void testAsyncExceptionReturnFuture() throws ExecutionException, InterruptedException {
+    public void testAsyncExceptionReturnFuture() throws InterruptedException,
+            ExecutionException, TimeoutException {
         Future<String> future = task.asyncReturnFutureWithException("testAsyncExceptionReturnFuture");
-        log.info("[在返回类型为Future<String>异步方法里捕获的异常] {}", future.get());
+        /**
+         * V get(long timeout, TimeUnit unit)
+         * timeout: 值
+         * unit: 单位
+         * 表示超过此时间会抛出超时异常，该线程就被释放会线程池，从而防止线程阻塞
+         */
+        log.info("[在返回类型为Future<String>异步方法里捕获的异常] {}", future.get(5, TimeUnit.SECONDS));
     }
 
 }

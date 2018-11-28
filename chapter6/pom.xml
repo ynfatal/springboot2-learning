@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter6</name>
-    <description>SpringDataJPA</description>
+    <description>Spring Boot2 | 第六篇: 整合 Spring Data JPA</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

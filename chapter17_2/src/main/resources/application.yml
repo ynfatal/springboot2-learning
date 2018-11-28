@@ -10,3 +10,11 @@ spring:
       # 配置账号、密码
       username: fatal
       password: 123456
+    contact:
+      name: fatal
+      url: fatal's url
+      email: 634137063@qq.com
+    # 描述
+    description: Spring Boot2 集成Swagger2在线调试（battcn版）
+    # 版本
+    version: 1.0

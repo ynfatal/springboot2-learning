@@ -2,31 +2,17 @@ package com.fatal;
 
 import com.fatal.entity.User;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.util.Lists;
-import org.assertj.core.util.Maps;
-import org.assertj.core.util.Sets;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.internal.util.collections.ListUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.core.CollectionFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.yaml.snakeyaml.util.ArrayUtils;
-
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 @RunWith(SpringRunner.class)

@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter15</name>
-    <description>SpringBoot整合Spring Cache</description>
+    <description>Spring Boot2 | 第十五篇: 整合 Spring Cache</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

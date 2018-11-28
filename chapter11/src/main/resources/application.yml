@@ -1,17 +1,38 @@
+server:
+  port: 8080
+
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    # druid \u76F8\u5173\u914D\u7F6E
+    # druid 相关配置
     druid:
+      # 监控统计拦截的 filters
+      filters: stat
       driver-class-name: com.mysql.jdbc.Driver
-      # \u57FA\u672C\u5C5E\u6027
-      url: jdbc:mysql://localhost:3306/chapter11?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+      # 基本属性 	allowMultiQueries：设置为true后，数据库那边才允许你批量更新
+      url: jdbc:mysql://localhost:3306/chapter10?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC 	#编码属性设置了存储数据到数据库才不会是乱码
       username: root
       password: 123456
+      # 配置初始化大小/最小/最大
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      # 获取连接等待超时时间
+      max-wait: 60000
+      # 间隔多久进行一次检测，检测需要关闭的空闲连接
+      time-between-eviction-runs-millis: 60000
+      # 一个连接在池中最小生存的时间
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      # 打开 PSCache，并指定每个连接上 PSCache 的大小。oracle 设为 true，mysql 设为 false。分库分表较多推荐设置为 false
+      pool-prepared-statements: false
+      max-pool-prepared-statement-per-connection-size: 20
 
-# \u6574\u5408 mybatis
 mybatis:
-  mapper-locations: classpath:mapper/*.xml  # \u6CE8\u610F\uFF1A\u4E00\u5B9A\u8981\u5BF9\u5E94 mapper \u6620\u5C04xml\u6587\u4EF6\u7684\u6240\u5728\u8DEF\u5F84
-  type-aliases-package: com.fatal.entity   # \u6CE8\u610F\uFF1A\u5BF9\u5E94\u5B9E\u4F53\u7C7B\u7684\u8DEF\u5F84
+  mapper-locations: classpath:mapper/*.xml  # 注意：一定要对应 mapper 映射xml文件的所在路径
+  type-aliases-package: com.example.entity  # 注意：对应实体类的路径
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 可以自控制台上输出 sql 语句

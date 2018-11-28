@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="JavadocGenerationManager">
+    <option name="OUTPUT_DIRECTORY" value="E:/var/接口文档" />
+    <option name="OTHER_OPTIONS" value="-encoding UTF-8 -charset UTF-8 -windowtitle &quot;接口文档&quot; -link http://docs.Oracle.com/javase/7/docs/api" />
+    <option name="LOCALE" value="zh_CN" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
@@ -7,6 +12,41 @@
         <option value="$PROJECT_DIR$/chapter1/pom.xml" />
         <option value="$PROJECT_DIR$/chapter2/pom.xml" />
         <option value="$PROJECT_DIR$/chapter3/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter4/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter5/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter6/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter7/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter8/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter9/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter10/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter11/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter12/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter13/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter14/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter15/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter16/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter17/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter18/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter17-1/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter17_2/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter17_1/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter19/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter19_2/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter19_3/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter19_1/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter19_4/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter20/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter21/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter22/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter23/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter24_1/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter24_2/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter24_3/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter25_1/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter25_2/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter25_3/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter25_4/pom.xml" />
+        <option value="$PROJECT_DIR$/chapter26_1/pom.xml" />
       </list>
     </option>
   </component>

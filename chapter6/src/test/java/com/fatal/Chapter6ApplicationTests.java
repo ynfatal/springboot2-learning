@@ -1,6 +1,6 @@
 package com.fatal;
 
-import com.fatal.dao.UserRepository;
+import com.fatal.mapper.UserRepository;
 import com.fatal.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;

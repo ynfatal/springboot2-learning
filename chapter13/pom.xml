@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter13</name>
-    <description>SpringBoot整合Jedis Redis</description>
+    <description>Spring Boot2 | 第十三篇: 整合 Jedis Redis</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

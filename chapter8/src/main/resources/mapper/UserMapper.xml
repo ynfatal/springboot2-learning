@@ -7,10 +7,10 @@
     </sql>
 
     <sql id="BASE_COLUMN">
-        userId,userName,password,phone
+        id,username,password,phone
     </sql>
 
-    <insert id="insert" parameterType="com.fatal.entity.User">
+    <insert id="insert" parameterType="com.fatal.entity.Order">
         INSERT INTO
         <include refid="BASE_TABLE"/>
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -27,7 +27,7 @@
         </trim>
     </insert>
 
-    <select id="selectUsers" resultType="com.fatal.entity.User">
+    <select id="selectUsers" resultType="com.fatal.entity.Order">
         SELECT
         <include refid="BASE_COLUMN"/>
         FROM

@@ -7,18 +7,84 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="chapter1" />
+        <module name="chapter10" />
+        <module name="chapter11" />
+        <module name="chapter12" />
+        <module name="chapter13" />
+        <module name="chapter14" />
+        <module name="chapter15" />
+        <module name="chapter16" />
+        <module name="chapter17_1" />
+        <module name="chapter17_2" />
+        <module name="chapter18" />
+        <module name="chapter19_1" />
+        <module name="chapter19_2" />
+        <module name="chapter19_3" />
+        <module name="chapter19_4" />
         <module name="chapter2" />
+        <module name="chapter20" />
+        <module name="chapter21" />
+        <module name="chapter22" />
+        <module name="chapter23" />
+        <module name="chapter24_1" />
+        <module name="chapter24_2" />
+        <module name="chapter24_3" />
+        <module name="chapter25_1" />
+        <module name="chapter25_2" />
+        <module name="chapter25_3" />
+        <module name="chapter25_4" />
+        <module name="chapter26_1" />
         <module name="chapter3" />
+        <module name="chapter4" />
+        <module name="chapter5" />
+        <module name="chapter6" />
+        <module name="chapter7" />
+        <module name="chapter8" />
+        <module name="chapter9" />
         <module name="springboot2-learning" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="cahpter1" target="1.8" />
       <module name="chapter1" target="1.8" />
+      <module name="chapter10" target="1.8" />
+      <module name="chapter11" target="1.8" />
+      <module name="chapter12" target="1.8" />
+      <module name="chapter13" target="1.8" />
+      <module name="chapter14" target="1.8" />
+      <module name="chapter15" target="1.8" />
+      <module name="chapter16" target="1.8" />
+      <module name="chapter17-2" target="1.8" />
+      <module name="chapter17_1" target="1.8" />
+      <module name="chapter17_2" target="1.8" />
+      <module name="chapter18" target="1.8" />
+      <module name="chapter19_1" target="1.8" />
+      <module name="chapter19_2" target="1.8" />
+      <module name="chapter19_3" target="1.8" />
+      <module name="chapter19_4" target="1.8" />
       <module name="chapter2" target="1.8" />
+      <module name="chapter20" target="1.8" />
+      <module name="chapter21" target="1.8" />
+      <module name="chapter22" target="1.8" />
+      <module name="chapter23" target="1.8" />
+      <module name="chapter24_1" target="1.8" />
+      <module name="chapter24_2" target="1.8" />
+      <module name="chapter24_3" target="1.8" />
+      <module name="chapter25_1" target="1.8" />
+      <module name="chapter25_2" target="1.8" />
+      <module name="chapter25_3" target="1.8" />
+      <module name="chapter25_4" target="1.8" />
+      <module name="chapter26_1" target="1.8" />
       <module name="chapter3" target="1.8" />
+      <module name="chapter4" target="1.8" />
+      <module name="chapter5" target="1.8" />
+      <module name="chapter6" target="1.8" />
+      <module name="chapter7" target="1.8" />
+      <module name="chapter8" target="1.8" />
+      <module name="chapter9" target="1.8" />
       <module name="demo" target="1.8" />
       <module name="springboot2-learning" target="1.8" />
+      <module name="upload_demo" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

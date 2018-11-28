@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter8</name>
-    <description>SpringBoot整合Mybatis</description>
+    <description>Spring Boot2 | 第八篇: 整合 Mybatis</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

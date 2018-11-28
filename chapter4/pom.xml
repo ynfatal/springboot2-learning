@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter4</name>
-    <description>SpringBoot整合Thymeleaf模板</description>
+    <description>Spring Boot2 | 第四篇: 整合Thymeleaf模板</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

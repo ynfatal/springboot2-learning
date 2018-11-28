@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter14</name>
-    <description>SpringBoot整合Lettuce Redis</description>
+    <description>Spring Boot2 | 第十四篇: 整合 Lettuce Redis</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter5</name>
-    <description>SpringBoot 与 JdbcTemplate</description>
+    <description>Spring Boot2 | 第五篇: 整合JdbcTemplate</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

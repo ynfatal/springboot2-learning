@@ -25,7 +25,7 @@ public class DataSourceConfig {
     @ConfigurationProperties(prefix = "spring.datasource.druid")
     public DataSource getDataSource() {
         /**
-         * @ConfigurationProperties 标注在方法上，会将配置数据映射到`new`出来的对象中
+         * @ConfigurationProperties 标注在方法上，会将配置数据映射到要`return`出来的对象中
          */
         return new DruidDataSource();
     }

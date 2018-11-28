@@ -1,10 +1,10 @@
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    # druid \u76F8\u5173\u914D\u7F6E
+    # druid 相关配置
     druid:
       driver-class-name: com.mysql.jdbc.Driver
-      # \u57FA\u672C\u5C5E\u6027
-      url: jdbc:mysql://localhost:3306/chapter5?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+      # 基本属性
+      url: jdbc:mysql://localhost:3306/chapter5?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC
       username: root
       password: 123456

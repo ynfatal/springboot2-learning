@@ -41,14 +41,14 @@ public class MessageConfig {
 
     @Bean
     RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory factory,
-                                                            MessageListenerAdapter adapterOne,
+                                                                MessageListenerAdapter adapterOne,
                                                                 MessageListenerAdapter adapterTwo) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         /** 设置连接工厂 */
         container.setConnectionFactory(factory);
-        /** 添加两个消息监听器，设置监听的主题为`topic` */
-        container.addMessageListener(adapterOne, new PatternTopic("topic"));
-        container.addMessageListener(adapterTwo, new PatternTopic("topic"));
+        /** 添加两个消息监听器，设置监听的主题为`config` */
+        container.addMessageListener(adapterOne, new PatternTopic("config"));
+        container.addMessageListener(adapterTwo, new PatternTopic("config"));
         return container;
     }
 

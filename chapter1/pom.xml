@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter1</name>
-    <description>我的第一个SpringBoot工程</description>
+    <description>我的第一个 Spring Boot2 工程</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

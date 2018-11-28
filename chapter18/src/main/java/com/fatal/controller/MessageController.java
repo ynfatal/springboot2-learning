@@ -24,7 +24,7 @@ public class MessageController {
     @PostMapping("/sendRedisMessage")
     public void sendRedisMessage(String message) {
         log.info("【控制器 MessageController】：生产者发布了<" + message + ">");
-        stringRedisTemplate.convertAndSend("topic", message);
+        stringRedisTemplate.convertAndSend("config", message);
     }
 
 }

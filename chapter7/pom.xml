@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter7</name>
-    <description>SpringBoot整合beatlsql</description>
+    <description>Spring Boot2 | 第七篇: 整合 BeetlSQL</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

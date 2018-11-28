@@ -2,7 +2,7 @@ spring:
   redis:
     host: localhost
     password: 123456
-    #数据库索引
+    # Redis默认情况下有16个分片，这里配置具体使用的分片，默认是0
     database: 1
     # 连接超时时间
     timeout: 10000ms

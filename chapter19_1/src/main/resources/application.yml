@@ -1,11 +1,11 @@
 spring:
   rabbitmq:
-    username: guest    # \u9ED8\u8BA4\u4E3A`guest`
-    password: guest    # \u9ED8\u8BA4\u4E3A`guest`
-    host: localhost    # \u9ED8\u8BA4\u4E3A`localhost`
-    port: 5672  # \u9ED8\u8BA4\u4E3A 5672
+    username: guest    # 默认为`guest`
+    password: guest    # 默认为`guest`
+    host: localhost    # 默认为`localhost`
+    port: 5672  # 默认为 5672
     virtual-host: /
-    # \u624B\u52A8ACK\uFF0C\u4E0D\u5F00\u542F\u81EA\u52A8ACK\uFF0C\u76EE\u7684\u662F\u4E3A\u4E86\u9632\u6B62\u62A5\u9519\u540E\u672A\u6B63\u786E\u5904\u7406\u6D88\u606F\u4E22\u5931\uFF0C\u9ED8\u8BA4\u4E3A`none`
+    # 手动ACK，不开启自动ACK，目的是为了防止报错后未正确处理消息丢失，默认为`none`
     listener:
       simple:
         acknowledge-mode: manual

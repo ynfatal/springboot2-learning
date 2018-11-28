@@ -23,7 +23,7 @@ public class UserController {
      * @param user
      */
     @PostMapping("/")
-    public int addUser (User user){
+    public int addUser(User user) {
         // 进行校验...
         return userService.addUser(user);
     }

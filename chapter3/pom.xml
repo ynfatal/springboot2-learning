@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter3</name>
-    <description>SpringBoot与日志框架</description>
+    <description>Spring Boot2 | 第三篇: 整合日志框架</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

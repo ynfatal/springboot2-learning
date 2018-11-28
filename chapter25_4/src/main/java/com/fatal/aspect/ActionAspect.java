@@ -46,10 +46,6 @@ public class ActionAspect {
     /**
      * 1、判断操作的类型 -- 增加、删除或者更新（增加和更新通过id区分）
      * 2、获取ChangeItem
-     *  (1)新增：
-     *  (2)更新：
-     *  (3)删除：
-     *
      * @return
      */
     @Around("save() || delete()")

@@ -46,7 +46,7 @@ public class Chapter14ApplicationTests {
             // 如果主线程不延迟一丢丢时间的话，那么Redis的连接会在主线程执行完毕后另开线程`Thread-2`关闭，
             // 而当`Thread-2`线程`提前`抢到资源时，redis连接就会马上关闭，导致其它线程redis连接不上。
             // 下面取值的代码会使主线程执行时间延迟而不至于导致其它线程redis连接不上，当然你可以让主线程睡个几秒
-            // 你可以试试，把下面的代码注释掉
+            // 你可以试试，把下面三行代码注释掉
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/

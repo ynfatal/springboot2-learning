@@ -55,7 +55,7 @@ public class AdviceAspectConfig {
      * @param joinPoint:获取当前执行的方法
      */
     @Around("aroundPoint()")
-    public void around(ProceedingJoinPoint joinPoint) {
+    public Object around(ProceedingJoinPoint joinPoint) {
         Object result = null;
         System.out.println("======  before  ======");
         try {
@@ -63,6 +63,7 @@ public class AdviceAspectConfig {
             result = joinPoint.proceed(joinPoint.getArgs());
             System.out.println("方法返回值为：" + result);
             System.out.println("======  afterReturning  ======");
+
         } catch (Throwable throwable) {
             throwable.printStackTrace();
             System.out.println("======  afterThrowing  ======");
@@ -70,6 +71,7 @@ public class AdviceAspectConfig {
             System.out.println("======  after  ======");
         }
         System.out.println();
+        return result;
     }
 
 }

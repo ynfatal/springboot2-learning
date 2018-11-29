@@ -36,6 +36,7 @@
         <module name="chapter26_1" />
         <module name="chapter26_2" />
         <module name="chapter26_3" />
+        <module name="chapter27_1" />
         <module name="chapter3" />
         <module name="chapter4" />
         <module name="chapter5" />
@@ -79,6 +80,7 @@
       <module name="chapter26_1" target="1.8" />
       <module name="chapter26_2" target="1.8" />
       <module name="chapter26_3" target="1.8" />
+      <module name="chapter27_1" target="1.8" />
       <module name="chapter3" target="1.8" />
       <module name="chapter4" target="1.8" />
       <module name="chapter5" target="1.8" />

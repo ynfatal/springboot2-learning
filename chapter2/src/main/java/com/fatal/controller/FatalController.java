@@ -51,11 +51,16 @@ public class FatalController {
         map.put("注解","@ConfigurationProperties");
         map.put("name", fatal2.getName());
         map.put("age", fatal2.getAge());
-        map.put("fatal6", fatal2.getFatal6());      // 对象
-        map.put("map", fatal2.getMap());      // Map
-        map.put("strings", fatal2.getStrings());   // 数组
-        map.put("list", fatal2.getList());    // List
-        map.put("set", fatal2.getList());    // Set
+        // 对象
+        map.put("fatal6", fatal2.getFatal6());
+        // Map
+        map.put("map", fatal2.getMap());
+        // 数组
+        map.put("strings", fatal2.getStrings());
+        // List
+        map.put("list", fatal2.getList());
+        // Set
+        map.put("set", fatal2.getList());
         return map;
     }
 

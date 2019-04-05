@@ -26,7 +26,7 @@ public class ValidatorController {
      * 测试属性参数验证
      */
     @GetMapping("/test1")
-    public String test1(@Validated @NotBlank(message = "name 不能为空")
+    public String test1(@NotBlank(message = "name 不能为空")
                             @Length(min = 2, max = 10, message = "name 长度必须在 {min} - {max} 之间")
                                     String name) {
         /**

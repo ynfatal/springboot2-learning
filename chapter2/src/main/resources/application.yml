@@ -18,7 +18,7 @@ server:
   port: 8081
 spring:
   profiles:
-    active: prod	#指定属于哪个环境
+    active: prod	#指定属于 prod 环境
 
 ---
 server:

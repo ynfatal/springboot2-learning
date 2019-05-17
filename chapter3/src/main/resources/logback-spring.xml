@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration>
-
     <!-- 指定控制台日志输出格式de配置项consoleLog -->
     <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -44,7 +43,7 @@
         <encoder>
             <pattern>
                 %msg%n
-                stdout    </pattern>
+            </pattern>
         </encoder>
         <!-- 滚动策略 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -53,11 +52,32 @@
         </rollingPolicy>
     </appender>
 
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <!--
+            日志输出格式：
+                %d：表示日期时间，
+                %thread：表示线程名，
+                %-5level：级别从左显示5个字符宽度，
+                %logger{50}：表示logger名字最长50个字符，否则按照句点分割，
+                %msg：日志消息，
+                %n：是换行符
+        -->
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <springProfile name="dev">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} ----> [%thread] ---> %-5level %logger{50} - %msg%n</pattern>
+            </springProfile>
+            <springProfile name="!dev">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} ==== [%thread] ==== %-5level %logger{50} - %msg%n</pattern>
+            </springProfile>
+        </layout>
+    </appender>
+
     <!-- 使用配置项 -->
     <root level="info">
         <appender-ref ref="consoleLog"/>
         <appender-ref ref="fileInfoLog"/>
         <appender-ref ref="fileErrorLog"/>
+        <!--<appender-ref ref="stdout" />-->
     </root>
 
 </configuration>

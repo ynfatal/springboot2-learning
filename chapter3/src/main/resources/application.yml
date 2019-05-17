@@ -11,3 +11,5 @@ spring:
   output:
     ansi:
       enabled: always
+#  profiles:
+#    active: dev

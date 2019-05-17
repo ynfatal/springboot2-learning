@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-        前面的 logback.xml 与 logback-spring-.xml
-        选一即可，所以先注掉该注册
+        前面的 logback-spring.xml 与本文件
+        选一即可，所以先注掉该文件，文件名加个1就行
+        这里有很多配置，可以用来参考
  -->
 
 

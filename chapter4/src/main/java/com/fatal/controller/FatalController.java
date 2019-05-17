@@ -48,10 +48,10 @@ public class FatalController {
     /**
      * 测试 #{}
      */
-    /*@GetMapping("/test2")
+    @GetMapping("/test2")
     public String test2(Model model) {
         return "test2";
-    }*/
+    }
 
     /**
      * 测试 @{}

@@ -18,7 +18,9 @@
     <h3>th:insert一起用,可以省略~{}:</h3>
     <!--  与th:insert一起用,可以省略~{} -->
     <div th:insert="commons/footer.html :: copy"></div> <!-- 这里有红线,但不影响正常运行 -->
+    <!--<div th:insert="commons/footer :: copy"></div>-->
     <div th:insert="commons/bar.html :: #side"></div>
+    <!--<div th:insert="commons/bar :: #side"></div>-->
 
 </body>
 </html>

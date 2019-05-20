@@ -1,4 +1,4 @@
-package com.fatal.dao;
+package com.fatal.mapper;
 
 import com.fatal.dao.aop.ActionDao;
 import com.fatal.entity.Action;

@@ -1,4 +1,4 @@
-package com.fatal.dao.message;
+package com.fatal.mapper.message;
 
 import com.fatal.entity.Message;
 import lombok.extern.slf4j.Slf4j;

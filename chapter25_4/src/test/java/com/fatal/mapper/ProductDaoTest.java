@@ -1,5 +1,6 @@
-package com.fatal.dao;
+package com.fatal.mapper;
 
+import com.fatal.dao.ProductDao;
 import com.fatal.entity.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;

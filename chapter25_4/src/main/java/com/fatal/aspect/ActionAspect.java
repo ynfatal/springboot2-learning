@@ -37,10 +37,10 @@ public class ActionAspect {
     @Autowired
     private ActionDao dao;
 
-    @Pointcut("execution(public * com.fatal.dao.*.save*(..))")
+    @Pointcut("execution(public * com.fatal.mapper.*.save*(..))")
     public void save() {}
 
-    @Pointcut("execution(public * com.fatal.dao.*.delete*(..))")
+    @Pointcut("execution(public * com.fatal.mapper.*.delete*(..))")
     public void delete() {}
 
     /**

@@ -1,4 +1,4 @@
-package com.fatal.mapper;
+package com.fatal.dao;
 
 import com.fatal.entity.User;
 

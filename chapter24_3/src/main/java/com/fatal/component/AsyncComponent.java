@@ -1,6 +1,6 @@
 package com.fatal.component;
 
-import com.fatal.dao.message.MessageRepository;
+import com.fatal.mapper.message.MessageRepository;
 import com.fatal.entity.Message;
 import com.fatal.entity.Order;
 import lombok.extern.slf4j.Slf4j;

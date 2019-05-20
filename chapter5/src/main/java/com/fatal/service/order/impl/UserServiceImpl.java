@@ -1,6 +1,6 @@
 package com.fatal.service.order.impl;
 
-import com.fatal.mapper.IUserDao;
+import com.fatal.dao.IUserDao;
 import com.fatal.entity.User;
 import com.fatal.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;

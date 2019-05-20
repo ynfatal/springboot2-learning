@@ -1,4 +1,4 @@
-package com.fatal.dao.order;
+package com.fatal.mapper.order;
 
 import com.fatal.entity.Order;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
-package com.fatal.mapper.impl;
+package com.fatal.dao.impl;
 
-import com.fatal.mapper.IUserDao;
+import com.fatal.dao.IUserDao;
 import com.fatal.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;

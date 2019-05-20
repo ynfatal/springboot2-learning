@@ -1,6 +1,6 @@
 package com.fatal.demo;
 
-import com.fatal.dao.message.MessageRepository;
+import com.fatal.mapper.message.MessageRepository;
 import com.fatal.entity.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;

@@ -1,8 +1,8 @@
 package com.fatal.service.order.impl;
 
 import com.fatal.component.AsyncComponent;
-import com.fatal.dao.message.MessageRepository;
-import com.fatal.dao.order.OrderRepository;
+import com.fatal.mapper.message.MessageRepository;
+import com.fatal.mapper.order.OrderRepository;
 import com.fatal.entity.Message;
 import com.fatal.entity.Order;
 import com.fatal.service.order.IOrderService;

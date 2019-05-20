@@ -1,7 +1,9 @@
 package com.fatal;
 
 import com.fatal.entity.User;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,13 +14,19 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.sql.DataSource;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Slf4j
 public class Chapter5ApplicationTests {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @LocalServerPort
     private int port;
@@ -75,6 +83,12 @@ public class Chapter5ApplicationTests {
     public void delete() {
         template.delete(urlWithId, 2);
         log.info("[删除用户成功]");
+    }
+
+    @Test
+    public void dataSourceTest() {
+        DataSource dataSource = jdbcTemplate.getDataSource();
+        Assert.assertTrue(dataSource instanceof HikariDataSource);
     }
 
 }

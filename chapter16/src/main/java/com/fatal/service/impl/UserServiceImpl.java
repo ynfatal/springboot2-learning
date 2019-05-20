@@ -1,4 +1,4 @@
-package com.fatal.service.order.impl;
+package com.fatal.service.impl;
 
 import com.fatal.dao.IUserDao;
 import com.fatal.entity.User;
@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
+ * User 服务实现
  * @author: Fatal
  * @date: 2018/10/14 0014 17:28
  */
@@ -44,5 +45,11 @@ public class UserServiceImpl implements IUserService {
         log.info("进入【selectById】方法");
         return dao.selectById(id);
     }
+
+    /**
+     *  @Cacheable 根据方法的请求参数对其结果进行缓存
+     *  @CachePut 根据方法的请求参数对其结果进行缓存，和 @Cacheable 不同的是，它每次都会触发真实方法的调用
+     *  @CachEvict 根据条件对缓存进行清空
+     */
 
 }

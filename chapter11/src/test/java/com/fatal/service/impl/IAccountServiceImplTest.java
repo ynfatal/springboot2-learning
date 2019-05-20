@@ -1,4 +1,4 @@
-package com.fatal.service.order.impl;
+package com.fatal.service.impl;
 
 import com.fatal.service.IAccountService;
 import org.junit.Test;

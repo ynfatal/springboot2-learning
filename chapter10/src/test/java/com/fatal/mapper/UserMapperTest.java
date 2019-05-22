@@ -27,14 +27,14 @@ public class UserMapperTest {
 
     @Test
     public void insert() {
-        User user = new User().setUserName("米彩").setPassword("123").setPhone("123");
+        User user = new User().setUsername("米彩").setPassword("123").setPhone("123");
         int record = mapper.insert(user);
         Assert.assertNotEquals(0, record);
     }
 
     @Test
     public void insertSelective() {
-        User user = new User().setUserName("米彩").setPassword("123");
+        User user = new User().setUsername("米彩").setPassword("123");
         int record = mapper.insert(user);
         Assert.assertNotEquals(0, record);
     }
@@ -54,7 +54,7 @@ public class UserMapperTest {
      */
     @Test
     public void updateByPrimaryKeySelective() {
-        User user = new User().setId(1000).setUserName("米彩的姐姐").setPassword("123");
+        User user = new User().setId(1000).setUsername("米彩的姐姐").setPassword("123");
         int record = mapper.updateByPrimaryKeySelective(user);
         Assert.assertNotEquals(0, record);
     }
@@ -65,7 +65,7 @@ public class UserMapperTest {
      */
     @Test
     public void updateByPrimaryKey() {
-        User user = new User().setId(1000).setUserName("米彩的姐姐").setPassword("123");
+        User user = new User().setId(1000).setUsername("米彩的姐姐").setPassword("123");
         int record = mapper.updateByPrimaryKey(user);
         Assert.assertNotEquals(0, record);
     }

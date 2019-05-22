@@ -27,12 +27,13 @@ public class UserServiceImpl implements IUserService {
         return userMapper.insert(user);
     }
 
-    /*
+    /**
      * 这个方法中用到了我们开头配置依赖的分页插件 pagehelper
      * 很简单，只需要在service层传入参数，然后将参数传递给一个插件的一个静态方法即可；
-     * pageNum 开始页数
-     * pageSize 每页显示的数据条数
-     * */
+     * @param pageNum 开始页数
+     * @param pageSize 每页显示的数据条数
+     * @return
+     */
     @Override
     public PageInfo<User> findAllUser(int pageNum, int pageSize) {
         // 进行校验...

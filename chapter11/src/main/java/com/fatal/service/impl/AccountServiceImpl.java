@@ -18,11 +18,14 @@ public class AccountServiceImpl implements IAccountService {
     private AccountMapper accountMapper;  // 这里会报错，但不影响正常使用
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void update() {
-        accountMapper.update(90d, 1);//用户1减10块 用户2加10块
+        // 用户1减10块 用户2加10块
+        accountMapper.update(90d, 1);
         Integer i = 1 / 0;
         accountMapper.update(110d, 2);
+        // 手动回滚
+//        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 
 }

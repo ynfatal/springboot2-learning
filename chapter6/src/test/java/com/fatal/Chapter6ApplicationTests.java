@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -46,5 +47,4 @@ public class Chapter6ApplicationTests {
         final Page<User> users = repository.findAll(pageable);
         log.info("[分页+排序+查询所有] - [{}]", users.getContent());
     }
-
 }

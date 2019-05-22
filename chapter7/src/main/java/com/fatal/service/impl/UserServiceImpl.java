@@ -13,21 +13,19 @@ import java.util.List;
  * @date: 2018/10/3 0003 21:54
  */
 @Service
-public class IUserServiceImpl implements IUserService {
+public class UserServiceImpl implements IUserService {
 
     @Autowired
     private IUserMapper userMapper;  // 这里会报红线，但不影响使用
 
     @Override
-    public User getUserById(Integer id) {
+    public User selectById(Integer id) {
         return userMapper.unique(id);
     }
 
     @Override
-    public List<User> select(String name) {
-        User paras = new User();
-        paras.setName(name);
-        return userMapper.selectSample(paras);
+    public List<User> selectByName(String name) {
+        return userMapper.selectByName(name);
     }
 
 }

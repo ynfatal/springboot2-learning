@@ -1,6 +1,5 @@
 package com.fatal.config;
 
-import org.beetl.sql.core.ClasspathLoader;
 import org.beetl.sql.core.Interceptor;
 import org.beetl.sql.core.UnderlinedNameConversion;
 import org.beetl.sql.core.db.MySqlStyle;
@@ -26,8 +25,8 @@ public class BeetlSqlConfig {
     /**
      * Mapper 接口扫描配置
      */
-    @Bean(name = "beetlSqlScannerConfigurer")
-    public BeetlSqlScannerConfigurer getBeetlSqlScannerConfigurer() {
+    @Bean
+    public BeetlSqlScannerConfigurer beetlSqlScannerConfigurer() {
         BeetlSqlScannerConfigurer conf = new BeetlSqlScannerConfigurer();
         conf.setBasePackage("com.fatal.mapper");
         conf.setDaoSuffix("Mapper");
@@ -35,9 +34,9 @@ public class BeetlSqlConfig {
         return conf;
     }
 
-    @Bean(name = "sqlManagerFactoryBean")
+    @Bean
     @Primary
-    public SqlManagerFactoryBean getSqlManagerFactoryBean(@Qualifier("dataSource") DataSource datasource) {
+    public SqlManagerFactoryBean sqlManagerFactoryBean(@Qualifier("dataSource") DataSource datasource) {
         SqlManagerFactoryBean factory = new SqlManagerFactoryBean();
         BeetlSqlDataSource source = new BeetlSqlDataSource();
         source.setMasterSource(datasource);

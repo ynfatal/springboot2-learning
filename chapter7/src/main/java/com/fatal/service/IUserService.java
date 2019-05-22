@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface IUserService {
 
-    User getUserById(Integer id);
+    User selectById(Integer id);
 
-    List<User> select(String name);
+    List<User> selectByName(String name);
 }

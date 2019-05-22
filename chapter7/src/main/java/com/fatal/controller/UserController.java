@@ -23,7 +23,7 @@ public class UserController {
      */
     @GetMapping("/{id}")
     public User fatal(@PathVariable Integer id) {
-        User user = userService.getUserById(id);
+        User user = userService.selectById(id);
         return user;
     }
 
@@ -32,7 +32,7 @@ public class UserController {
      */
     @GetMapping("/query/{name}")
     public List<User> fatal(@PathVariable String name) {
-        List<User> users = userService.select(name);
+        List<User> users = userService.selectByName(name);
         return users;
     }
 

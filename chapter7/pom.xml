@@ -49,13 +49,7 @@
         <dependency>
             <groupId>com.ibeetl</groupId>
             <artifactId>beetl-framework-starter</artifactId>
-            <version>1.1.63.RELEASE</version>
-        </dependency>
-        <!-- druid 连接池 -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.1.9</version>
+            <version>1.1.81.RELEASE</version>
         </dependency>
         <!-- SpringBoot 热部署依赖 -->
         <dependency>
@@ -63,12 +57,17 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
-        <!-- 事务管理器依赖此包 -->
+        <!-- 事务管理器依赖此包，tx 中带有 DaoSupport -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>5.0.8.RELEASE</version>
             <scope>compile</scope>
+        </dependency>
+        <!-- 导入 HikariCP 连接池 -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
         </dependency>
     </dependencies>
 

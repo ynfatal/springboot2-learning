@@ -1,11 +1,9 @@
 package com.fatal.config;
 
-import com.alibaba.druid.pool.DruidDataSource;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -20,24 +18,12 @@ public class DataSourceConfig {
 
     /**
      * 配置数据库
+     * @desc @ConfigurationProperties 标注在方法上，会将配置数据映射到要`return`出来的对象中
      */
-    @Bean(name = "dataSource")
-    @ConfigurationProperties(prefix = "spring.datasource.druid")
-    public DataSource getDataSource() {
-        /**
-         * @ConfigurationProperties 标注在方法上，会将配置数据映射到要`return`出来的对象中
-         */
-        return new DruidDataSource();
-    }
-
-    /**
-     * 开启事务
-     */
-    @Bean(name = "transactionManager")
-    public DataSourceTransactionManager getDataSourceTransactionManager(@Qualifier("dataSource") DataSource datasource) {
-        DataSourceTransactionManager manager = new DataSourceTransactionManager();
-        manager.setDataSource(datasource);
-        return manager;
+    @Bean
+    @ConfigurationProperties(prefix = "spring.datasource.hikari")
+    public DataSource dataSource() {
+        return new HikariDataSource();
     }
 
 }

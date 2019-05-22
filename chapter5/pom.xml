@@ -25,6 +25,7 @@
     </properties>
 
     <dependencies>
+        <!-- jdbc 依赖携带 HikariCP -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
@@ -58,6 +59,4 @@
             </plugin>
         </plugins>
     </build>
-
-
 </project>

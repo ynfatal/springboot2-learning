@@ -38,6 +38,9 @@ public class Chapter9ApplicationTests {
         Assert.assertNotEquals(null ,user);
     }
 
+    /**
+     * 根据主键更新属性不为null的值
+     */
     @Test
     public void updateByPrimaryKeySelective() {
         int record = userMapper.updateByPrimaryKeySelective(new User().setId(1000).setPassword("123123123"));

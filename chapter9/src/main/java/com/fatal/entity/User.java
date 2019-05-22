@@ -3,8 +3,6 @@ package com.fatal.entity;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
@@ -18,8 +16,7 @@ import javax.persistence.Id;
 @Accessors(chain = true)
 public class User {
 
-    @Id     // 使用通用Mapper必须给主键加上注解@Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)    // 自增
+    @Id
     private Integer id;
 
     private String username;

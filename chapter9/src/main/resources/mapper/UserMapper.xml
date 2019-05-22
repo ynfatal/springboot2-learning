@@ -10,7 +10,7 @@
         id,username,password,phone
     </sql>
 
-    <select id="selectUsers" resultType="com.fatal.entity.Order">
+    <select id="selectUsers" resultType="com.fatal.entity.User">
         SELECT
         <include refid="BASE_COLUMN"/>
         FROM

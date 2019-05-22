@@ -40,7 +40,7 @@ public class UserMapperTest {
     }
 
     /**
-     * select id, user_name, password, phone from user where id = ?
+     * select id, username, password, phone from user where id = ?
      */
     @Test
     public void selectByPrimaryKey() {
@@ -49,7 +49,7 @@ public class UserMapperTest {
     }
 
     /**
-     * Preparing: update user SET user_name = ?, password = ? where id = ?
+     * Preparing: update user SET username = ?, password = ? where id = ?
      * Parameters: 米彩的姐姐(String), 123(String), 1000(Integer)
      */
     @Test
@@ -60,7 +60,7 @@ public class UserMapperTest {
     }
 
     /**
-     * Preparing: update user set user_name = ?, password = ?, phone = ? where id = ?
+     * Preparing: update user set username = ?, password = ?, phone = ? where id = ?
      * Parameters: 米彩的姐姐(String), 123(String), null, 1000(Integer)
      */
     @Test

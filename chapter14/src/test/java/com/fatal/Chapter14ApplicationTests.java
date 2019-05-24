@@ -29,6 +29,8 @@ public class Chapter14ApplicationTests {
 
     /**
      * 测试线程安全
+     * TODO: 这里的线程问题，以后来解决。
+     *  思考：为什么46行到57行去掉后，会报错
      */
     @Test
     public void testThreadSecurity() {

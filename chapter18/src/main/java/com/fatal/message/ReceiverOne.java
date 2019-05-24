@@ -26,6 +26,7 @@ public class ReceiverOne {
     /** 方法名随你起，不过必须和配置类中的消息监听器组件保持一致 */
     public void receiveMessage(String message) {
         log.info("【消费者 ReceiverOne】：我消费了<" + message + ">");
+        // Decrements the count of the latch, releasing all waiting threads if the count reaches zero.
         latch.countDown();
     }
 

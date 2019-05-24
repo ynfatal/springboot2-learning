@@ -25,6 +25,7 @@ public class ReceiverTwo {
 
     public void receiveMessage(String message) {
         log.info("【消费者 ReceiverTwo】：我消费了<" + message + ">");
+        // Decrements the count of the latch, releasing all waiting threads if the count reaches zero.
         latch.countDown();
     }
 

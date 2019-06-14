@@ -37,6 +37,7 @@
         <module name="chapter26_2" />
         <module name="chapter26_3" />
         <module name="chapter27_1" />
+        <module name="chapter28" />
         <module name="chapter3" />
         <module name="chapter4" />
         <module name="chapter5" />
@@ -81,6 +82,7 @@
       <module name="chapter26_2" target="1.8" />
       <module name="chapter26_3" target="1.8" />
       <module name="chapter27_1" target="1.8" />
+      <module name="chapter28" target="1.8" />
       <module name="chapter3" target="1.8" />
       <module name="chapter4" target="1.8" />
       <module name="chapter5" target="1.8" />
@@ -92,5 +94,16 @@
       <module name="springboot2-learning" target="1.8" />
       <module name="upload_demo" target="1.8" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="chapter10" options="-parameters" />
+      <module name="chapter11" options="-parameters" />
+      <module name="chapter5" options="-parameters" />
+      <module name="chapter6" options="-parameters" />
+      <module name="chapter7" options="-parameters" />
+      <module name="chapter8" options="-parameters" />
+      <module name="chapter9" options="-parameters" />
+    </option>
   </component>
 </project>

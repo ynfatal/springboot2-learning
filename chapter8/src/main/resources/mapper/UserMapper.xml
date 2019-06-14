@@ -27,7 +27,13 @@
         </trim>
     </insert>
 
-    <select id="selectUsers" resultType="com.fatal.entity.User">
+    <!--
+        application.yml 配置了
+        type-aliases-package: com.fatal.entity，
+        所以这里只写类名也能找到对应的实体
+     -->
+    <select id="selectUsers" resultType="User">
+    <!--<select id="selectUsers" resultType="com.fatal.entity.User">-->
         SELECT
         <include refid="BASE_COLUMN"/>
         FROM

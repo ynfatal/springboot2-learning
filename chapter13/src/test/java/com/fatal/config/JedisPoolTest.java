@@ -1,6 +1,5 @@
 package com.fatal.config;
 
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,8 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-
-import static org.junit.Assert.*;
 
 /**
  * @author: Fatal

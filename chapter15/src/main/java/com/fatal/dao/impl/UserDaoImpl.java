@@ -19,9 +19,9 @@ public class UserDaoImpl implements IUserDao {
 
     static {
         // 初始化数据库
-        db.put(1l,new User().setId(1l).setUsername("米彩").setPassword("18"));
-        db.put(2l,new User().setId(2l).setUsername("米琪").setPassword("19"));
-        db.put(3l,new User().setId(3l).setUsername("小米").setPassword("20"));
+        db.put(1L,new User().setId(1L).setUsername("米彩").setPassword("18"));
+        db.put(2L,new User().setId(2L).setUsername("米琪").setPassword("19"));
+        db.put(3L,new User().setId(3L).setUsername("小米").setPassword("20"));
     }
 
     @Override

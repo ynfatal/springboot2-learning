@@ -24,8 +24,17 @@ public class Chapter14ApplicationTests {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    /**
+     * RedisTemplate 的泛型默认只能支持 <String, String>
+     *     如果你写别的泛型如 <String, String>，它会提示你 Could not autowire.
+     *     所以，我们才需要自定义一个能存储其他类型的模板
+     */
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
     @Autowired
     private RedisTemplate<String, Serializable> serializableRedisTemplate;
+
 
     /**
      * 测试线程安全
@@ -58,19 +67,31 @@ public class Chapter14ApplicationTests {
     }
 
     /**
-     * 测试默认模板
+     * 测试模板 -> StringRedisTemplate
      */
     @Test
-    public void testString() {
+    public void testStringRedisTemplate() {
         ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
         String key = "name";
-        ops.set(key, "米琪");
+        ops.set(key, "米彩");
         String name = ops.get(key);
-        log.info("测试默认模板【字符串缓存结果】 = {}", name);
+        log.info("测试模板 -> StringRedisTemplate 【字符串缓存结果】 = {}", name);
     }
 
     /**
-     * 测试自定义模板
+     * 测试默认模板 -> RedisTemplate<String, String>
+     */
+    @Test
+    public void testDefaultRedisTemplate() {
+        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+        String key = "name";
+        ops.set(key, "米琪");
+        String name = ops.get(key);
+        log.info("测试默认模板 -> RedisTemplate<String, String> 【字符串缓存结果】 = {}", name);
+    }
+
+    /**
+     * 测试自定义模板 -> RedisTemplate<String, Serializable>
      */
     @Test
     public void testUser() {
@@ -79,7 +100,7 @@ public class Chapter14ApplicationTests {
         String key = "fatal:user";
         ops.set(key, user);
         User result = (User)ops.get(key);
-        log.info("测试自定义模板【对象缓存结果】 = {}", result);
+        log.info("测试自定义模板 -> RedisTemplate<String, Serializable>【对象缓存结果】 = {}", result);
     }
 
 }

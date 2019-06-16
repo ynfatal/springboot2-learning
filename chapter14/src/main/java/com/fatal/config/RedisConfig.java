@@ -23,8 +23,10 @@ public class RedisConfig {
     @Bean
     public RedisTemplate<String, Serializable> serializableRedisTemplate(LettuceConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Serializable> template = new RedisTemplate<>();
-        template.setKeySerializer(new StringRedisSerializer()); // key序列化
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());  // value序列化
+        // key序列化
+        template.setKeySerializer(new StringRedisSerializer());
+        // value序列化
+        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         template.setConnectionFactory(redisConnectionFactory);
         return template;
     }

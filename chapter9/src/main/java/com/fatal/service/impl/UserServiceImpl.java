@@ -41,7 +41,7 @@ public class UserServiceImpl implements IUserService {
         // ====================  普通写法   =====================
         // 将参数传进这个方法就可以实现物理分页了，非常简单
         PageHelper.startPage(pageNum,pageSize);
-        // 查询出整个 List
+        // 看语句像查询出整个 List，但是底层对其进行了增强，下面语句执行的时候添加了分页条件了
         List<User> users = userMapper.selectUsers();
         // 把查询结果给 PageInfo，它会帮我们取出当前页的数据
         PageInfo result = new PageInfo(users);
@@ -51,6 +51,8 @@ public class UserServiceImpl implements IUserService {
                 .setOrderBy("id desc")
 //                .doSelectPageInfo(() -> this.userMapper.selectAll());
                 .doSelectPageInfo(userMapper::selectAll);
+
+        // TODO 分页 + 排序 userMapper::selectAll 这一句就是我们需要写的查询，有了这两款插件无缝切换各种数据库
         return pageInfo;
     }
 

@@ -26,7 +26,7 @@ public class Chapter14ApplicationTests {
 
     /**
      * RedisTemplate 的泛型默认只能支持 <String, String>
-     *     如果你写别的泛型如 <String, String>，它会提示你 Could not autowire.
+     *     如果你写别的泛型如 <String, Object>，它会提示你 Could not autowire.
      *     所以，我们才需要自定义一个能存储其他类型的模板
      */
     @Autowired

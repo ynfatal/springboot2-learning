@@ -1,7 +1,9 @@
 package com.fatal;
 
-import com.fatal.mapper.UserRepository;
+import com.fatal.convert.ConvertUtil;
+import com.fatal.dto.UserDTO;
 import com.fatal.entity.User;
+import com.fatal.mapper.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.sql.DataSource;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -41,10 +42,35 @@ public class Chapter6ApplicationTests {
         log.info("[根据用户名查询成功] - [{}]", one==null?"无记录":one);
     }
 
+    /**
+     * 测试分页查询
+     */
     @Test
-    public void findAllWithPage() {
+    public void findPage() {
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Order.asc("username")));
-        final Page<User> users = repository.findAll(pageable);
-        log.info("[分页+排序+查询所有] - [{}]", users.getContent());
+        Page<User> page = repository.findAll(pageable);
+        log.info("[分页+排序+查询所有] - [{}]", page.getContent());
+    }
+
+    /**
+     * 测试分页查询（内容替换）
+     */
+    @Test
+    public void findPageWithConvertContent() {
+        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Order.asc("username")));
+        Page<User> page = repository.findAll(pageable);
+        // 内容转为DTO
+        Page<UserDTO> result = page.map(ConvertUtil::convert);
+        log.info("[分页+排序+查询所有(DTO)] - [{}]", result.getContent());
+    }
+
+    /**
+     * 测试自定义分页查询sql
+     */
+    @Test
+    public void findPageWithCustomSql() {
+        Pageable pageable = PageRequest.of(0, 1, Sort.by(Sort.Order.asc("id")));
+        Page<User> page = repository.findPage(pageable);
+        log.info("[分页+排序+查询所有（自定义分页查询sql）] - [{}]", page.getContent());
     }
 }

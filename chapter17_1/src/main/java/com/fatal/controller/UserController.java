@@ -23,8 +23,8 @@ public class UserController {
     @GetMapping("/")
     @ApiOperation(value = "查询所有", notes = "获取用户列表")
     public List<User> get() {
-        List<User> users = Arrays.asList(new User(0l, "米彩", "123"),
-                new User(1l, "米琪", "123"));
+        List<User> users = Arrays.asList(new User(0L, "米彩", "123"),
+                new User(1L, "米琪", "123"));
         return users;
     }
 

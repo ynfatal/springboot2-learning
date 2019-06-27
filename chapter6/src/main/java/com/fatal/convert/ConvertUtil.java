@@ -5,7 +5,7 @@ import com.fatal.entity.User;
 import org.springframework.beans.BeanUtils;
 
 /**
- * 数据传输对象转换器
+ * 数据传输对象转换工具类
  * @author: Fatal
  * @date: 2019/6/26 0026 11:39
  */

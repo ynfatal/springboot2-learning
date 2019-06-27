@@ -73,4 +73,23 @@ public class Chapter6ApplicationTests {
         Page<User> page = repository.findPage(pageable);
         log.info("[分页+排序+查询所有（自定义分页查询sql）] - [{}]", page.getContent());
     }
+
+    /**
+     * 测试动态拼装sql加模糊查询
+     */
+    @Test
+    public void findPageWithLike() {
+        String username1 = "米";
+        String username2 = "";
+        String username3 = null;
+        List<User> list1 = repository.findPageWithLike(username1);
+        List<User> list2 = repository.findPageWithLike(username2);
+        List<User> list3 = repository.findPageWithLike(username3);
+        System.out.println("list1: ");
+        list1.forEach(System.out::println);
+        System.out.println("list2: ");
+        list2.forEach(System.out::println);
+        System.out.println("list3: ");
+        list3.forEach(System.out::println);
+    }
 }

@@ -3,10 +3,7 @@ package com.fatal.controller;
 import com.fatal.entity.User;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,8 +27,14 @@ public class UserController {
 
     @PostMapping("/")
     @ApiOperation(value = "添加用户", notes = "添加用户操作")
-    public User insert(@ApiParam(name = "user", value = "用户信息") User user) {
+    public User insert(User user) {
         return user;
+    }
+
+    @PutMapping("/")
+    @ApiOperation(value = "更新用户", notes = "更新用户操作")
+    public Long update(@ApiParam(name = "id", value = "用户主键") Long id) {
+        return id;
     }
 
 }

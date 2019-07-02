@@ -33,8 +33,12 @@ public class UserController {
 
     @PutMapping("/")
     @ApiOperation(value = "更新用户", notes = "更新用户操作")
-    public Long update(@ApiParam(name = "id", value = "用户主键") Long id) {
-        return id;
+    public User update(@ApiParam(name = "id", value = "用户主键")
+                       @RequestParam(name = "id") Long id) {
+        return new User()
+                .setId(id)
+                .setUsername("fatal")
+                .setPassword("123456");
     }
 
 }

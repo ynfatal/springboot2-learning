@@ -79,17 +79,18 @@ public class Chapter6ApplicationTests {
      */
     @Test
     public void findPageWithLike() {
+        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Order.asc("id")));
         String username1 = "米";
         String username2 = "";
         String username3 = null;
-        List<User> list1 = repository.findPageWithLike(username1);
-        List<User> list2 = repository.findPageWithLike(username2);
-        List<User> list3 = repository.findPageWithLike(username3);
-        System.out.println("list1: ");
-        list1.forEach(System.out::println);
-        System.out.println("list2: ");
-        list2.forEach(System.out::println);
-        System.out.println("list3: ");
-        list3.forEach(System.out::println);
+        Page<User> page1 = repository.findPageWithLike(username1, pageable);
+        Page<User> page2 = repository.findPageWithLike(username2, pageable);
+        Page<User> page3 = repository.findPageWithLike(username3, pageable);
+        System.out.println("page1: ");
+        page1.forEach(System.out::println);
+        System.out.println("page2: ");
+        page2.forEach(System.out::println);
+        System.out.println("page3: ");
+        page3.forEach(System.out::println);
     }
 }

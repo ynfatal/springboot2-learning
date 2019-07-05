@@ -35,7 +35,8 @@ public class MessageConfig {
 
     @Bean
     CountDownLatch countDownLatch() {
-        return new CountDownLatch(1);
+        // 设置闩锁的计数为 2
+        return new CountDownLatch(2);
     }
 
 

@@ -13,13 +13,23 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class IAccountServiceImplTest {
+public class AccountServiceImplTest {
 
     @Autowired
-    private IAccountService IAccountService;
+    private IAccountService accountService;
 
     @Test
     public void update() {
-        IAccountService.update();
+        accountService.update();
+    }
+
+    @Test
+    public void nest1() {
+        accountService.nest1();
+    }
+
+    @Test
+    public void nest3() {
+        accountService.nest3();
     }
 }

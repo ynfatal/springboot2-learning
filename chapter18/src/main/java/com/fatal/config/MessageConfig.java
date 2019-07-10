@@ -55,13 +55,13 @@ public class MessageConfig {
 
     @Bean
     MessageListenerAdapter adapterOne(ReceiverOne receiverOne) {
-        /** 对`ReceiverOne`进行封装，指定接受消息de方法为`receiverMessage` */
+        /** 对`ReceiverOne`进行封装，指定接收消息de方法为`receiverMessage` */
         return new MessageListenerAdapter(receiverOne, "receiveMessage");
     }
 
     @Bean
     MessageListenerAdapter adapterTwo(ReceiverTwo receiverTwo) {
-        /** 对`ReceiverTwo`进行封装，指定接受消息de方法为`receiverMessage` */
+        /** 对`ReceiverTwo`进行封装，指定接收消息de方法为`receiverMessage` */
         return new MessageListenerAdapter(receiverTwo, "receiveMessage");
     }
 

@@ -2,7 +2,6 @@ package com.fatal.receiver;
 
 import com.fatal.config.RabbitMQConfig;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +12,14 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-@RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
 public class FatalReceiver {
 
-    @RabbitHandler
+    @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
     public void process(String context) {
         log.info("【FatalReceiver】处理了：[{}]", context);
+        // 模拟消费者业务异常，观察自动 ack 的弊端。
+        // 当消费者出现异常导致消费失败，这会导致消费者循环消费。
+//        int i = 1/0;
     }
 
 }

@@ -17,8 +17,12 @@ import java.util.Date;
 @Component
 public class FatalSender {
 
-    @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    public FatalSender(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
 
     public void send() {
         String context = "现在时刻" + new Date();

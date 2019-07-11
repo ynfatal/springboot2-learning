@@ -38,7 +38,6 @@ public class DirectReceiver {
         } catch (Exception e) {
             // TODO 业务异常的后续处理
             log.error("【消费失败，业务异常】 time = {}", LocalDateTime.now());
-            throw new RuntimeException(e);
         }
     }
 }

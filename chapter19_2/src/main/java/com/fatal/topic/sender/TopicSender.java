@@ -16,14 +16,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class TopicSender {
 
-    @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public void send() {
-        User user = new User(1l, "fatal", "123");
-        log.info("【Sender发布的User信息】：[{}]", user);
-        rabbitTemplate.convertAndSend(TopicRabbitMQConfig.TOPIC_EXCHANGE_NAME, "fatal.user" ,user);
+    @Autowired
+    public TopicSender(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
     }
 
-
+    public void send() {
+        User user = new User(1L, "fatal", "123");
+        log.info("【Sender发布的User信息】：[{}]", user);
+        rabbitTemplate.convertAndSend(TopicRabbitMQConfig.TOPIC_EXCHANGE, "fatal.user" ,user);
+    }
 }

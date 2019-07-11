@@ -15,11 +15,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class FanoutSender {
 
-    @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @Autowired
+    public FanoutSender(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
+
     public void send() {
-        String message = "测试FanoutExchange";
+        String message = "测试FanoutExchange实现发布与订阅";
         log.info("【FanoutSender发布消息】 -- [{}]", message);
         rabbitTemplate.convertAndSend(FanoutRabbitConfig.FANOUT_EXCHANGE, "", message);
     }

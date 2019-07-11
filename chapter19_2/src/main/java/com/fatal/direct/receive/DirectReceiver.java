@@ -1,31 +1,29 @@
-package com.fatal.topic.receiver;
+package com.fatal.direct.receive;
 
-import com.fatal.topic.config.TopicRabbitMQConfig;
-import com.fatal.topic.entity.User;
+import com.fatal.direct.config.DirectRabbitConfig;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 
 /**
- * 接收者
  * @author: Fatal
- * @date: 2018/10/22 0022 15:09
+ * @date: 2019/7/7 0007 0:10
  */
 @Slf4j
 @Component
-@RabbitListener(queues = TopicRabbitMQConfig.TOPIC_QUEUE)
-public class TopicReceiver {
+public class DirectReceiver {
 
-    @RabbitHandler
-    public void receiveMessage(User user, Message message, Channel channel) {
+    @Transactional(rollbackFor = Exception.class)
+    @RabbitListener(queues = {DirectRabbitConfig.DIRECT_QUEUE})
+    public void receive(String messages, Message message, Channel channel) throws Exception {
         try {
-            log.info("【接收的User信息】--[{}]", user);
+            log.info("【DirectReceiver接收到消息】 -- [{}]", messages);
             /**
              * @method void basicAck(long deliveryTag, boolean multiple) throws IOException
              * @deliveryTag 指定队列要确认的已接收消息的标签（也叫传递标签）。新的队列默认的传递标签为0，代表接收过0条消息；
@@ -40,7 +38,7 @@ public class TopicReceiver {
         } catch (Exception e) {
             // TODO 业务异常的后续处理
             log.error("【消费失败，业务异常】 time = {}", LocalDateTime.now());
+            throw new RuntimeException(e);
         }
     }
-
 }

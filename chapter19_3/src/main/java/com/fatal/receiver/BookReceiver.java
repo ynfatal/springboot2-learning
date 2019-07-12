@@ -28,7 +28,7 @@ public class BookReceiver {
     @RabbitListener(queues = {RabbitMQConfig.CONFIRM_QUEUE})
     public void listenerReceiver(Book book, Message message, Channel channel) {
         try {
-            log.info("【listenerReceiver 监听的消息】 - [{}]", book);
+            log.info("【listenerReceiver 监听的消息】 - [监听时间] - [{}] - [{}]", LocalDateTime.now(), book);
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (IOException e) {
             // TODO Ack失败的后续处理

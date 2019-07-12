@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter19_3</name>
-    <description>SpringBoot2 第十九篇：整合RabbitMQ（Ack的方式）</description>
+    <description>SpringBoot2 第十九篇：整合RabbitMQ（生产者确认）</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

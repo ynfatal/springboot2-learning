@@ -8,6 +8,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 /**
@@ -19,14 +20,17 @@ import java.time.LocalDateTime;
 @Component
 public class BookConsumer {
 
-    @RabbitListener(queues = RabbitMQConfig.REGISTER_QUEUE_NAME)
+    @RabbitListener(queues = RabbitMQConfig.DEAD_LETTER_QUEUE_NAME)
     public void listenerDelayQueue(Book book, Message message, Channel channel) {
         log.info("[listenerDelayQueue 监听的消息] - [消费时间] - [{}] - [{}]", LocalDateTime.now(), book);
         try {
-            // 通知`MQ`消息已被成功消费了，可以Ack了,rabbitmq收到ack后，将远程队列中的消息删除
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        } catch (IOException e) {
+            // TODO Ack失败的后续处理
+            log.error("【Ack失败，网络繁忙】 time = {}", LocalDateTime.now());
         } catch (Exception e) {
-            // TODO 如果报错了,那么我们可以进行`容错`处理,比如转移当前消息进入其它队列
+            // TODO 业务异常的后续处理
+            log.error("【消费失败，业务异常】 time = {}", LocalDateTime.now());
         }
     }
 

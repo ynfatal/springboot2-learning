@@ -2,12 +2,9 @@ package com.fatal.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,127 +18,102 @@ import java.util.Map;
 public class RabbitMQConfig {
 
     /**
-     * 自定义RabbitTemplate
+     * 延迟相关名称
      */
-    @Bean
-    public RabbitTemplate rabbitTemplate(CachingConnectionFactory connectionFactory) {
-        connectionFactory.setPublisherConfirms(true);
-        connectionFactory.setPublisherReturns(true);
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        /**
-         *  仅适用于存在回调函数ReturnCallback的情况，
-         *  如果发送方设置了mandatory 模式,则会先调用basic.return方法.
-         */
-        rabbitTemplate.setMandatory(true);
-        /** 设置确认回调函数 */
-        rabbitTemplate.setConfirmCallback((correlationData, ack, cause) ->
-                log.info((ack?"消息发送成功":"消息发送失败") + "：time({}),correlationData({}), ack({}),cause({})", LocalDateTime.now(), connectionFactory, ack, cause));
-        /** 设置返回回调函数 */
-        rabbitTemplate.setReturnCallback((message, replyCode, replyText, exchange, routingKey) ->
-                log.info("消息丢失：time({}),message({}), replyCode({}), replyText({}), exchange({}), routingKey({})",
-                        LocalDateTime.now(), message, replyCode, replyText, exchange, routingKey));
-        return rabbitTemplate;
-    }
-
-    /*
-     * 延迟队列名称
-     */
-    public static final String REGISTER_DELAY_QUEUE_NAME = "dev.book.register.delay.queue";
-    /**
-     * 普通交换机de名称
-     */
-    public static final String REGISTER_DELAY_EXCHANGE_NAME = "dev.book.register.delay.exchange";
-    /**
-     * 通往延迟队列的路由键`DELAY_ROUTING_KEY`
-     */
-    public static final String DELAY_ROUTING_KEY = "";
-
+    private static final String DELAY_QUEUE_NAME = "delay_queue";
+    public static final String DELAY_EXCHANGE_NAME = "delay_exchange";
+    public static final String DELAY_ROUTING_KEY = "delay_book";
 
     /**
-     * 普通队列名称
-     * @Desc: 该队列与`死信交换机`绑定，当死信交换机接受到消息后，会将消息放到此队列中
+     * 死信相关名称
      */
-    public static final String REGISTER_QUEUE_NAME = "dev.book.register.queue";
-    /**
-     * 死信交换机de名称
-     */
-    public static final String REGISTER_EXCHANGE_NAME = "dev.book.register.exchange";
-    /**
-     * 通往普通队列的路由键`ROUTING_KEY`
-     * @Desc: 因为延迟队列在这里指定的`死信交换机`是`Topic交换机`，所以`路由键`必不可少！！！
-     */
-    public static final String ROUTING_KEY = "all";
-
+    public static final String DEAD_LETTER_QUEUE_NAME = "dead_letter_queue";
+    private static final String DEAD_LETTER_EXCHANGE_NAME = "dead_letter_exchange";
+    // 一般使用原队列的路由键
+    private static final String DEAD_LETTER_ROUTING_KEY = "delay_book";
 
     /**
-     * 延迟队列中用来关联`死信交换机`的交换机键名，路由键键名和存活时间键名（这是名字是固定的）
+     * 延迟队列中用来关联`死信交换机`的交换机键名，路由键键名和存活时间键名（这是参数值是`固定`的）
      */
     private static final String X_DEAD_LETTER_EXCHANGE = "x-dead-letter-exchange";
     private static final String X_DEAD_LETTER_ROUTING_KEY = "x-dead-letter-routing-key";
     private static final String X_MESSAGE_TTL = "x-message-ttl";
 
+    // **************************   死信交换机相关配置   **************************
 
     /**
-     * 延迟队列
-     * @Desc: 在队列中指定与某个`死信交换机`关联，并指定`死信`携带的路由键
+     * 死信队列
      */
     @Bean
-    public Queue delayProcessQueue() {
-        Map<String, Object> params = new HashMap<>();
-        // `x-dead-letter-exchange` 关联`DLX（死信交换机）`
-        params.put(X_DEAD_LETTER_EXCHANGE, REGISTER_EXCHANGE_NAME);
-        // `x-dead-letter-routing-key` 声明了死信在转发时携带的 routing-key。
-        params.put(X_DEAD_LETTER_ROUTING_KEY, ROUTING_KEY);
-        /** `x-message-ttl`指定该队列为延迟队列（给队列设置存活时间） */
-//        params.put(X_MESSAGE_TTL, 5 * 1000);
-        return new Queue(REGISTER_DELAY_QUEUE_NAME, true, false, false, params);
-    }
-
-    /**
-     * 普通交换机
-     * @Desc: 与延迟队列进行绑定
-     */
-    @Bean
-    public DirectExchange delayExchange() {
-        return new DirectExchange(REGISTER_DELAY_EXCHANGE_NAME);
-    }
-
-    /**
-     * `delayBinding`组件
-     * @Desc: 将延迟队列、普通交换机、`DELAY_ROUTING_KEY`路由键 三者绑定
-     */
-    @Bean
-    public Binding delayBinding() {
-        return BindingBuilder.bind(delayProcessQueue()).to(delayExchange()).with(DELAY_ROUTING_KEY);
-    }
-
-
-    /**
-     * 普通队列
-     * @Desc: 与`死信交换机`绑定的队列，在`死信交换机`接收到消息后，会发送给该队列
-     */
-    @Bean
-    public Queue registerBookQueue() {
-        return new Queue(REGISTER_QUEUE_NAME, true);
+    public Queue dlxQueue() {
+        return new Queue(DEAD_LETTER_QUEUE_NAME);
     }
 
     /**
      * DLX（死信交换机）：dead letter发送到的exchange
-     * @Desc: 本质上是一个普通的交换机，当延迟队列中指定该交换机为`死信交换机`后，它就相对那个延迟队列
-     * 就是死信交换机。简单来说，死信交换机就是多一个功能，可以接受与它关联的延迟队列的消息
+     * @desc: 本质上是一个普通的交换机
      */
     @Bean
-    public TopicExchange registerBookTopicExchange() {
-        return new TopicExchange(REGISTER_EXCHANGE_NAME);
+    public DirectExchange dlxExchange() {
+        return new DirectExchange(DEAD_LETTER_EXCHANGE_NAME);
     }
 
     /**
-     * `dlxBinding`组件
-     * @Desc: 将普通队列、`死信交换机（DLX）`、`ROUTING_KEY`路由键 三者绑定
+     * 绑定组件
+     * @desc: 将`死信队列`、`死信交换机（DLX）`、`DEAD_LETTER_ROUTING_KEY`路由键 三者绑定
      */
     @Bean
     public Binding dlxBinding() {
-        return BindingBuilder.bind(registerBookQueue()).to(registerBookTopicExchange()).with(ROUTING_KEY);
+        return BindingBuilder.bind(dlxQueue())
+                .to(dlxExchange())
+                .with(DEAD_LETTER_ROUTING_KEY);
     }
+
+    // ************************   死信交换机相关配置(end)   ************************
+
+    // **************************   延迟交换机相关配置   **************************
+
+    /**
+     * 延迟队列
+     * @desc: 与`死信交换机`绑定，并指定`死信`携带的路由键
+     */
+    @Bean
+    public Queue delayQueue() {
+        Map<String, Object> configs = new HashMap<>();
+        // `x-dead-letter-exchange` 关联`DLX（死信交换机）`
+        configs.put(X_DEAD_LETTER_EXCHANGE, DEAD_LETTER_EXCHANGE_NAME);
+        // `x-dead-letter-routing-key` 声明了死信在转发时携带的 routing-key。
+        configs.put(X_DEAD_LETTER_ROUTING_KEY, DEAD_LETTER_ROUTING_KEY);
+        // `x-message-ttl`设置该队列中消息的存活时间（队列属性设置，队列中所有消息都有相同的过期时间）
+//        configs.put(X_MESSAGE_TTL, 5 * 1000);
+        /**
+         * @param durable 声明持久化队列，则为true。（该队列在服务器重启之后继续存在）
+         * @param exclusive 如果声明独占队列，则该队列将仅由声明者的连接使用
+         * @param autoDelete 如果服务器不存在的时候应该将队列删除，则为true
+         * @param arguments 用于声明队列的参数
+         */
+        return new Queue(DELAY_QUEUE_NAME, true, false, false, configs);
+    }
+
+    /**
+     * 延迟交换机
+     */
+    @Bean
+    public DirectExchange delayExchange() {
+        return new DirectExchange(DELAY_EXCHANGE_NAME);
+    }
+
+    /**
+     * 绑定组件
+     * @desc: 将`延迟队列`、`延迟交换机`、`DELAY_ROUTING_KEY`路由键 三者绑定
+     */
+    @Bean
+    public Binding delayBinding() {
+        return BindingBuilder.bind(delayQueue())
+                .to(delayExchange())
+                .with(DELAY_ROUTING_KEY);
+    }
+
+    // ************************   延迟交换机相关配置(end)   ************************
 
 }

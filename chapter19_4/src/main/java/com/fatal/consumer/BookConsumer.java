@@ -27,7 +27,7 @@ public class BookConsumer {
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (IOException e) {
             // TODO Ack失败的后续处理
-            log.error("【Ack失败，网络繁忙】 time = {}", LocalDateTime.now());
+            log.error("【Ack失败】 time = {}", LocalDateTime.now());
         } catch (Exception e) {
             // TODO 业务异常的后续处理
             log.error("【消费失败，业务异常】 time = {}", LocalDateTime.now());

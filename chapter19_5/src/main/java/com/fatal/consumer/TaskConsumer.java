@@ -90,10 +90,10 @@ public class TaskConsumer {
              *  1. ack和nack失败 通过重新排队，直到这两个方法正常调用为止
              *  2. 断网问题 消费失败的消息会变成 unacked，那么当网络正常了，系统重新启动会再次消费 这个 unacked 的消息。
              * @method Basic.RecoverOk basicRecover(boolean requeue) throws IOException;
-             * @requeue true: 消息将被重新排队并可能传递给其他使用者
+             * @requeue true: 消息将被重新排队并可能传递给其他使用者（默认）
              *      false: 消息将被重新排队并传递给同一使用者
              */
-            channel.basicRecover(true);
+            channel.basicRecover();
         }
     }
 }

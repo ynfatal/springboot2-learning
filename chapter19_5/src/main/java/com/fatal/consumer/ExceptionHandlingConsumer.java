@@ -72,7 +72,7 @@ public class ExceptionHandlingConsumer {
             log.error("【exceptionHandlingConsumer Ack失败】 time = {}", LocalDateTime.now());
             e.printStackTrace();
             // 消息将被重新排队
-            channel.basicRecover(true);
+            channel.basicRecover();
             // 抛出异常，让消费端事务回滚
             throw new IOException(e);
         } catch (Exception e) {

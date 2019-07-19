@@ -22,7 +22,7 @@ public class BookConsumer {
 
     @RabbitListener(queues = RabbitMQConfig.DEAD_LETTER_QUEUE_NAME)
     public void listenerDelayQueue(Book book, Message message, Channel channel) {
-        log.info("[listenerDelayQueue 监听的消息] - [监听时间] - [{}] - [{}]", LocalDateTime.now(), book);
+        log.info("[listenerDelayQueue 消费消息] - [消费时间] - [{}] - [{}]", LocalDateTime.now(), book);
         try {
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (IOException e) {

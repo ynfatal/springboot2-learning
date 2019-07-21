@@ -7,3 +7,8 @@ spring:
       max-file-size: 10MB
       # 设置总上传数据最大值
       max-request-size: 10MB
+
+# 文件上传路径
+upload:
+  path: E:/upload/fatal/
+#  path: /usr/local/upload/fatal/

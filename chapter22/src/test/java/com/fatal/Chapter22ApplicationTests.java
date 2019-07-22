@@ -55,11 +55,11 @@ public class Chapter22ApplicationTests {
         helper.setText("<html><body><h1></h1><img style='max-width: 500px' src=\"cid:wallpaper\" ></body></html>", true); // 内容
         // FileSystemResource 加载绝对路径的流
         FileSystemResource file = new FileSystemResource(new File(PATHNAME));
-        // 为 contentId 设置值
+        // 设置 contentId 及其对应的 `文件资源`（Resource）
         helper.addInline("wallpaper", file);
 
-        //添加多个附件可以使用多条
-        //helper.addAttachment(FILENAME, file);
+        // 在邮件中添加附件，添加多个附件可以使用多条
+        // helper.addAttachment(附件名, 附件对象);
         helper.addAttachment(FILENAME, file);
 
         mailSender.send(mimeMessage);

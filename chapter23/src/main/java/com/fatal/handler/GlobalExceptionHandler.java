@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
     private final String CUSTOM_STATUS_CODE = "javax.servlet.error.status_code";
 
     /**
-     * 测试传统定制json数据的异常处理方法
+     * 不自适应
      */
     @ResponseBody
     @ExceptionHandler(TraditionalException.class)
@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 测试定制json数据（保持自适应效果）的异常处理方法
+     * 自适应
      */
     @ExceptionHandler(AdaptiveException.class)
     public String adaptive(Exception e, HttpServletRequest request) {

@@ -16,7 +16,7 @@ public class FatalErrorAttributes extends DefaultErrorAttributes {
 
     /**
      * 这个方法有点像代理
-     * @param webRequest ：接受异常处理方法中的request
+     * @param webRequest ：接收异常处理方法中的request
      * @param includeStackTrace
      * @return
      */

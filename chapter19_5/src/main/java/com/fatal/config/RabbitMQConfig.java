@@ -64,6 +64,8 @@ public class RabbitMQConfig {
      * 在 SpringBoot 整合 RabbitMQ 的组件 SimpleRabbitListenerContainerFactory
      * 默认配置的基础上，将 MessageConverter（默认是 SimpleMessageConverter，该转换器基于 Jdk 序列化）
      * 设置为 Jackson2JsonMessageConverter（基于 Json 序列化，性能更好）
+     * 下面的组件是从源码中找的，我们在这个组件的基础上进行修改的话，可以保留配置的属性。要是写个新的，很多
+     * 配置就没意义了，比如，你在外面设置的手动ack没有了。它用的还是默认的 no ack。
      * @param configurer
      * @param connectionFactory
      * @return

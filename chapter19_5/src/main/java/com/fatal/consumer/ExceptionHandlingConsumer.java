@@ -49,7 +49,7 @@ public class ExceptionHandlingConsumer {
             log.warn("【exceptionHandlingConsumer 监听第三方物流系统】 - [监听时间] - [{}] 第三方系统异常，重试", LocalDateTime.now());
             return;
         }
-        // 主动取队列去消息，并获得 GetResponse
+        // 主动去队列取消息，并获得 GetResponse
         GetResponse getResponse = channel.basicGet(RabbitMQConfig.EXCEPTION_HANDLING_QUEUE_NAME, false);
         if (!Optional.ofNullable(getResponse).isPresent()) {
             log.info("【exceptionHandlingConsumer 监听队列 {}】 - [监听时间] - [{}] 暂无消息",

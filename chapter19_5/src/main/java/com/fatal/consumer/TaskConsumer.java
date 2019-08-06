@@ -69,9 +69,9 @@ public class TaskConsumer {
                 throw new IOException();
             }
             /**
-             * 拒绝消息。multiple 设置为 true，如果调用此方法过程中报错了，消息就会变为 nack 状态，那么下次调用就需要
+             * 拒绝消息。multiple 设置为 true，如果调用此方法过程中报错了，消息就会变为 unacked 状态，那么下次调用就需要
              * 拒绝传递标签之前（包括提供的传递标签）的所有消息（当然，如果只有一条消费失败的消息运气不好，因为网络问题调用不了
-             * basicNack 方法，那么这条消息就会变成 nack 状态，那怎么办呢？目前我的想法是给消息设置个过期时间）
+             * basicNack 方法，那么这条消息就会变成 unacked 状态，那怎么办呢？目前我的想法是给消息设置个过期时间）
              * @method void basicNack(long deliveryTag, boolean multiple, boolean requeue) throws IOException
              * @deliveryTag 指定队列要拒绝的已接收消息的标签（也叫传递标签）。新的队列默认的传递标签为0，代表接收过0条消息；
              *      队列接收消息后，传递标签会从0开始累加。（传递标签de值也可以看成该队列接收的第n条消息）

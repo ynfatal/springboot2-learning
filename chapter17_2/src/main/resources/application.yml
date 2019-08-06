@@ -5,7 +5,7 @@ spring:
     # 扫描的包路径,默认扫描所有
     base-package: com.fatal
     security:
-      # true: 开启后访问 swagger-ui.html 会自动路由到登陆页面，保障接口信息不被暴露）
+      # true: 开启后访问 swagger-ui.html 会自动路由到登陆页面，保障接口信息不被暴露
       filter-plugin: true
       # 配置账号、密码
       username: fatal

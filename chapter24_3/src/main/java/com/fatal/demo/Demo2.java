@@ -28,7 +28,7 @@ public class Demo2 {
     }
 
     @Transactional
-    Message test2(Message message) throws Exception {
+    Message test2(Message message) {
         Message save = messageRepository.save(message);
         int i = 1/0; // 抛个异常测试事务
         return save;

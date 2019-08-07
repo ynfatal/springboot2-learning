@@ -17,11 +17,11 @@ public class ArgsAspectConfig {
     @Pointcut("args(Long) && within(com.fatal.service.*)")
     public void pointArgsWithOneParam() {}
 
-    // 匹配指定类中任何以find开头的而且第一个参数为Long型的方法
+    // 匹配指定类中任何以find开头而且只有一个Long参数的方法
     @Pointcut("execution(* *..find*(Long))")
     public void pointExecutionWithOneParam() {}
 
-    // 匹配指定类中任何以find开头而且只有一个Long参数的方法
+    // 匹配指定类中任何以find开头的而且第一个参数为Long型的方法
     @Pointcut("args(Long,..) && within(com.fatal.service.*)")
     public void pointArgsWithGEOneParam() {}
 

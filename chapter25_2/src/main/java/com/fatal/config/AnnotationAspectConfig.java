@@ -17,9 +17,9 @@ public class AnnotationAspectConfig {
     @Pointcut("@annotation(com.fatal.anno.AdminOnly)")
     public void pointAnnotationTargetMethod() {}
 
-    // 匹配所有标注有`@NeedSecured`注解的类的所有方法，要求
+    // 匹配所有标注有`@NeedSecuredClass`注解的类的所有方法，要求
     // annotation 的 RetentionPolity 为 CLASS
-    @Pointcut("@within(com.fatal.anno.NeedSecured)")
+    @Pointcut("@within(com.fatal.anno.NeedSecuredClass)")
     public void pointWithinAnnotationTargetClassWithInherited() {}
 
     // 匹配所有标注有`@NeedSecured`注解的类的所有方法，要求

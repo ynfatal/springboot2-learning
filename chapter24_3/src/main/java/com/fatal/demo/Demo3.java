@@ -21,13 +21,13 @@ public class Demo3 {
     private MessageRepository messageRepository;
 
     @Async
-    public Future<Message> test1(Message message) throws Exception {
+    public Future<Message> test1(Message message) {
         System.out.println("当前线程" + Thread.currentThread().getName());
         return test2(message);
     }
 
     @Async
-    Future<Message> test2(Message message) throws Exception {
+    Future<Message> test2(Message message) {
         System.out.println("当前线程" + Thread.currentThread().getName());
         Message save = messageRepository.save(message);
         return new AsyncResult<>(save);

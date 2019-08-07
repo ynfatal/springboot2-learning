@@ -12,6 +12,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.Serializable;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
@@ -37,33 +38,35 @@ public class Chapter14ApplicationTests {
 
 
     /**
-     * 测试线程安全
-     * TODO: 这里的线程问题，以后来解决。
-     *  思考：为什么46行到57行去掉后，会报错
+     * 测试线程安全（模拟10000并发）
      */
     @Test
-    public void testThreadSecurity() {
+    public void testThreadSecurity() throws InterruptedException {
+        // 该闩锁主要用于使main线程处于等待状态，防止提前关闭redis连接
+        CountDownLatch latch = new CountDownLatch(10000);
+        // 拦住所有线程，等计数为 0 时，同时释放
+        CountDownLatch concurrentLatch = new CountDownLatch(10000);
         // 创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待。
-        ExecutorService executorService = Executors.newFixedThreadPool(1000);
-        IntStream.range(0, 1000).forEach(i ->
+        ExecutorService executorService = Executors.newFixedThreadPool(10000);
+        IntStream.range(0, 10000).forEach(i ->
                 executorService.execute(() -> {
+                    concurrentLatch.countDown();
+                    latch.countDown();
+                    try {
+                        concurrentLatch.await();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     Thread thread = Thread.currentThread();
                     log.info("【thread】 = {}", thread.getName());
                     stringRedisTemplate.opsForValue().increment("fatal", 1);
                 })
         );
-        /*try {
-            Thread.sleep(3000);
-            // 如果主线程不延迟一丢丢时间的话，那么Redis的连接会在主线程执行完毕后另开线程`Thread-2`关闭，
-            // 而当`Thread-2`线程`提前`抢到资源时，redis连接就会马上关闭，导致其它线程redis连接不上。
-            // 下面取值的代码会使主线程执行时间延迟而不至于导致其它线程redis连接不上，当然你可以让主线程睡个几秒
-            // 你可以试试，把下面三行代码注释掉
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
+
+        // 使当前线程等待直到闩锁计数为零，除非线程被中断。
+        latch.await();
         String value = stringRedisTemplate.opsForValue().get("fatal");
-        Thread thread = Thread.currentThread();
-        log.info("{}【fatal】 = {}", thread.getName(), value);
+        log.info("【fatal】 = {}", value);
     }
 
     /**

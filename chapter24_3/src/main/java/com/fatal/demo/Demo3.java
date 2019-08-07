@@ -30,7 +30,7 @@ public class Demo3 {
     Future<Message> test2(Message message) throws Exception {
         System.out.println("当前线程" + Thread.currentThread().getName());
         Message save = messageRepository.save(message);
-        return new AsyncResult<>(message);
+        return new AsyncResult<>(save);
     }
 
 }

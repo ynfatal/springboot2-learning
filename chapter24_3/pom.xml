@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter24_3</name>
-    <description>Demo project for Spring Boot</description>
+    <description>SpringBoot2  第二十四篇（三）：@Async与事务</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

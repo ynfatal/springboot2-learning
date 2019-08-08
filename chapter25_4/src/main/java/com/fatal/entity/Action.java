@@ -28,7 +28,7 @@ public class Action {
     /** 操作人 */
     private String operator;
 
-    /** 更新时间 */
+    /** 操作时间 */
     private Date operateTime;
 
     /** 操作类型 */

@@ -3,9 +3,9 @@ package com.fatal.util;
 import com.alibaba.fastjson.JSON;
 import com.fatal.annotation.DataLog;
 import com.fatal.entity.ChangeItem;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.beans.BeanInfo;
@@ -20,9 +20,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class DiffUtil {
-
-    private static final Logger logger = LoggerFactory.getLogger(DiffUtil.class);
+@Slf4j
+public class DifferentUtil {
 
     public static Object getObjectById(Object target,Object id) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Method findMethod = target.getClass().getDeclaredMethod("findById", Long.class);
@@ -37,7 +36,7 @@ public class DiffUtil {
      * @return
      */
     public static List<ChangeItem> getInsertChangeItems(Object obj){
-        Map<String,String> valueMap = getBeanSimpleFieldValueMap(obj,true/*filter null*/);
+        Map<String,String> valueMap = getBeanSimpleFieldValueMap(obj,true);
         Map<String,String> fieldCnNameMap = getFieldNameMap(obj.getClass());
         List<ChangeItem> items = new ArrayList<>();
         for(Map.Entry<String,String> entry : valueMap.entrySet()){
@@ -75,21 +74,19 @@ public class DiffUtil {
      */
     public static List<ChangeItem> getChangeItems(Object oldObj, Object newObj) {
         Class cl = oldObj.getClass();
-        List<ChangeItem> changeItems = new ArrayList<ChangeItem>();
+        List<ChangeItem> changeItems = new ArrayList<>();
         //获取字段中文名称
         Map<String,String> fieldCnNameMap = getFieldNameMap(cl);
         try {
+            // 获取实体信息
             BeanInfo beanInfo = Introspector.getBeanInfo(cl, Object.class);
 
-            for (PropertyDescriptor propertyDescriptor : beanInfo
-                    .getPropertyDescriptors()) {
+            for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
                 String field = propertyDescriptor.getName();
                 //获取字段旧值
-                String oldProp = getValue(PropertyUtils.getProperty(oldObj,
-                        field));
+                String oldProp = getValue(PropertyUtils.getProperty(oldObj, field));
                 //获取字段新值
-                String newProp = getValue(PropertyUtils.getProperty(newObj,
-                        field));
+                String newProp = getValue(PropertyUtils.getProperty(newObj, field));
 
                 //对比新旧值
                 if (!oldProp.equals(newProp)) {
@@ -103,7 +100,7 @@ public class DiffUtil {
                 }
             }
         } catch (Exception e) {
-            logger.error("There is error when convert change item", e);
+            log.error("There is error when convert change item", e);
         }
         return changeItems;
     }
@@ -131,7 +128,7 @@ public class DiffUtil {
      * @return
      */
     public static Map<String,String> getFieldNameMap(Class<?> clz){
-        Map<String,String> map = new HashMap<>();
+        Map<String,String> map = new HashMap<>(16);
         for (Field field : clz.getDeclaredFields()) {
             if (field.isAnnotationPresent(DataLog.class)) {
                 DataLog datalog = field.getAnnotation(DataLog.class);
@@ -154,15 +151,16 @@ public class DiffUtil {
     }
 
     /**
-     * 获取bean的fieldname和value
+     * 获取bean的fieldName和value
      * 只获取简单类型，不获取复杂类型，包括集合
      * @param bean
      * @return
      */
     public static Map<String, String> getBeanSimpleFieldValueMap(Object bean, boolean filterNull) {
-        Map<String, String> map = new HashMap<String, String>();
-        if (bean == null)
+        Map<String, String> map = new HashMap<>(16);
+        if (ObjectUtils.isEmpty(bean)) {
             return map;
+        }
         Class<?> clazz = bean.getClass();
         try {
             //不获取父类的字段
@@ -170,18 +168,21 @@ public class DiffUtil {
             for (int i = 0; i < fields.length; i++) {
                 Class<?> fieldType = fields[i].getType();
                 String name = fields[i].getName();
+                // 获取 getXXX()
                 Method method = clazz.getMethod("get" + name.substring(0, 1).toUpperCase() + name.substring(1));
                 Object value = method.invoke(bean);
-                if (filterNull && value == null)
+                if (filterNull && ObjectUtils.isEmpty(value)) {
                     continue;
+                }
                 if (isBaseDataType(fieldType)) {
-                    String strValue = getFieldStringValue(fieldType,value);
+//                    String strValue = getFieldStringValue(fieldType,value);
+                    String strValue = getValue(value);
                     map.put(name,strValue);
                 }
 
             }
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         return map;
     }

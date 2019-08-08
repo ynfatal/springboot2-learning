@@ -7,7 +7,6 @@ import lombok.experimental.Accessors;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -27,16 +26,25 @@ public class Product {
     @DataLog(name = "产品名称")
     private String name;
 
+    @DataLog(name = "商品类别")
     private String category;
 
-    private BigDecimal buyPrice;
+    @DataLog(name = "商品详情")
+    private String detail;
 
-    private BigDecimal sellPrice;
+    @DataLog(name = "买入价")
+    private Integer buyPrice;
 
+    @DataLog(name = "卖出价")
+    private Integer sellPrice;
+
+    @DataLog(name = "供应商")
     private String provider;
 
+    @DataLog(name = "更新时间")
     private Date updateTime;
 
+    @DataLog(name = "上线时间")
     private Date onlineTime;
 
 }

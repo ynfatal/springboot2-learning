@@ -1,10 +1,10 @@
 package com.fatal.aspect;
 
-import com.fatal.dao.aop.ActionDao;
+import com.fatal.dao.ActionDao;
 import com.fatal.entity.Action;
 import com.fatal.entity.ChangeItem;
 import com.fatal.enums.ActionType;
-import com.fatal.util.DiffUtil;
+import com.fatal.util.DifferentUtil;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -12,7 +12,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -37,10 +37,10 @@ public class ActionAspect {
     @Autowired
     private ActionDao dao;
 
-    @Pointcut("execution(public * com.fatal.mapper.*.save*(..))")
+    @Pointcut("execution(public * com.fatal.dao.ProductDao.save*(..))")
     public void save() {}
 
-    @Pointcut("execution(public * com.fatal.mapper.*.delete*(..))")
+    @Pointcut("execution(public * com.fatal.dao.ProductDao.delete*(..))")
     public void delete() {}
 
     /**
@@ -60,30 +60,30 @@ public class ActionAspect {
         Object joinPointArg = joinPoint.getArgs()[0];
 
         Long id = null;
-        if (DELETE.equals(method)) {
+        if (method.contains(DELETE)) {
             id = (Long) joinPointArg;
         } else {
             // 先判断有没有id
             Object property = PropertyUtils.getProperty(joinPointArg, ID);
-            if (property != null) {
+            if (!ObjectUtils.isEmpty(property)) {
                 id = Long.valueOf(property.toString());
             }
         }
 
-        if (id == null) {
+        if (ObjectUtils.isEmpty(id)) {
             // 新增
             actionType = ActionType.INSERT;
             action.setObjectClass(joinPointArg.getClass().getName());
         } else {
-            if (SAVE.equals(method)) {
+            if (method.contains(SAVE)) {
                 // 更新
                 actionType = ActionType.UPDATE;
-            } else if (DELETE.equals(method)) {
+            } else if (method.contains(DELETE)) {
                 // 删除
                 actionType = ActionType.DELETE;
             }
-            // 通过切点的父类反射获得 findById()。然后拿id 去数据库查原始数据
-            oldObj = DiffUtil.getObjectById(joinPoint.getTarget(), id);
+            // 通过切点的父类反射获得 findById()。然后拿id通过反射去数据库查原始数据
+            oldObj = DifferentUtil.getObjectById(joinPoint.getTarget(), id);
             action.setObjectClass(oldObj.getClass().getName());
             action.setObjectId(id);
         }
@@ -92,22 +92,20 @@ public class ActionAspect {
         Object result = joinPoint.proceed(joinPoint.getArgs());
         // =========           end          =========
 
-        if (id == null) {
+        if (ObjectUtils.isEmpty(id)) {
             // 新增后的实体中是存在id的
             Long newId = Long.valueOf(PropertyUtils.getProperty(result, ID).toString());
             action.setObjectId(newId);
-            List<ChangeItem> changeItems = DiffUtil.getInsertChangeItems(joinPointArg);
-            if (!CollectionUtils.isEmpty(changeItems)) {
-                action.setChanges(changeItems);
-            }
+            List<ChangeItem> changeItems = DifferentUtil.getInsertChangeItems(joinPointArg);
+            action.getChanges().addAll(changeItems);
         } else {
             if (SAVE.equals(method)) {
                 // 更新
-                List<ChangeItem> changeItems = DiffUtil.getChangeItems(oldObj, joinPointArg);
+                List<ChangeItem> changeItems = DifferentUtil.getChangeItems(oldObj, joinPointArg);
                 action.getChanges().addAll(changeItems);
             } else if (DELETE.equals(method)) {
                 // 删除
-                ChangeItem changeItem = DiffUtil.getDeleteChangeItem(oldObj);
+                ChangeItem changeItem = DifferentUtil.getDeleteChangeItem(oldObj);
                 action.getChanges().add(changeItem);
             }
         }

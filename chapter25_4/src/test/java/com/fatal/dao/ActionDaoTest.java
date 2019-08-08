@@ -1,6 +1,5 @@
-package com.fatal.mapper;
+package com.fatal.dao;
 
-import com.fatal.dao.aop.ActionDao;
 import com.fatal.entity.Action;
 import com.fatal.enums.ActionType;
 import org.junit.Before;
@@ -23,12 +22,12 @@ public class ActionDaoTest {
     @Autowired
     private ActionDao dao;
 
-    Action action;
+    private Action action;
 
     @Before
     public void before() {
         action = new Action()
-                .setObjectId(123456l)
+                .setObjectId(123456L)
                 .setActionType(ActionType.INSERT)
                 .setObjectClass("objectClass")
                 .setOperateTime(new Date())

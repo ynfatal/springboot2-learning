@@ -1,6 +1,5 @@
-package com.fatal.mapper;
+package com.fatal.dao;
 
-import com.fatal.dao.ProductDao;
 import com.fatal.entity.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -32,8 +30,8 @@ public class ProductDaoTest {
         product = new Product().setName("童年·在人间·我的大学")
                 .setCategory("书")
                 .setProvider("fatal")
-                .setBuyPrice(new BigDecimal(33.33))
-                .setSellPrice(new BigDecimal(44.44))
+                .setBuyPrice(3333)
+                .setSellPrice(4444)
                 .setUpdateTime(new Date());
     }
 

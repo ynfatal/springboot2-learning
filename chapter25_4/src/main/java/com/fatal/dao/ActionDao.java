@@ -1,4 +1,4 @@
-package com.fatal.dao.aop;
+package com.fatal.dao;
 
 import com.fatal.entity.Action;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -7,6 +7,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  * @author: Fatal
  * @date: 2018/11/15 0015 11:33
  */
-public interface ActionDao extends MongoRepository<Action, Long> {
+public interface ActionDao extends MongoRepository<Action, String> {
 
 }

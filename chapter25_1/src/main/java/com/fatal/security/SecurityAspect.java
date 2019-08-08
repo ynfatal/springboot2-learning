@@ -18,6 +18,7 @@ public class SecurityAspect {
 
     /**
      * 切点
+     * 注意：如果注解和切面不在同一个包，记得要用全类名
      */
     @Pointcut("@annotation(AdminOnly)")
     public void adminOnly() {

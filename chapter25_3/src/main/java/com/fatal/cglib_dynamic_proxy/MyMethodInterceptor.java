@@ -33,6 +33,15 @@ public class MyMethodInterceptor implements MethodInterceptor {
         return Enhancer.create(this.obj.getClass(), this);
     }
 
+    /**
+     * @desc 所有生成的代理方法都调用此方法而不是原始方法。原始方法可以通过使用方法对象的普通反射调用，也可以通过使用methodproxy（更快）调用。
+     * @param obj 增强的对象
+     * @param method 方法对象
+     * @param args 参数
+     * @param methodProxy 用于调用父类（未拦截的）方法，可根据需要多次调用
+     * @return
+     * @throws Throwable
+     */
     @Override
     public Object intercept(Object obj, Method method, Object[] args, MethodProxy methodProxy)
             throws Throwable {
@@ -48,7 +57,10 @@ public class MyMethodInterceptor implements MethodInterceptor {
              * Object obj:被代理对象
              * Object... args:实际方法参数
              */
+            // 使用 MethodProxy
             invoke = methodProxy.invokeSuper(obj, args);
+            // 使用方法对象的普通反射调用
+//            invoke = method.invoke(this.obj, args);
         } catch (InvocationTargetException e) {
             // 注意：代理类不会改变被代理类的方法。如果代理类有异常抛出，那么被代理类也要抛出。
             throw e;

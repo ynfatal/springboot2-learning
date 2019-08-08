@@ -63,7 +63,7 @@ public class Chapter242ApplicationTests {
          * V get(long timeout, TimeUnit unit)
          * timeout: 值
          * unit: 单位
-         * 表示超过此时间会抛出超时异常，该线程就被释放会线程池，从而防止线程阻塞
+         * 表示超过此时间会抛出超时异常，该线程就被释放回线程池，从而防止线程阻塞
          */
         log.info("[在返回类型为Future<String>异步方法里捕获的异常] {}", future.get(5, TimeUnit.SECONDS));
     }

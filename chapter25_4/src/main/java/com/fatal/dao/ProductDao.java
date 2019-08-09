@@ -11,4 +11,12 @@ import java.util.Optional;
  * @date: 2018/11/15 0015 10:55
  */
 public interface ProductDao extends JpaRepository<Product, Long> {
+
+    /**
+     * 后面反射要用到
+     * @param aLong
+     * @return
+     */
+    @Override
+    Optional<Product> findById(Long aLong);
 }

@@ -11,6 +11,4 @@ import java.util.Optional;
  * @date: 2018/11/15 0015 10:55
  */
 public interface ProductDao extends JpaRepository<Product, Long> {
-    @Override
-    Optional<Product> findById(Long aLong);
 }

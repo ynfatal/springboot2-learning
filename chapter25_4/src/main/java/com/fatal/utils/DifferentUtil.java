@@ -1,4 +1,4 @@
-package com.fatal.util;
+package com.fatal.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.fatal.annotation.DataLog;

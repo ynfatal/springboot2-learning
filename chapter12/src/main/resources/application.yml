@@ -1,11 +1,9 @@
 spring:
-  redis:
-    host: localhost
-    password: 123456
-    # Redis默认情况下有16个分片，这里配置具体使用的分片，默认是0
-    database: 1
-    # 连接超时时间
-    timeout: 10000ms
-
-# 把这里边用到的API解释下，然后将整合篇做笔记。整合完毕后，再次复习下redis，回头来做详情篇
-# 还有学习 spring-data-redis
+  data:
+    mongodb:
+      # 默认uri`mongodb://localhost:27017/test`
+      # 数据库有用户名和密码可参考：mongodb://name:password@localhost:27017/db
+      #      uri: mongodb://fatal:123456@localhost:27017/test
+      uri: mongodb://localhost:27017/test
+      username: fatal
+      password: 123456

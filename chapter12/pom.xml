@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter12</name>
-    <description>Spring Boot2 | 第十二篇: 整合 Redis</description>
+    <description>Spring Boot2 | 第十二篇: 整合 MongoDB</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -27,7 +27,7 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -37,8 +37,11 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.22</version>
-            <scope>test</scope>
+        </dependency>
+        <!-- 为了控制打印Json格式数据方便查看 -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
         </dependency>
     </dependencies>
 

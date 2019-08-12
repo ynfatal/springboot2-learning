@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ValidatorController {
 
     @PostMapping(value = "/insert")
-    public String insert(@Validated(value = Groups.Default.class) Book book,
+    public String insert(@Validated(value = Groups.Insert.class) Book book,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return bindingResult.getFieldError().getDefaultMessage();
@@ -25,6 +25,15 @@ public class ValidatorController {
 
     @PostMapping(value = "/update")
     public String update(@Validated(value = Groups.Update.class) Book book,
+                         BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return bindingResult.getFieldError().getDefaultMessage();
+        }
+        return "success";
+    }
+
+    @PostMapping(value = "/other")
+    public String other(@Validated(value = Groups.Other.class) Book book,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return bindingResult.getFieldError().getDefaultMessage();

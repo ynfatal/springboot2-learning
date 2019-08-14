@@ -1,6 +1,9 @@
 package com.fatal.service;
 
+import com.fatal.dto.ParamDTO;
 import com.fatal.entity.User;
+
+import java.util.List;
 
 /**
  * User 服务
@@ -17,5 +20,11 @@ public interface IUserService {
 
     /** 查 */
     User selectById(Long id);
+
+    /** 查集合 */
+    List<User> listUser();
+
+    /** 根据DTO查询集合 */
+    List<User> listUser(ParamDTO paramDTO);
 
 }

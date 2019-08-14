@@ -1,5 +1,6 @@
 package com.fatal;
 
+import com.fatal.dto.ParamDTO;
 import com.fatal.entity.User;
 import com.fatal.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.CacheManager;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -26,7 +29,7 @@ public class Chapter16ApplicationTests {
         /**
          * 测试添加
          */
-        User user = new User().setId(1l).setUsername("fatal").setPassword("21");
+        User user = new User().setId(1L).setUsername("fatal").setPassword("21");
         User result = userService.insertOrUpdate(user);
         log.info("【添加成功】 = [{}]", result);
 
@@ -47,6 +50,36 @@ public class Chapter16ApplicationTests {
          */
         User selectAfterDelete = userService.selectById(result.getId());
         log.info("【查询成功】 = [{}]", selectAfterDelete);
+    }
+
+    @Test
+    public void testListUser() {
+        List<User> users = userService.listUser();
+        log.info("【查询成功】 = [{}]", users);
+    }
+
+    @Test
+    public void testListUserWithParam() {
+        ParamDTO paramDTO = new ParamDTO()
+                .setId(1L)
+                .setUsername("米彩");
+        /*ParamDTO paramDTO = new ParamDTO()
+                .setId(2L)
+                .setUsername("米琪");*/
+        List<User> users = userService.listUser(paramDTO);
+        log.info("【查询成功】 = [{}]", users);
+    }
+
+    @Test
+    public void testSelectById() {
+        User selectAfterInsert = userService.selectById(1L);
+        log.info("【查询成功】 = [{}]", selectAfterInsert);
+    }
+
+    @Test
+    public void testRemove() {
+        User remove = userService.remove(1L);
+        log.info("【删除成功】 = [{}]", remove);
     }
 
     /**

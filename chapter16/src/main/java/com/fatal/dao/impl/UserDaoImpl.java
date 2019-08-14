@@ -1,11 +1,15 @@
 package com.fatal.dao.impl;
 
 import com.fatal.dao.IUserDao;
+import com.fatal.dto.ParamDTO;
 import com.fatal.entity.User;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * User 数据库访问层实现
@@ -42,6 +46,33 @@ public class UserDaoImpl implements IUserDao {
     @Override
     public User selectById(Long id) {
         return db.get(id);
+    }
+
+    @Override
+    public List<User> listUser() {
+        List<User> users = db.values().stream()
+                .collect(Collectors.toList());
+        return users;
+    }
+
+    @Override
+    public List<User> listUser(ParamDTO paramDTO) {
+        return db.values().stream()
+                .filter(user -> {
+                    // 模拟多条件查询
+                    Long id = paramDTO.getId();
+                    String username = paramDTO.getUsername();
+                    if (!ObjectUtils.isEmpty(id) && !ObjectUtils.isEmpty(username)) {
+                        return id.equals(user.getId()) && username.equals(user.getUsername());
+                    } else if (!ObjectUtils.isEmpty(id)) {
+                        return id.equals(user.getId());
+                    } else if (!ObjectUtils.isEmpty(username)){
+                        return username.equals(user.getUsername());
+                    } else {
+                        return true;
+                    }
+                })
+                .collect(Collectors.toList());
     }
 
 }

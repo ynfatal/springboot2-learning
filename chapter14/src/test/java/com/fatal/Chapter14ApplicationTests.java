@@ -99,7 +99,7 @@ public class Chapter14ApplicationTests {
     @Test
     public void testUser() {
         ValueOperations<String, Serializable> ops = serializableRedisTemplate.opsForValue();
-        User user = new User(1l, "米彩", "18");
+        User user = new User(1L, "米彩", "18");
         String key = "fatal:user";
         ops.set(key, user);
         User result = (User)ops.get(key);

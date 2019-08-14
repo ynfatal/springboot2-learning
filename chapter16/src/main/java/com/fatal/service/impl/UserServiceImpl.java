@@ -59,6 +59,15 @@ public class UserServiceImpl implements IUserService {
         return dao.selectById(id);
     }
 
+
+    @Override
+    @Cacheable(unless="#result == null", cacheNames = "users", key = "'users'")
+    public List<User> listUser() {
+        // 健壮性判断...
+        log.info("进入【listUser()】方法");
+        return dao.listUser();
+    }
+
     /**
      * 查询集合、分页要不要做缓存，可以根据参数的复杂程度，如果参数是条件单一（比如只有id），则适合做缓存，
      * 如果参数是一个DTO，里边的属性随着变化，出现了很多种情况（数学的`组合`问题），这中场景下要不要做缓存，
@@ -80,14 +89,6 @@ public class UserServiceImpl implements IUserService {
      * 根据频率决定吧，如果查询条件相同的有一定的几率，建议使用。
      * @return
      */
-    @Override
-    @Cacheable(unless="#result == null", cacheNames = "users", key = "'users'")
-    public List<User> listUser() {
-        // 健壮性判断...
-        log.info("进入【listUser()】方法");
-        return dao.listUser();
-    }
-
     @Override
     @Cacheable(unless="#result == null", cacheNames = "users", key = "#paramDTO.id + ':' + #paramDTO.username")
     public List<User> listUser(ParamDTO paramDTO) {

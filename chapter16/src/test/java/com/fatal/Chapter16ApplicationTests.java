@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.CacheManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -29,7 +30,12 @@ public class Chapter16ApplicationTests {
         /**
          * 测试添加
          */
-        User user = new User().setId(1L).setUsername("fatal").setPassword("21");
+        User user = new User()
+                .setId(1L)
+                .setUsername("fatal")
+                .setPassword("21")
+                .setCreateTime(LocalDateTime.now())
+                .setUpdateTime(LocalDateTime.now());
         User result = userService.insertOrUpdate(user);
         log.info("【添加成功】 = [{}]", result);
 

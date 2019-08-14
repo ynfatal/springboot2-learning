@@ -52,7 +52,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    @Cacheable(cacheNames = "user", key = "#id")
+    @Cacheable(unless="#result == null", cacheNames = "user", key = "#id")
     public User selectById(Long id) {
         // 健壮性判断...
         log.info("进入【selectById】方法");
@@ -81,7 +81,7 @@ public class UserServiceImpl implements IUserService {
      * @return
      */
     @Override
-    @Cacheable(cacheNames = "users", key = "'users'")
+    @Cacheable(unless="#result == null", cacheNames = "users", key = "'users'")
     public List<User> listUser() {
         // 健壮性判断...
         log.info("进入【listUser()】方法");
@@ -89,7 +89,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    @Cacheable(cacheNames = "users", key = "#paramDTO.id + ':' + #paramDTO.username")
+    @Cacheable(unless="#result == null", cacheNames = "users", key = "#paramDTO.id + ':' + #paramDTO.username")
     public List<User> listUser(ParamDTO paramDTO) {
         // 健壮性判断...
         log.info("进入【listUser(ParamDTO paramDTO)】方法");

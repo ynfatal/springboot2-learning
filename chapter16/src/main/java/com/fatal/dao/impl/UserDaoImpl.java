@@ -6,6 +6,8 @@ import com.fatal.entity.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,9 +26,24 @@ public class UserDaoImpl implements IUserDao {
 
     static {
         // 初始化数据库
-        db.put(1L,new User().setId(1L).setUsername("米彩").setPassword("18"));
-        db.put(2L,new User().setId(2L).setUsername("米琪").setPassword("19"));
-        db.put(3L,new User().setId(3L).setUsername("小米").setPassword("20"));
+        db.put(1L,new User()
+                .setId(1L)
+                .setUsername("米彩")
+                .setPassword("18")
+                .setCreateTime(LocalDateTime.now())
+                .setUpdateTime(LocalDateTime.now()));
+        db.put(2L,new User()
+                .setId(2L)
+                .setUsername("米琪")
+                .setPassword("19")
+                .setCreateTime(LocalDateTime.now())
+                .setUpdateTime(LocalDateTime.now()));
+        db.put(3L,new User()
+                .setId(3L)
+                .setUsername("小米")
+                .setPassword("20")
+                .setCreateTime(LocalDateTime.now())
+                .setUpdateTime(LocalDateTime.now()));
     }
 
     @Override
@@ -50,9 +67,7 @@ public class UserDaoImpl implements IUserDao {
 
     @Override
     public List<User> listUser() {
-        List<User> users = db.values().stream()
-                .collect(Collectors.toList());
-        return users;
+        return new ArrayList<>(db.values());
     }
 
     @Override

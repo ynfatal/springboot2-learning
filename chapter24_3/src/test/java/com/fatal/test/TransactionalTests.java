@@ -1,7 +1,7 @@
 package com.fatal.test;
 
 import com.fatal.entity.Order;
-import com.fatal.service.order.IOrderService;
+import com.fatal.service.IOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;

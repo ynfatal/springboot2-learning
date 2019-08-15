@@ -5,7 +5,7 @@ import com.fatal.mapper.message.MessageRepository;
 import com.fatal.mapper.order.OrderRepository;
 import com.fatal.entity.Message;
 import com.fatal.entity.Order;
-import com.fatal.service.order.IOrderService;
+import com.fatal.service.IOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,9 +128,8 @@ public class OrderServiceImpl implements IOrderService {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             System.out.println("~~~~~~~~~~~~~~  " + Thread.currentThread().getName()+ " -- 异步方法抛异常啦    ~~~~~~~~~~~~~~");
             e.printStackTrace();
-        } finally {
-            return future;
         }
+        return future;
     }
 
     /**
@@ -144,10 +143,7 @@ public class OrderServiceImpl implements IOrderService {
             e.printStackTrace();
             // 手动回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            /**
-             * 抛出 RuntimeException 让它自动回滚（需要全局异常处理器统一出来的话则抛个异常咯
-             * ，不需要的话就手动回滚吧）
-             */
+            // 抛出 RuntimeException 让它自动回滚
 //            throw new RuntimeException(e);
         } else if (o instanceof String){
             log.info("[异步方法成功返回] --> {}", o);

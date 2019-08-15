@@ -61,9 +61,8 @@ public class AsyncComponent {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             System.out.println("~~~~~~~~~~~~~~  " + Thread.currentThread().getName()+ " -- 异步方法抛异常啦    ~~~~~~~~~~~~~~");
             e.printStackTrace();
-        } finally {
-            return future;
         }
+        return future;
     }
 
 }

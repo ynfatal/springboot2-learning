@@ -1,4 +1,4 @@
-package com.fatal.service.order;
+package com.fatal.service;
 
 import com.fatal.entity.Order;
 

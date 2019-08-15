@@ -66,7 +66,7 @@ public class Task {
             throw new RuntimeException(param);
         } catch (Exception e) {
             log.info("success to catch: [{}]", param);
-            future = new AsyncResult<String>(param);
+            future = new AsyncResult<>(param);
         }
         return future;
     }

@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter20</name>
-    <description>SpringBoot2 | 第二十篇：使用SpringBoot上传文件</description>
+    <description>SpringBoot2 | 第二十篇: 使用SpringBoot上传文件</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

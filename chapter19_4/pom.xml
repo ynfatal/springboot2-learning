@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter19_4</name>
-    <description>SpringBoot2 第十九篇：整合RabbitMQ_4（延迟队列）</description>
+    <description>SpringBoot2 | 第十九篇: 整合RabbitMQ_4（延迟队列）</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

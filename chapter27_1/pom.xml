@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter27_1</name>
-    <description>SpringBoot 第二十七篇（一）：轻松搞定重复提交（本地锁）</description>
+    <description>SpringBoot | 第二十七篇（一）: 轻松搞定重复提交（本地锁）</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

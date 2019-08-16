@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter25_4</name>
-    <description>SpringBoot2 第二十五篇（四）：SpringAOP实战</description>
+    <description>SpringBoot2 | 第二十五篇（四）: SpringAOP实战</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

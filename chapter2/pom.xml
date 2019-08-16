@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter2</name>
-    <description> Spring Boot2 | 第二篇: 配置详情</description>
+    <description> SpringBoot2 | 第二篇: 配置详情</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

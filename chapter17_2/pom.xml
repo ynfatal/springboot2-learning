@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter17_2</name>
-    <description>Spring Boot2 | 第十七篇：集成Swagger2在线调试（battcn版）</description>
+    <description>SpringBoot2 | 第十七篇: 集成Swagger2在线调试（battcn版）</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

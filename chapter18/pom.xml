@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter18</name>
-    <description>SpringBoot2 | 第十八篇：使用 Redis 实现消息队列</description>
+    <description>SpringBoot2 | 第十八篇: 使用 Redis 实现消息队列</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

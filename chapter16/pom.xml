@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter16</name>
-    <description>Spring Boot2 | 第十六篇: Spring Cache 集成 Redis</description>
+    <description>SpringBoot2 | 第十六篇: Spring Cache 集成 Redis</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

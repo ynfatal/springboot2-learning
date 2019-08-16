@@ -12,7 +12,7 @@
     <artifactId>chapter19_5</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>chapter19_5</name>
-    <description>Demo project for Spring Boot</description>
+    <description>SpringBoot2 | 第十九篇: 整合RabbitMQ_5（生产案例）</description>
 
     <properties>
         <java.version>1.8</java.version>

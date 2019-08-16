@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>chapter26_2</name>
-    <description>SpringBoot2 第二十六篇（二）：自定义验证</description>
+    <description>SpringBoot2 | 第二十六篇（二）: 自定义验证</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

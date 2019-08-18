@@ -25,7 +25,7 @@ public interface IShopCartService {
      * @param userId 用户ID
      * @param goodsId 商品ID
      */
-    void remove(Long userId, Long goodsId);
+    void removeOne(Long userId, Long goodsId);
 
     /**
      * 购物车列表
@@ -36,12 +36,12 @@ public interface IShopCartService {
     List<ShopCartDTO> shopCarts(Long userId, List<Long> goodsIds);
 
     /**
-     * 删除购物车指定商品
+     * 移除购物车指定商品
      * @param userId 用户ID
      * @param goodsIds 商品ID数组（该参数必须是可变参数或者数组，后面需要转为 byte[][] 类型，如果
      *                 这里用集合的话，后面序列化的 byte[][] 结果是错的）
      */
-    void delete(Long userId, Long... goodsIds);
+    void remove(Long userId, Long... goodsIds);
 
     /**
      * 清空购物车

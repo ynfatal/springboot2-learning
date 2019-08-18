@@ -75,13 +75,13 @@ public class ShopCartServiceImpl implements IShopCartService {
      * @param goodsId 商品ID
      */
     @Override
-    public void remove(Long userId, Long goodsId) {
+    public void removeOne(Long userId, Long goodsId) {
         // 校验 goodsId 是否存在（保证数据库存在该商品）
         goodsService.getById(goodsId);
         Long value = hashOperations.increment(getKey(userId), goodsId, -1L);
         if (value <= 0) {
             // 如果购物车中该商品的数量小于或等于0，就将该商品从购物车中删除
-            delete(userId, goodsId);
+            remove(userId, goodsId);
         }
     }
 
@@ -113,7 +113,7 @@ public class ShopCartServiceImpl implements IShopCartService {
     }
 
     @Override
-    public void delete(Long userId, Long... goodsIds) {
+    public void remove(Long userId, Long... goodsIds) {
         hashOperations.delete(getKey(userId), goodsIds);
     }
 

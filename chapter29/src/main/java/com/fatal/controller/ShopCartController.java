@@ -39,7 +39,7 @@ public class ShopCartController {
     @PutMapping("/decrement")
     public ResponseEntity<Void> decrement(@NotNull(message = "userId不能为空") Long userId,
                           @NotNull(message = "goodsId不能为空") Long goodsId) {
-        shopCartService.remove(userId, goodsId);
+        shopCartService.removeOne(userId, goodsId);
         return ResponseEntity.ok().build();
     }
 
@@ -49,10 +49,10 @@ public class ShopCartController {
         return ResponseEntity.ok(shopCartService.shopCarts(userId, Arrays.asList(goodsIds)));
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/remove")
     public ResponseEntity<Void> delete(@NotNull(message = "userId不能为空") Long userId,
                        @NotEmpty(message = "goodsIds不能为空") @Min(value = 555555) Long... goodsIds) {
-        shopCartService.delete(userId, goodsIds);
+        shopCartService.remove(userId, goodsIds);
         return ResponseEntity.ok().build();
     }
 

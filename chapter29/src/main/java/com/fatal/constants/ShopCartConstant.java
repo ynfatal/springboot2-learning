@@ -13,7 +13,7 @@ public interface ShopCartConstant {
     String SHOP_CART = "SHOP_CART:%s";
 
     /**
-     * 系统统一数据：单个商品允许添加到购物车的数额
+     * 系统统一数据：单种商品允许添加到购物车的数额
      */
     Integer MAX = 10000;
 

@@ -17,4 +17,9 @@ public interface ShopCartConstant {
      */
     Integer MAX = 10000;
 
+    /**
+     * 系统统一数据：允许添加到购物车商品种类的数额
+     */
+    Integer TYPE_MAX = 120;
+
 }

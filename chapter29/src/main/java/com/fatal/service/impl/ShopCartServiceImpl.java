@@ -55,6 +55,9 @@ public class ShopCartServiceImpl implements IShopCartService {
     @Override
     public void increment(Long userId, Long goodsId, Long increment) {
         Integer value = (Integer) hashOperations.get(getKey(userId), goodsId);
+        if (ObjectUtils.isEmpty(value) && hashOperations.size(getKey(userId)) >= ShopCartConstant.TYPE_MAX) {
+            throw new ValidateException(ResponseEnum.SHOP_CART_GOODS_TYPE_COUNT_FULL.getMessage());
+        }
         boolean overflow = increment > ShopCartConstant.MAX ||
                 !ObjectUtils.isEmpty(value) && value + increment > ShopCartConstant.MAX;
         if (overflow) {

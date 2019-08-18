@@ -47,7 +47,7 @@ public class ShopCartServiceImpl implements IShopCartService {
      *      若总数小于 max，则 `总数 - 数据库总数`作为`增量`，输入框显示总数
      *      若总数大于或等于 max，则 `max - 数据库总数`作为`增量`，输入框显示 max
      * 操作三：商品详情添加到购物车
-     * @desc 该方法会对购物车单个商品总量进行控制
+     * @desc 该方法会对购物车单个商品总量以及购物车商品种类数量进行控制
      * @param userId 用户ID
      * @param goodsId 商品ID
      * @param increment 增量

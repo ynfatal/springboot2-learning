@@ -1,7 +1,9 @@
 package com.fatal.service.impl;
 
+import com.fatal.common.exception.ValidateException;
 import com.fatal.dto.ShopCartGoodsDTO;
 import com.fatal.entity.Goods;
+import com.fatal.enums.ResponseEnum;
 import com.fatal.enums.StatusEnums;
 import com.fatal.repository.GoodsRepository;
 import com.fatal.service.IGoodsService;
@@ -24,7 +26,6 @@ public class GoodsServiceImpl implements IGoodsService {
     }
 
     /**
-     * 测试缓存
      * @param id
      * @return
      */
@@ -35,7 +36,7 @@ public class GoodsServiceImpl implements IGoodsService {
                 .setId(id)
                 .setStatus(StatusEnums.NORMAL.getCode()));
         return goodsRepository.findOne(example)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new ValidateException(ResponseEnum.GOODS_IS_NOT_EXISTS));
     }
 
     @Override

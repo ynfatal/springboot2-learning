@@ -54,15 +54,17 @@ public class ShopCartServiceImpl implements IShopCartService {
      */
     @Override
     public void increment(Long userId, Long goodsId, Long increment) {
+        // 校验 goodsId 是否存在（保证数据库存在该商品）
+        goodsService.getById(goodsId);
         Integer value = (Integer) hashOperations.get(getKey(userId), goodsId);
         if (ObjectUtils.isEmpty(value) && hashOperations.size(getKey(userId)) >= ShopCartConstant.TYPE_MAX) {
-            throw new ValidateException(ResponseEnum.SHOP_CART_GOODS_TYPE_COUNT_FULL.getMessage());
+            throw new ValidateException(ResponseEnum.SHOP_CART_GOODS_TYPE_COUNT_FULL);
         }
         boolean overflow = increment > ShopCartConstant.MAX ||
                 !ObjectUtils.isEmpty(value) && value + increment > ShopCartConstant.MAX;
         if (overflow) {
             hashOperations.put(getKey(userId), goodsId, ShopCartConstant.MAX);
-            throw new ValidateException(ResponseEnum.SHOP_CART_GOODS_COUNT_OUT_OF_RANGE.getMessage());
+            throw new ValidateException(ResponseEnum.SHOP_CART_GOODS_COUNT_OUT_OF_RANGE);
         }
         hashOperations.increment(getKey(userId), goodsId, increment);
     }
@@ -74,6 +76,8 @@ public class ShopCartServiceImpl implements IShopCartService {
      */
     @Override
     public void remove(Long userId, Long goodsId) {
+        // 校验 goodsId 是否存在（保证数据库存在该商品）
+        goodsService.getById(goodsId);
         Long value = hashOperations.increment(getKey(userId), goodsId, -1L);
         if (value <= 0) {
             // 如果购物车中该商品的数量小于或等于0，就将该商品从购物车中删除

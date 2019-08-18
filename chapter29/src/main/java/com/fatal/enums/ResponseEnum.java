@@ -17,7 +17,14 @@ public enum ResponseEnum {
     /**
      * 购物车已满，不能添加新商品
      */
-    SHOP_CART_GOODS_TYPE_COUNT_FULL(10001, "购物车已满，不能添加新商品");
+    SHOP_CART_GOODS_TYPE_COUNT_FULL(10001, "购物车已满，不能添加新商品"),
+
+    /**
+     * 数据库不存在此商品
+     */
+    GOODS_IS_NOT_EXISTS(10100, "数据库不存在此商品"),
+
+    ;
 
     private Integer code;
 

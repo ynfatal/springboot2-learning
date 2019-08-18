@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -43,16 +44,26 @@ public class RedisTests extends Chapter29ApplicationTests {
      */
     @Test
     public void save100Test() {
+        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
         for (int i = 0; i < 100; i++) {
         }
     }
 
     @Test
-    public void getTest() {
+    public void hashTest() {
         HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
         hashOperations.put("Cart", "用户id", goods);
         Goods result = (Goods) hashOperations.get("Cart", "用户id");
         System.out.println(result);
+    }
+
+    @Test
+    public void stringTest() {
+        ValueOperations<String, Serializable> valueOperations = redisTemplate.opsForValue();
+//        valueOperations.set("GOODS", goods);
+//        Serializable goods = valueOperations.get("GOODS");
+//        System.out.println(goods);
+        valueOperations.set("TEST", "qwertyuiopqwertyu");
     }
 
 }

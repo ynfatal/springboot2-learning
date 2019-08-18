@@ -1,18 +1,23 @@
 package com.fatal.service.impl;
 
+import com.fatal.common.exception.ValidateException;
 import com.fatal.constants.ShopCartConstant;
 import com.fatal.dto.ShopCartDTO;
 import com.fatal.dto.ShopCartGoodsDTO;
 import com.fatal.dto.ShopCartItemDTO;
 import com.fatal.dto.ShopCartMainDTO;
+import com.fatal.enums.ResponseEnum;
 import com.fatal.service.IGoodsService;
 import com.fatal.service.IShopCartService;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -41,17 +46,22 @@ public class ShopCartServiceImpl implements IShopCartService {
      * 操作二：购物车商品项输入框填充数字，这个数是总数；前端拿到总数，先将它与商家定义的max比较，
      *      若总数小于 max，则 `总数 - 数据库总数`作为`增量`，输入框显示总数
      *      若总数大于或等于 max，则 `max - 数据库总数`作为`增量`，输入框显示 max
+     * 操作三：商品详情添加到购物车
+     * @desc 该方法会对购物车单个商品总量进行控制
      * @param userId 用户ID
      * @param goodsId 商品ID
      * @param increment 增量
      */
     @Override
     public void increment(Long userId, Long goodsId, Long increment) {
-        Long value = hashOperations.increment(getKey(userId), goodsId, increment);
-        if (value > ShopCartConstant.MAX) {
-            hashOperations.increment(getKey(userId), goodsId, -increment);
-            throw new RuntimeException("数量超出范围");
+        Integer value = (Integer) hashOperations.get(getKey(userId), goodsId);
+        boolean overflow = increment > ShopCartConstant.MAX ||
+                !ObjectUtils.isEmpty(value) && value + increment > ShopCartConstant.MAX;
+        if (overflow) {
+            hashOperations.put(getKey(userId), goodsId, ShopCartConstant.MAX);
+            throw new ValidateException(ResponseEnum.SHOP_CART_GOODS_COUNT_OUT_OF_RANGE.getMessage());
         }
+        hashOperations.increment(getKey(userId), goodsId, increment);
     }
 
     /**

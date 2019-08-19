@@ -1,6 +1,6 @@
 package com.fatal.common.exception;
 
-import com.fatal.enums.ResponseEnum;
+import com.fatal.common.enums.ResponseEnum;
 
 import javax.validation.ConstraintViolationException;
 

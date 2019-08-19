@@ -1,12 +1,12 @@
 package com.fatal.service.impl;
 
 import com.fatal.common.exception.ValidateException;
-import com.fatal.constants.ShopCartConstant;
+import com.fatal.common.constants.ShopCartConstant;
 import com.fatal.dto.ShopCartDTO;
 import com.fatal.dto.ShopCartGoodsDTO;
 import com.fatal.dto.ShopCartItemDTO;
 import com.fatal.dto.ShopCartMainDTO;
-import com.fatal.enums.ResponseEnum;
+import com.fatal.common.enums.ResponseEnum;
 import com.fatal.service.IGoodsService;
 import com.fatal.service.IShopCartService;
 import org.springframework.data.redis.core.HashOperations;

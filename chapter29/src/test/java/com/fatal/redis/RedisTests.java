@@ -3,7 +3,7 @@ package com.fatal.redis;
 import com.fatal.Chapter29ApplicationTests;
 import com.fatal.dto.RedisTestDTO;
 import com.fatal.entity.Goods;
-import com.fatal.enums.StatusEnums;
+import com.fatal.common.enums.StatusEnums;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

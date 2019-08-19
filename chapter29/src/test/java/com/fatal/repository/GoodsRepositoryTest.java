@@ -2,7 +2,7 @@ package com.fatal.repository;
 
 import com.fatal.Chapter29ApplicationTests;
 import com.fatal.entity.Goods;
-import com.fatal.enums.StatusEnums;
+import com.fatal.common.enums.StatusEnums;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

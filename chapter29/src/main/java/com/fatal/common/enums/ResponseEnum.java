@@ -1,4 +1,4 @@
-package com.fatal.enums;
+package com.fatal.common.enums;
 
 import lombok.Getter;
 

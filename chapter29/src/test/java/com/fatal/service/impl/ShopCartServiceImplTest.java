@@ -4,7 +4,7 @@ import com.fatal.Chapter29ApplicationTests;
 import com.fatal.dto.ShopCartDTO;
 import com.fatal.dto.ShopCartMainDTO;
 import com.fatal.service.IShopCartService;
-import com.fatal.utils.JsonUtil;
+import com.fatal.common.utils.JsonUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.fatal.constants;
+package com.fatal.common.constants;
 
 /**
  * 购物车常量

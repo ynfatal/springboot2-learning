@@ -70,7 +70,7 @@ public class ShopCartServiceImpl implements IShopCartService {
     }
 
     /**
-     * 操作：购物车商品项点击 “-”，`数据库总数`减一
+     * 操作：购物车商品项点击 “-”，`购物车这种类型的商品总数`减一
      * @param userId 用户ID
      * @param goodsId 商品ID
      */

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
-@EnableAspectJAutoProxy(exposeProxy = true)
 @SpringBootTest
 public class Chapter29ApplicationTests {
 

@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
@@ -54,7 +53,7 @@ public class ShopCartController {
 
     @DeleteMapping("/remove")
     public ResponseEntity<Void> delete(@NotNull(message = "userId不能为空") Long userId,
-                       @NotEmpty(message = "goodsIds不能为空") @Min(value = 555555) Long... goodsIds) {
+                       @NotEmpty(message = "goodsIds不能为空") Long... goodsIds) {
         shopCartService.remove(userId, goodsIds);
         return ResponseEntity.ok().build();
     }

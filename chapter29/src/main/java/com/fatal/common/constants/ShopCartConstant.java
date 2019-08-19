@@ -22,4 +22,13 @@ public interface ShopCartConstant {
      */
     Integer TYPE_MAX = 120;
 
+    /**
+     * 为购物车加上前缀
+     * @param userId
+     * @return
+     */
+    static String getKey(Long userId) {
+        return String.format(ShopCartConstant.SHOP_CART, userId);
+    }
+
 }

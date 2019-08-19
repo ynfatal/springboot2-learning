@@ -3,6 +3,8 @@ package com.fatal.controller;
 import com.fatal.dto.ShopCartDTO;
 import com.fatal.dto.ShopCartMainDTO;
 import com.fatal.service.IShopCartService;
+import com.fatal.vo.ShopCartMainVO;
+import com.fatal.vo.ShopCartVO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -44,9 +46,10 @@ public class ShopCartController {
     }
 
     @GetMapping("/shopCarts")
-    public ResponseEntity<List<ShopCartDTO>> shopCarts(@NotNull(message = "userId不能为空") Long userId,
-                                       @NotEmpty(message = "goodsIds不能为空") Long... goodsIds) {
-        return ResponseEntity.ok(shopCartService.shopCarts(userId, Arrays.asList(goodsIds)));
+    public ResponseEntity<List<ShopCartVO>> shopCarts(@NotNull(message = "userId不能为空") Long userId,
+                                                      @NotEmpty(message = "goodsIds不能为空") Long... goodsIds) {
+        List<ShopCartDTO> shopCartDTOs = shopCartService.shopCarts(userId, Arrays.asList(goodsIds));
+        return ResponseEntity.ok(ShopCartVO.of(shopCartDTOs));
     }
 
     @DeleteMapping("/remove")
@@ -63,8 +66,9 @@ public class ShopCartController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ShopCartMainDTO>> into(@NotNull(message = "userId不能为空") Long userId) {
-        return ResponseEntity.ok(shopCartService.into(userId));
+    public ResponseEntity<List<ShopCartMainVO>> into(@NotNull(message = "userId不能为空") Long userId) {
+        List<ShopCartMainDTO> shopCartMainDTOs = shopCartService.into(userId);
+        return ResponseEntity.ok(ShopCartMainVO.of(shopCartMainDTOs));
     }
 
 }

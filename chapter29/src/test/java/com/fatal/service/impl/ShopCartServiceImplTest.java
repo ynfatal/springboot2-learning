@@ -49,7 +49,7 @@ public class ShopCartServiceImplTest extends Chapter29ApplicationTests {
 
     @Test
     public void delete() {
-        shopCartService.delete(userId, goodsIds);
+        shopCartService.remove(userId, goodsIds);
     }
 
     @Test

@@ -1,17 +1,18 @@
 package com.fatal.redis;
 
 import com.fatal.Chapter29ApplicationTests;
+import com.fatal.dto.RedisTestDTO;
 import com.fatal.entity.Goods;
 import com.fatal.enums.StatusEnums;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.core.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Fatal
@@ -23,6 +24,8 @@ public class RedisTests extends Chapter29ApplicationTests {
     private RedisTemplate<String, Serializable> redisTemplate;
 
     private Goods goods;
+
+    private RedisTestDTO redisTestDTO;
 
     @Before
     public void before() {
@@ -37,16 +40,19 @@ public class RedisTests extends Chapter29ApplicationTests {
                 .setStatus(StatusEnums.NORMAL.getCode())
                 .setCreateTime(LocalDateTime.now())
                 .setUpdateTime(LocalDateTime.now());
+
+        redisTestDTO = new RedisTestDTO()
+                .setGoodsId(Long.MAX_VALUE)
+                .setCount(10000);
     }
 
-    /**
-     * 保存一个对象记录作为value
-     */
     @Test
-    public void save100Test() {
-        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
-        for (int i = 0; i < 100; i++) {
-        }
+    public void zsetTest() {
+        String key = "ZSET_TEST";
+        ZSetOperations<String, Serializable> zSetOperations = redisTemplate.opsForZSet();
+        zSetOperations.add(key, redisTestDTO, 1);   // skiplist
+        Set<Serializable> range = zSetOperations.range(key, 0, -1);
+        range.forEach(System.out::println);
     }
 
     @Test
@@ -60,10 +66,18 @@ public class RedisTests extends Chapter29ApplicationTests {
     @Test
     public void stringTest() {
         ValueOperations<String, Serializable> valueOperations = redisTemplate.opsForValue();
-//        valueOperations.set("GOODS", goods);
-//        Serializable goods = valueOperations.get("GOODS");
-//        System.out.println(goods);
-        valueOperations.set("TEST", "qwertyuiopqwertyu");
+        valueOperations.set("GOODS", goods);
+        Serializable goods = valueOperations.get("GOODS");
+        System.out.println(goods);
+    }
+
+    @Test
+    public void listTest() {
+        String key = "LIST_TEST";
+        ListOperations<String, Serializable> listOperations = redisTemplate.opsForList();
+        listOperations.leftPush(key, redisTestDTO);
+        List<Serializable> range = listOperations.range(key, 0, -1);
+        range.forEach(System.out::println);
     }
 
 }

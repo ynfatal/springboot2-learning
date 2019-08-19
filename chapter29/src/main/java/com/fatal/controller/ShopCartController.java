@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
@@ -32,7 +33,8 @@ public class ShopCartController {
     @PostMapping("/increment")
     public ResponseEntity<Void> increment(@NotNull(message = "userId不能为空") Long userId,
                                           @NotNull(message = "goodsId不能为空") Long goodsId,
-                                          @NotNull(message = "increment不能为空") Long increment) {
+                                          @NotNull(message = "increment不能为空")
+                                          @Min(value = 1, message = "increment不能小于{value}") Long increment) {
         shopCartService.increment(userId, goodsId, increment);
         return ResponseEntity.ok().build();
     }

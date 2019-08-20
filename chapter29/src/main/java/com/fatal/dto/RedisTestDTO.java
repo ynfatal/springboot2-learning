@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class RedisTestDTO implements Serializable {
 
-    private Long goodsId;
+    private Long skuId;
 
     private Integer count;
 

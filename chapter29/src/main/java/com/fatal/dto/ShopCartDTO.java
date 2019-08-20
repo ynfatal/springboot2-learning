@@ -2,12 +2,11 @@ package com.fatal.dto;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
 /**
- * 店铺DTO，包含了`店铺`信息和`购物车商品`信息
+ * 店铺DTO，包含了`店铺`信息和`购物车sku`信息
  * @author Fatal
  * @date 2019/8/15 0015 19:17
  */
@@ -26,13 +25,13 @@ public class ShopCartDTO {
     private String shopName;
 
     /**
-     * 购物车商品集合
+     * 购物车sku集合
      */
     private List<ShopCartItemDTO> items;
 
-    public static ShopCartDTO of(ShopCartGoodsDTO shopCartGoodsDTO) {
-        ShopCartDTO shopCartDTO = new ShopCartDTO();
-        BeanUtils.copyProperties(shopCartGoodsDTO, shopCartDTO);
-        return shopCartDTO;
+    public static ShopCartDTO of(ShopCartSkuDTO shopCartSkuDTO) {
+        return new ShopCartDTO()
+                .setShopId(shopCartSkuDTO.getShopId())
+                .setShopName(shopCartSkuDTO.getShopName());
     }
 }

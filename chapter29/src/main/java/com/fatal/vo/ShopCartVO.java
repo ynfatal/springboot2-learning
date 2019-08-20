@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 店铺VO，包含了`店铺`信息和`购物车商品`信息
+ * 店铺VO，包含了`店铺`信息和`购物车sku`信息
  * @author Fatal
  * @date 2019/8/15 0015 19:17
  */
@@ -27,7 +27,7 @@ public class ShopCartVO {
     private String shopName;
 
     /**
-     * 购物车商品集合
+     * 购物车sku集合
      */
     private List<ShopCartItemVO> items;
 

@@ -1,19 +1,26 @@
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`chapter29` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
+
 USE `chapter29`;
 
-CREATE TABLE `goods` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `content` text COLLATE utf8mb4_bin,
-  `name` varchar(16) COLLATE utf8mb4_bin DEFAULT NULL,
-  `price` bigint(20) DEFAULT NULL,
-  `shop_id` bigint(20) DEFAULT NULL,
-  `shop_name` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL,
-  `stock` int(11) DEFAULT NULL,
-  `picture` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
-  `create_time` timestamp NULL DEFAULT NULL,
-  `update_time` timestamp NULL DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
-  `max` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+DROP TABLE IF EXISTS `sku`;
 
-insert  into `goods`(`id`,`content`,`name`,`price`,`shop_id`,`shop_name`,`stock`,`picture`,`create_time`,`update_time`,`status`,`max`) values (1,'冻的','雪碧',22000,123456,'Fatal Shop',100,'http://...pic...123.png','2019-08-14 18:08:17','2019-08-14 18:08:17',1,1000),(2,'也是冻的','柠檬茶',11000,123456,'Fatal Shop',100,'http://...pic...123.png','2019-08-15 17:54:52','2019-08-15 17:54:52',1,1000),(3,'冻的冻的。。。','果粒奶优',12000,123456,'Fatal Shop',100,'http://...pic...123.png','2019-08-15 17:57:31','2019-08-15 17:57:31',0,1000),(4,'冻的。','果粒奶优',11000,123457,'MiCai Shop',100,'http://...pic...123.png','2019-08-15 17:58:45','2019-08-15 17:58:45',1,1000),(5,'鲜牛奶好喝又健康...','纯牛奶',8000,123457,'MiCai Shop',100,'http://...pic...123.png','2019-08-15 18:00:13','2019-08-15 18:00:13',1,1000),(6,'爽快...','菠萝啤',15000,123457,'MiCai Shop',100,'http://...pic...123.png','2019-08-15 18:02:21','2019-08-15 18:02:21',1,1000);
+CREATE TABLE `sku` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT,
+    `create_time` datetime(6) DEFAULT NULL,
+    `goods_id` bigint(20) DEFAULT NULL,
+    `goods_name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+    `max` int(11) DEFAULT NULL,
+    `picture` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+    `price` bigint(20) DEFAULT NULL,
+    `properties` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+    `shop_id` bigint(20) DEFAULT NULL,
+    `shop_name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+    `status` int(11) DEFAULT NULL,
+    `stock` int(11) DEFAULT NULL,
+    `update_time` datetime(6) DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+/*Data for the table `sku` */
+
+insert  into `sku`(`id`,`create_time`,`goods_id`,`goods_name`,`max`,`picture`,`price`,`properties`,`shop_id`,`shop_name`,`status`,`stock`,`update_time`) values (1,'2019-08-20 14:02:37.573000',111111,'帆布鞋',300,'http://...pic...123.png',55000,'白色;40',123457,'MiCai Shop',1,1000,'2019-08-20 14:02:37.573000'),(2,'2019-08-20 14:07:26.372000',222222,'太阳帽',300,'http://...pic...123.png',21000,'黑色',123457,'MiCai Shop',1,1000,'2019-08-20 14:07:26.372000'),(3,'2019-08-20 14:08:02.730000',222222,'太阳帽',200,'http://...pic...123.png',21000,'蓝色',123457,'MiCai Shop',1,1000,'2019-08-20 14:08:02.730000'),(4,'2019-08-20 14:20:06.744000',333333,'男士皮鞋',500,'http://...pic...123.png',221000,'40;黑色编织镂空款B1923913',123456,'Fatal Shop',1,1000,'2019-08-20 14:20:06.744000'),(5,'2019-08-20 14:21:00.800000',444444,'男士皮鞋',500,'http://...pic...123.png',221000,'39;黑色编织镂空款B1923913',123456,'Fatal Shop',0,1000,'2019-08-20 14:21:00.800000'),(6,'2019-08-20 14:21:56.445000',444444,'男士皮鞋',500,'http://...pic...123.png',221000,'43;黑色编织镂空款B1923913',123456,'Fatal Shop',-1,1000,'2019-08-20 14:21:56.445000'),(7,'2019-08-20 14:23:36.476000',444444,'限量款骑士领带',2,'http://...pic...123.png',521000,'',123456,'Fatal Shop',1,1000,'2019-08-20 14:23:36.476000');

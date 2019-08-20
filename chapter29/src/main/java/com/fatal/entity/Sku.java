@@ -12,20 +12,26 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
+ * 全名 Stock Keeping Unit(库存量最小单位)，在这里指有具体规格的商品。例如：40码白色帆布鞋。
  * @author Fatal
  * @date 2019/8/14 0014 17:15
  */
-@Entity
 @Data
+@Entity
 @Accessors(chain = true)
-public class Goods implements Serializable {
+public class Sku implements Serializable {
 
     /**
-     * 商品ID
+     * skuID
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)     // 这里为了方便，用自增
     private Long id;
+
+    /**
+     * 商品ID
+     */
+    private Long goodsId;
 
     /**
      * 店铺ID
@@ -38,30 +44,29 @@ public class Goods implements Serializable {
     private String shopName;
 
     /**
-     * 商品名称
+     * 商品名称（冗余字段）
      */
-    private String name;
+    private String goodsName;
 
     /**
-     * 商品单价（单位：分）
+     * sku单价（单位：分）
      */
     private Long price;
 
     /**
-     * 商品库存
+     * sku库存
      */
     private Integer stock;
 
     /**
-     * 商品详情
-     */
-    @Column(columnDefinition = "text")
-    private String content;
-
-    /**
-     * 商品主图
+     * sku图片
      */
     private String picture;
+
+    /**
+     * 规格（规格本来应该是张表的，这里为了方便，就直接 String）
+     */
+    private String properties;
 
     /**
      * 允许添加到购物车的最大数额
@@ -83,7 +88,7 @@ public class Goods implements Serializable {
     private LocalDateTime updateTime;
 
     /**
-     * 商品状态：-1 下架; 0 删除; 1 在架
+     * sku状态：-1 下架; 0 删除; 1 在架
      */
     private Integer status;
 

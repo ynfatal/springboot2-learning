@@ -2,7 +2,7 @@ package com.fatal.redis;
 
 import com.fatal.Chapter29ApplicationTests;
 import com.fatal.dto.RedisTestDTO;
-import com.fatal.entity.Goods;
+import com.fatal.entity.Sku;
 import com.fatal.common.enums.StatusEnums;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,26 +23,28 @@ public class RedisTests extends Chapter29ApplicationTests {
     @Autowired
     private RedisTemplate<String, Serializable> redisTemplate;
 
-    private Goods goods;
+    private Sku sku;
 
     private RedisTestDTO redisTestDTO;
 
     @Before
     public void before() {
-        goods = new Goods()
+        sku = new Sku()
+                .setGoodsId(111111L)
                 .setShopId(123457L)
                 .setShopName("MiCai Shop")
-                .setName("菠萝啤")
+                .setGoodsName("帆布鞋")
                 .setPrice(15000L)
                 .setStock(100)
                 .setPicture("http://...pic...123.png")
-                .setContent("爽快...")
+                .setProperties("白色;40")
+                .setMax(300)
                 .setStatus(StatusEnums.NORMAL.getCode())
                 .setCreateTime(LocalDateTime.now())
                 .setUpdateTime(LocalDateTime.now());
 
         redisTestDTO = new RedisTestDTO()
-                .setGoodsId(Long.MAX_VALUE)
+                .setSkuId(Long.MAX_VALUE)
                 .setCount(10000);
     }
 
@@ -58,17 +60,17 @@ public class RedisTests extends Chapter29ApplicationTests {
     @Test
     public void hashTest() {
         HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
-        hashOperations.put("Cart", "用户id", goods);
-        Goods result = (Goods) hashOperations.get("Cart", "用户id");
+        hashOperations.put("Cart", "用户id", sku);
+        Sku result = (Sku) hashOperations.get("Cart", "用户id");
         System.out.println(result);
     }
 
     @Test
     public void stringTest() {
         ValueOperations<String, Serializable> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set("GOODS", goods);
-        Serializable goods = valueOperations.get("GOODS");
-        System.out.println(goods);
+        valueOperations.set("SKU", sku);
+        Serializable sku = valueOperations.get("SKU");
+        System.out.println(sku);
     }
 
     @Test

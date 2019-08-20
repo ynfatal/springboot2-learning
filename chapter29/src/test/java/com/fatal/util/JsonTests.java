@@ -1,7 +1,7 @@
 package com.fatal.util;
 
 import com.fatal.Chapter29ApplicationTests;
-import com.fatal.entity.Goods;
+import com.fatal.entity.Sku;
 import com.fatal.common.enums.StatusEnums;
 import com.fatal.common.utils.JsonUtil;
 import org.junit.Before;
@@ -15,18 +15,20 @@ import java.time.LocalDateTime;
  */
 public class JsonTests extends Chapter29ApplicationTests {
 
-    private Goods goods;
+    private Sku sku;
 
     @Before
     public void before() {
-        goods = new Goods()
+        sku = new Sku()
+                .setGoodsId(111111L)
                 .setShopId(123457L)
                 .setShopName("MiCai Shop")
-                .setName("菠萝啤")
+                .setGoodsName("帆布鞋")
                 .setPrice(15000L)
                 .setStock(100)
                 .setPicture("http://...pic...123.png")
-                .setContent("爽快...")
+                .setProperties("白色;40")
+                .setMax(300)
                 .setStatus(StatusEnums.NORMAL.getCode())
                 .setCreateTime(LocalDateTime.now())
                 .setUpdateTime(LocalDateTime.now());
@@ -34,10 +36,10 @@ public class JsonTests extends Chapter29ApplicationTests {
 
     @Test
     public void fun() {
-        String json = JsonUtil.toJson(goods);
+        String json = JsonUtil.toJson(this.sku);
         System.out.println(json);
-        Goods goods = JsonUtil.fromJson(json, Goods.class);
-        System.out.println(goods);
+        Sku sku = JsonUtil.fromJson(json, Sku.class);
+        System.out.println(sku);
     }
 
 

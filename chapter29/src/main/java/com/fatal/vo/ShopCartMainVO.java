@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 购物车商品VO，包括两个最重要的数据，购物车中的商品ID和对应的数量
+ * 购物车skuVO，包括两个最重要的数据，购物车中的skuID和对应的数量
  * @author Fatal
  * @date 2019/8/16 0016 23:19
  */
@@ -17,18 +17,18 @@ import java.util.stream.Collectors;
 public class ShopCartMainVO {
 
     /**
-     * 商品ID
+     * skuID
      */
-    private Object goodsId;
+    private Object skuId;
 
     /**
-     * 商品数量
+     * 购物车sku数量
      */
     private Object count;
 
     private static ShopCartMainVO of(ShopCartMainDTO shopCartMainDTO) {
         return new ShopCartMainVO()
-                .setGoodsId(shopCartMainDTO.getGoodsId())
+                .setSkuId(shopCartMainDTO.getSkuId())
                 .setCount(shopCartMainDTO.getCount());
     }
 

@@ -18,13 +18,13 @@ import java.util.List;
  */
 public class ShopCartServiceImplTest extends Chapter29ApplicationTests {
 
-    private Long userId = 123456L;
-    private Long goodsId = 111111L;
-    private Long[] goodsIds;
+    private Long userId = 999999L;
+    private Long skuId = 1L;
+    private Long[] skuIds;
 
     @Before
     public void before() {
-        goodsIds = new Long[]{111111L, 222222L};
+        skuIds = new Long[]{1L, 2L};
     }
 
     @Autowired
@@ -32,24 +32,29 @@ public class ShopCartServiceImplTest extends Chapter29ApplicationTests {
 
     @Test
     public void increment() {
-        shopCartService.increment(userId, goodsId, 1L);
+        shopCartService.increment(userId,2L, 100L);
+        shopCartService.increment(userId,4L, 100L);
+        shopCartService.increment(userId,3L, 100L);
+        shopCartService.increment(userId,1L, 100L);
+        shopCartService.increment(userId,6L, 100L);
+        shopCartService.increment(userId,7L, 100L);
     }
 
     @Test
-    public void remove() {
-        shopCartService.remove(userId, goodsId);
+    public void removeOne() {
+        shopCartService.removeOne(userId, skuId);
     }
 
     @Test
     public void shopCarts() {
-        List<ShopCartDTO> shopCartDTOs = shopCartService.shopCarts(userId, Arrays.asList(1L, 2L, 4L, 5L, 6L));
+        List<ShopCartDTO> shopCartDTOs = shopCartService.shopCarts(userId, Arrays.asList(7L, 2L, 1L, 4L, 3L, 6L));
         String json = JsonUtil.toJson(shopCartDTOs);
         System.out.println(json);
     }
 
     @Test
     public void delete() {
-        shopCartService.remove(userId, goodsIds);
+        shopCartService.remove(userId, skuIds);
     }
 
     @Test
@@ -61,13 +66,6 @@ public class ShopCartServiceImplTest extends Chapter29ApplicationTests {
     public void into() {
         List<ShopCartMainDTO> list = shopCartService.into(userId);
         System.out.println(JsonUtil.toJson(list));
-    }
-    
-    @Test
-    public void putMany() {
-        for (int i = 200; i >= 0; i--) {
-            shopCartService.increment(userId, (long) i, 1L);
-        }
     }
 
 }

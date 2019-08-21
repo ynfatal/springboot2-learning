@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 全名 Stock Keeping Unit(库存量最小单位)，在这里指有具体规格的商品。例如：40码白色帆布鞋。
+ * 全名 Stock Keeping Unit(库存量最小单位)，可以理解为有具体规格的商品。例如：40码白色帆布鞋。
  * @author Fatal
  * @date 2019/8/14 0014 17:15
  */

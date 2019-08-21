@@ -55,6 +55,11 @@ public class ShopCartItemDTO {
     private Integer max;
 
     /**
+     * sku个数
+     */
+    private Integer count;
+
+    /**
      * sku状态：-1 下架; 0 删除; 1 在架
      */
     private Integer status;

@@ -1,7 +1,6 @@
 package com.fatal.service;
 
 import com.fatal.dto.ShopCartDTO;
-import com.fatal.dto.ShopCartMainDTO;
 
 import java.util.List;
 
@@ -28,9 +27,17 @@ public interface IShopCartService {
     void removeOne(Long userId, Long skuId);
 
     /**
+     * 购物车列表分页
+     * @param userId 用户ID
+     * @param currentPage
+     * @return
+     */
+    List<ShopCartDTO> shopCarts(Long userId, Integer currentPage);
+
+    /**
      * 购物车列表
      * @param userId 用户ID
-     * @param skuIds 10个id（这个由前端控制，淘宝购物车就是没下拉一次加载`10`个）
+     * @param skuIds
      * @return
      */
     List<ShopCartDTO> shopCarts(Long userId, List<Long> skuIds);
@@ -52,10 +59,23 @@ public interface IShopCartService {
     /**
      * 进入购物车
      * @param userId 用户ID
-     * @return Map<Object, Object> => Map<skuId, count> => List<ShopCartMainDTO>
-     *     这里为什么用Object? 因为 spring data redis 是根据数值的大小来决定接收的类型是 Integer 还是 Long。
-     *     所以这边的 key 和 value 的类型不能确定为某一类型。
+     * @return 购物车 TotalPage
      */
-    List<ShopCartMainDTO> into(Long userId);
+    Integer into(Long userId);
+
+    /**
+     * 获得当前页的skuIds
+     * @param userId 用户ID
+     * @param currentPage 当前页码
+     * @return
+     */
+    List<Object> currentPageSkuId(Long userId, Integer currentPage);
+
+    /**
+     * 购物车分组
+     * @param userId 用户ID
+     * @return
+     */
+    List<Object> shopCartGrouping(Long userId);
 
 }

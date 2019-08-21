@@ -20,15 +20,15 @@ public class SkuRepositoryTest extends Chapter29ApplicationTests {
     @Test
     public void saveTest() {
         Sku sku = new Sku()
-                .setGoodsId(444444L)
-                .setShopId(123456L)
-                .setShopName("Fatal Shop")
-                .setGoodsName("限量款骑士领带")
-                .setPrice(521000L)
+                .setGoodsId(151312L)
+                .setShopId(123457L)
+                .setShopName("MiCai Shop")
+                .setGoodsName("胸针")
+                .setPrice(191000L)
                 .setStock(1000)
                 .setPicture("http://...pic...123.png")
-                .setProperties("")
-                .setMax(2)
+                .setProperties("骑士蓝")
+                .setMax(10)
                 .setStatus(StatusEnums.NORMAL.getCode())
                 .setCreateTime(LocalDateTime.now())
                 .setUpdateTime(LocalDateTime.now());

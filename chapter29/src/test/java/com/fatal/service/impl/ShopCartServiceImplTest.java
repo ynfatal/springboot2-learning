@@ -1,15 +1,13 @@
 package com.fatal.service.impl;
 
 import com.fatal.Chapter29ApplicationTests;
-import com.fatal.dto.ShopCartDTO;
-import com.fatal.dto.ShopCartMainDTO;
-import com.fatal.service.IShopCartService;
 import com.fatal.common.utils.JsonUtil;
+import com.fatal.dto.ShopCartDTO;
+import com.fatal.service.IShopCartService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,7 +22,7 @@ public class ShopCartServiceImplTest extends Chapter29ApplicationTests {
 
     @Before
     public void before() {
-        skuIds = new Long[]{1L, 2L};
+        skuIds = new Long[]{7L, 10L, 2L};
     }
 
     @Autowired
@@ -34,20 +32,25 @@ public class ShopCartServiceImplTest extends Chapter29ApplicationTests {
     public void increment() {
         shopCartService.increment(userId,2L, 100L);
         shopCartService.increment(userId,4L, 100L);
+        shopCartService.increment(userId,9L, 100L);
         shopCartService.increment(userId,3L, 100L);
+        shopCartService.increment(userId,8L, 100L);
+        shopCartService.increment(userId,12L, 100L);
         shopCartService.increment(userId,1L, 100L);
         shopCartService.increment(userId,6L, 100L);
+        shopCartService.increment(userId,10L, 100L);
+        shopCartService.increment(userId,11L, 100L);
         shopCartService.increment(userId,7L, 100L);
     }
 
     @Test
     public void removeOne() {
-        shopCartService.removeOne(userId, skuId);
+        shopCartService.removeOne(userId, 7L);
     }
 
     @Test
     public void shopCarts() {
-        List<ShopCartDTO> shopCartDTOs = shopCartService.shopCarts(userId, Arrays.asList(7L, 2L, 1L, 4L, 3L, 6L));
+        List<ShopCartDTO> shopCartDTOs = shopCartService.shopCarts(userId, 3);
         String json = JsonUtil.toJson(shopCartDTOs);
         System.out.println(json);
     }
@@ -64,8 +67,14 @@ public class ShopCartServiceImplTest extends Chapter29ApplicationTests {
 
     @Test
     public void into() {
-        List<ShopCartMainDTO> list = shopCartService.into(userId);
-        System.out.println(JsonUtil.toJson(list));
+        Integer totalPage = shopCartService.into(userId);
+        System.out.println(totalPage);
+    }
+
+    @Test
+    public void shopCartGrouping() {
+        List<Object> list = shopCartService.shopCartGrouping(userId);
+        System.out.println(list);
     }
 
 }

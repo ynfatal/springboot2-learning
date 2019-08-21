@@ -1,9 +1,7 @@
 package com.fatal.controller;
 
 import com.fatal.dto.ShopCartDTO;
-import com.fatal.dto.ShopCartMainDTO;
 import com.fatal.service.IShopCartService;
-import com.fatal.vo.ShopCartMainVO;
 import com.fatal.vo.ShopCartVO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -12,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -49,15 +45,15 @@ public class ShopCartController {
 
     @GetMapping("/shopCarts")
     public ResponseEntity<List<ShopCartVO>> shopCarts(@NotNull(message = "userId不能为空") Long userId,
-                                                      @NotEmpty(message = "skuIds不能为空")
-                                                      @Size(max = 10, message = "购物车每次下拉最多只刷新{max}个sku") Long... skuIds) {
-        List<ShopCartDTO> shopCartDTOs = shopCartService.shopCarts(userId, Arrays.asList(skuIds));
+                                                      @NotNull(message = "currentPage不能为空")
+                                                      @Min(value = 1, message = "currentPage不能小于{value}") Integer currentPage) {
+        List<ShopCartDTO> shopCartDTOs = shopCartService.shopCarts(userId, currentPage);
         return ResponseEntity.ok(ShopCartVO.of(shopCartDTOs));
     }
 
     @DeleteMapping("/remove")
     public ResponseEntity<Void> delete(@NotNull(message = "userId不能为空") Long userId,
-                       @NotEmpty(message = "skuIds不能为空") Long... skuIds) {
+                                       @NotEmpty(message = "skuIds不能为空") Long... skuIds) {
         shopCartService.remove(userId, skuIds);
         return ResponseEntity.ok().build();
     }
@@ -69,9 +65,8 @@ public class ShopCartController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ShopCartMainVO>> into(@NotNull(message = "userId不能为空") Long userId) {
-        List<ShopCartMainDTO> shopCartMainDTOs = shopCartService.into(userId);
-        return ResponseEntity.ok(ShopCartMainVO.of(shopCartMainDTOs));
+    public ResponseEntity<Integer> into(@NotNull(message = "userId不能为空") Long userId) {
+        return ResponseEntity.ok(shopCartService.into(userId));
     }
 
 }

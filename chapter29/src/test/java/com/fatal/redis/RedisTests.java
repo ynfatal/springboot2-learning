@@ -11,6 +11,7 @@ import org.springframework.data.redis.core.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -80,6 +81,16 @@ public class RedisTests extends Chapter29ApplicationTests {
         listOperations.leftPush(key, redisTestDTO);
         List<Serializable> range = listOperations.range(key, 0, -1);
         range.forEach(System.out::println);
+    }
+
+    @Test
+    public void shopCartTest1() {
+        ArrayList<Sku> list = new ArrayList<>();
+        for (int i = 0; i < 120; i++) {
+            list.add(sku);
+        }
+        ValueOperations<String, Serializable> opsForValue = redisTemplate.opsForValue();
+        opsForValue.set("shopCart120", list);
     }
 
 }

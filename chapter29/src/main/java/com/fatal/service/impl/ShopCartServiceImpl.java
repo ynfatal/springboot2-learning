@@ -1,23 +1,25 @@
 package com.fatal.service.impl;
 
-import com.fatal.common.exception.ValidateException;
 import com.fatal.common.constants.ShopCartConstant;
-import com.fatal.dto.ShopCartDTO;
-import com.fatal.dto.ShopCartSkuDTO;
-import com.fatal.dto.ShopCartItemDTO;
-import com.fatal.dto.ShopCartMainDTO;
 import com.fatal.common.enums.ResponseEnum;
-import com.fatal.service.ISkuService;
+import com.fatal.common.exception.ValidateException;
+import com.fatal.dto.ShopCartDTO;
+import com.fatal.dto.ShopCartItemDTO;
+import com.fatal.dto.ShopCartSkuDTO;
 import com.fatal.service.IShopCartService;
+import com.fatal.service.ISkuService;
+import org.springframework.aop.framework.AopContext;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -47,7 +49,7 @@ public class ShopCartServiceImpl implements IShopCartService {
      *      若总数小于 max，则 `总数 - 数据库总数`作为`增量`，输入框显示总数
      *      若总数大于或等于 max，则 `max - 数据库总数`作为`增量`，输入框显示 max
      * 操作三：商品详情页添加到购物车
-     * @desc 该方法会对购物车单种sku总个数以及购物车sku种类数量进行控制
+     * @desc 该方法会对购物车单种sku总个数以及购物车sku种类数量进行控制，并且维护后面用于分组的购物车信息
      * @param userId 用户ID
      * @param skuId skuID
      * @param increment 增量
@@ -55,18 +57,21 @@ public class ShopCartServiceImpl implements IShopCartService {
     @Override
     public void increment(Long userId, Long skuId, Long increment) {
         // 校验 skuId 是否存在（保证数据库存在该sku）
-        skuService.getById(skuId);
-        Integer value = (Integer) hashOperations.get(ShopCartConstant.getKey(userId), skuId);
-        if (ObjectUtils.isEmpty(value) && hashOperations.size(ShopCartConstant.getKey(userId)) >= ShopCartConstant.TYPE_MAX) {
-            throw new ValidateException(ResponseEnum.SHOP_CART_SKU_TYPE_COUNT_FULL);
+        ShopCartSkuDTO shopCartSkuDTO = skuService.getShopCartSkuById(skuId);
+        Integer value = (Integer) hashOperations.get(ShopCartConstant.getCartKey(userId), skuId);
+        if (ObjectUtils.isEmpty(value)) {
+            hashOperations.put(ShopCartConstant.getGroupingKey(userId), skuId, shopCartSkuDTO.getShopId());
+            if (hashOperations.size(ShopCartConstant.getCartKey(userId)) >= ShopCartConstant.TYPE_MAX) {
+                throw new ValidateException(ResponseEnum.SHOP_CART_SKU_TYPE_COUNT_FULL);
+            }
         }
         boolean overflow = increment > ShopCartConstant.MAX ||
                 !ObjectUtils.isEmpty(value) && value + increment > ShopCartConstant.MAX;
         if (overflow) {
-            hashOperations.put(ShopCartConstant.getKey(userId), skuId, ShopCartConstant.MAX);
+            hashOperations.put(ShopCartConstant.getCartKey(userId), skuId, ShopCartConstant.MAX);
             throw new ValidateException(ResponseEnum.SHOP_CART_SKU_COUNT_OUT_OF_RANGE);
         }
-        hashOperations.increment(ShopCartConstant.getKey(userId), skuId, increment);
+        hashOperations.increment(ShopCartConstant.getCartKey(userId), skuId, increment);
     }
 
     /**
@@ -78,11 +83,63 @@ public class ShopCartServiceImpl implements IShopCartService {
     public void removeOne(Long userId, Long skuId) {
         // 校验 skuId 是否存在（保证数据库存在该sku）
         skuService.getById(skuId);
-        Long value = hashOperations.increment(ShopCartConstant.getKey(userId), skuId, -1L);
+        Long value = hashOperations.increment(ShopCartConstant.getCartKey(userId), skuId, -1L);
         if (value <= 0) {
             // 如果购物车中该sku的数量小于或等于0，就将该sku从购物车中删除
-            remove(userId, skuId);
+            proxy().remove(userId, skuId);
         }
+    }
+
+    /**
+     * 获取当前的 skuIds 然后封装数据
+     * @param userId 用户ID
+     * @param currentPage 当前页数
+     * @return
+     */
+    @Override
+    public List<ShopCartDTO> shopCarts(Long userId, Integer currentPage) {
+        List<Long> skuIds = proxy().currentPageSkuId(userId, currentPage).stream()
+                .map(this::toLong)
+                .collect(Collectors.toList());
+        return CollectionUtils.isEmpty(skuIds) ? new ArrayList<>() : shopCarts(userId, skuIds);
+    }
+
+    /**
+     * @Cacheable unless排除对空集和null的缓存
+     * @param userId 用户ID
+     * @param currentPage 当前页码
+     * @return
+     */
+    @Override
+    @Cacheable(unless = "#result == null || #result.size() == 0", cacheNames = ShopCartConstant.SHOP_CART_PAGE,
+            key = "#userId + ':' + #currentPage")
+    public List<Object> currentPageSkuId(Long userId, Integer currentPage) {
+        return proxy().shopCartGrouping(userId).stream()
+                .skip((currentPage - 1) * ShopCartConstant.PAGE_SIZE)
+                .limit(ShopCartConstant.PAGE_SIZE)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Cacheable(unless = "#result == null", cacheNames = ShopCartConstant.SORT_SHOP_CART, key = "#userId")
+    public List<Object> shopCartGrouping(Long userId) {
+        Map<Object, Object> entries = hashOperations.entries(ShopCartConstant.getGroupingKey(userId));
+        List<Map.Entry<Object, Object>> entryList = new ArrayList<>(entries.entrySet());
+        // 最新加入购物的sku在最后，所以这里得先反序
+        Collections.reverse(entryList);
+        Map<Object, List<Object>> collect = entryList.stream()
+                .collect(
+                        Collectors.groupingBy(
+                                Map.Entry::getValue,
+                                // 得到的key保留原来（作为Entry的value时）的顺序（保存put的顺序）
+                                LinkedHashMap::new,
+                                // 得到的list元素也要保留顺序 Collectors.toList() -> ArrayList（有序）
+                                Collectors.mapping(Map.Entry::getKey, Collectors.toList())
+                        )
+                );
+        return collect.values().stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -90,16 +147,20 @@ public class ShopCartServiceImpl implements IShopCartService {
      *   1. 获得 shopCartSkuDTOs
      *   2. 根据 店铺ID 对 shopCartSkuDTOs 进行分组
      *   3. 获得 店铺集合，遍历填充数据
-     * @desc 带顺序的购物车列表，店铺顺序由旗下最新添加的商品顺序决定。展示给前端后,他只需要往sku里边填充count
-     *      就可以直接拿去展示。
+     * @desc 带顺序的购物车列表，店铺顺序由旗下最新添加的商品顺序决定。展示给前端后，临界值看看是否操作，不需要的话
+     *      他可以直接拿去展示。
      * @param userId 用户ID
-     * @param skuIds 10个id（这个由前端控制，淘宝购物车就是没下拉一次加载`10`个，最后不足的也算一次）
+     * @param skuIds
      * @return
      */
     @Override
     public List<ShopCartDTO> shopCarts(Long userId, List<Long> skuIds) {
         List<ShopCartSkuDTO> shopCartSkuDTOs = skuIds.stream()
-                .map(skuService::getShopCartSkuById)
+                .map(skuId -> {
+                    Integer count = (Integer) hashOperations.get(ShopCartConstant.getCartKey(userId), skuId);
+                    return skuService.getShopCartSkuById(skuId)
+                            .setCount(count);
+                })
                 .collect(Collectors.toList());
         Map<Long, List<ShopCartSkuDTO>> shopMap = shopCartSkuDTOs.stream()
                 .collect(Collectors.groupingBy(ShopCartSkuDTO::getShopId));
@@ -113,26 +174,56 @@ public class ShopCartServiceImpl implements IShopCartService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * @CacheEvict allEntries = true: 清楚当前`cacheNames`下的所有缓存
+     * @param userId 用户ID
+     * @param skuIds skuID数组（该参数必须是可变参数或者数组，后面需要转为 byte[][] 类型，如果
+     */
     @Override
+    @Caching(evict = {
+            @CacheEvict(cacheNames = ShopCartConstant.SORT_SHOP_CART, key = "#userId", beforeInvocation = true),
+            @CacheEvict(cacheNames = ShopCartConstant.SHOP_CART_PAGE, beforeInvocation = true, allEntries = true)
+    })
     public void remove(Long userId, Long... skuIds) {
-        hashOperations.delete(ShopCartConstant.getKey(userId), skuIds);
+        hashOperations.delete(ShopCartConstant.getCartKey(userId), skuIds);
+        hashOperations.delete(ShopCartConstant.getGroupingKey(userId), skuIds);
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(cacheNames = ShopCartConstant.SORT_SHOP_CART, key = "#userId", beforeInvocation = true),
+            @CacheEvict(cacheNames = ShopCartConstant.SHOP_CART_PAGE, beforeInvocation = true, allEntries = true)
+    })
     public void clear(Long userId) {
-        redisTemplate.delete(ShopCartConstant.getKey(userId));
+        redisTemplate.delete(ShopCartConstant.getCartKey(userId));
+        redisTemplate.delete(ShopCartConstant.getGroupingKey(userId));
     }
 
     @Override
-    public List<ShopCartMainDTO> into(Long userId) {
-        List<ShopCartMainDTO> dtos = hashOperations.entries(ShopCartConstant.getKey(userId))
-                .entrySet().stream()
-                .map(entry -> new ShopCartMainDTO()
-                        .setSkuId(entry.getKey())
-                        .setCount(entry.getValue())
-                ).collect(Collectors.toList());
-        // 逆序，最新的添加的sku放最上面
-        Collections.reverse(dtos);
-        return dtos;
+    public Integer into(Long userId) {
+        Long size = hashOperations.size(ShopCartConstant.getGroupingKey(userId));
+        return getTotalPage(size.intValue());
     }
+
+    /**
+     * 获取购物车总页数
+     * @param totalSize
+     * @return
+     */
+    private Integer getTotalPage(Integer totalSize) {
+        return totalSize % ShopCartConstant.PAGE_SIZE == 0 ?
+                totalSize / ShopCartConstant.PAGE_SIZE :
+                totalSize / ShopCartConstant.PAGE_SIZE + 1;
+    }
+
+    private IShopCartService proxy() {
+        return (ShopCartServiceImpl) AopContext.currentProxy();
+    }
+
+    private Long toLong(Object id) {
+        return id instanceof  Long?
+                (Long) id :
+                Long.valueOf(((Integer) id).longValue());
+    }
+
 }

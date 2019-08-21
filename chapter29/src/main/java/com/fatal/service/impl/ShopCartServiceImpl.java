@@ -175,7 +175,7 @@ public class ShopCartServiceImpl implements IShopCartService {
     }
 
     /**
-     * @CacheEvict allEntries = true: 清楚当前`cacheNames`下的所有缓存
+     * @CacheEvict allEntries = true: 清除当前`cacheNames`下的所有缓存
      * @param userId 用户ID
      * @param skuIds skuID数组（该参数必须是可变参数或者数组，后面需要转为 byte[][] 类型，如果
      */

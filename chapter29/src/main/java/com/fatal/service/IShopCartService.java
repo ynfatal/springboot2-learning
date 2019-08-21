@@ -72,9 +72,8 @@ public interface IShopCartService {
     List<Object> currentPageSkuId(Long userId, Integer currentPage);
 
     /**
-     * 购物车分组
      * @param userId 用户ID
-     * @return
+     * @return 分组摊平后的购物车
      */
     List<Object> shopCartGrouping(Long userId);
 

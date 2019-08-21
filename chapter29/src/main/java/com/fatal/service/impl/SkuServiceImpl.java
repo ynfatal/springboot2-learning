@@ -41,6 +41,7 @@ public class SkuServiceImpl implements ISkuService {
 
     /**
      * 用于展示的数据，如果还涉及到其他表的数据，可在这里封装（除了用户特有的）
+     * @desc 这里的缓存在更新或者删除该sku的时候清理
      * @param id
      * @return
      */

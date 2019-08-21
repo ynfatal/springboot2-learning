@@ -60,7 +60,7 @@ public class ShopCartSkuDTO {
     private String properties;
 
     /**
-     * 允许添加到购物车的最大数额
+     * 单种sku允许添加到购物车的最大数额
      */
     private Integer max;
 

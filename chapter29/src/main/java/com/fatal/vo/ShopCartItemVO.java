@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 /**
  * 购物车skuVO，去掉了重复的属性
- * @desc @EqualsAndHashCode 这里只选择了两个属性，是为了后面去重；先去重后map，可以减少大部分操作。
  * @author Fatal
  * @date 2019/8/15 0015 17:45
  */
@@ -51,7 +50,7 @@ public class ShopCartItemVO {
     private String properties;
 
     /**
-     * 允许添加到购物车的最大数额
+     * 单种sku允许添加到购物车的最大数额
      */
     private Integer max;
 

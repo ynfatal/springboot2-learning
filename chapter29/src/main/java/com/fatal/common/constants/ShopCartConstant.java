@@ -23,7 +23,7 @@ public interface ShopCartConstant {
     String SORT_SHOP_CART = "SORT_SHOP_CART";
 
     /**
-     * 购物车分页前缀
+     * 购物车分页（根据排序购物车计算出的分页）
      */
     String SHOP_CART_PAGE = "SHOP_CART_PAGE";
 

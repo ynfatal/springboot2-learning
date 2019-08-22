@@ -5,6 +5,7 @@ import com.fatal.dto.GoodsDTO;
 import java.util.List;
 
 /**
+ * 商品服务
  * @author Fatal
  * @date 2019/8/22 0022 9:19
  */

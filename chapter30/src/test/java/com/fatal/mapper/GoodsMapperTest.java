@@ -6,10 +6,10 @@ import com.fatal.common.enums.StatusEnums;
 import com.fatal.entity.Goods;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Fatal
@@ -51,8 +51,9 @@ public class GoodsMapperTest extends Chapter30ApplicationTests {
     }
 
     private <T> void print(List<T> list) {
-        Optional.ofNullable(list)
-                .ifPresent(System.out::println);
+        if (!CollectionUtils.isEmpty(list)) {
+            list.forEach(System.out::println);
+        }
     }
 
 }

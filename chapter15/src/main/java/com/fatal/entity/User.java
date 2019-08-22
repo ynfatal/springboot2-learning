@@ -3,8 +3,6 @@ package com.fatal.entity;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
-
 /**
  * User 实体
  * @author: Fatal
@@ -12,7 +10,7 @@ import java.io.Serializable;
  */
 @Data
 @Accessors(chain = true)
-public class User implements Serializable {
+public class User {
 
     private Long id;
     private String username;

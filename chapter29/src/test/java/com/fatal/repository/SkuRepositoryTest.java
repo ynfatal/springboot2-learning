@@ -27,9 +27,9 @@ public class SkuRepositoryTest extends Chapter29ApplicationTests {
                 .setPrice(191000L)
                 .setStock(1000)
                 .setPicture("http://...pic...123.png")
-                .setProperties("骑士蓝")
+                .setProperties("骑士红")
                 .setMax(10)
-                .setStatus(StatusEnums.NORMAL.getCode())
+                .setStatus(StatusEnums.PROHIBIT.getCode())
                 .setCreateTime(LocalDateTime.now())
                 .setUpdateTime(LocalDateTime.now());
         skuRepository.save(sku);

@@ -28,7 +28,8 @@ public class SkuServiceImpl implements ISkuService {
 
     /**
      * sku详情
-     * @desc 这里的缓存在更新或者删除该sku的时候清理
+     * @desc 这里的缓存在更新或者删除该sku的时候清理。
+     *      为什么这里查找的是上架和下架两个状态的sku。因为下架的sku也需要展示
      * @param id
      * @return
      */

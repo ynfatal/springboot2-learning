@@ -2,6 +2,7 @@ package com.fatal.service.impl;
 
 import com.fatal.common.constants.ShopCartConstant;
 import com.fatal.common.enums.ResponseEnum;
+import com.fatal.common.enums.StatusEnums;
 import com.fatal.common.exception.ValidateException;
 import com.fatal.dto.ShopCartDTO;
 import com.fatal.dto.ShopCartItemDTO;
@@ -56,8 +57,9 @@ public class ShopCartServiceImpl implements IShopCartService {
      */
     @Override
     public void increment(Long userId, Long skuId, Long increment) {
-        // 校验 skuId 是否存在（保证数据库存在该sku）
+        // 校验 skuId 是否存在（保证数据库存在该sku，且该sku的状态为正常）
         ShopCartSkuDTO shopCartSkuDTO = skuService.getShopCartSkuById(skuId);
+        isNormal(shopCartSkuDTO);
         Integer value = (Integer) hashOperations.get(ShopCartConstant.getCartKey(userId), skuId);
         if (ObjectUtils.isEmpty(value)) {
             hashOperations.put(ShopCartConstant.getGroupingKey(userId), skuId, shopCartSkuDTO.getShopId());
@@ -82,7 +84,7 @@ public class ShopCartServiceImpl implements IShopCartService {
     @Override
     public void removeOne(Long userId, Long skuId) {
         // 校验 skuId 是否存在（保证数据库存在该sku）
-        skuService.getById(skuId);
+        isNormal(skuService.getShopCartSkuById(skuId));
         Long value = hashOperations.increment(ShopCartConstant.getCartKey(userId), skuId, -1L);
         if (value <= 0) {
             // 如果购物车中该sku的数量小于或等于0，就将该sku从购物车中删除
@@ -214,6 +216,16 @@ public class ShopCartServiceImpl implements IShopCartService {
         return totalSize % ShopCartConstant.PAGE_SIZE == 0 ?
                 totalSize / ShopCartConstant.PAGE_SIZE :
                 totalSize / ShopCartConstant.PAGE_SIZE + 1;
+    }
+
+    /**
+     * `加入购物车`和`移出购物车`都检验sku是否`上架`
+     * @param shopCartSkuDTO
+     */
+    private void isNormal(ShopCartSkuDTO shopCartSkuDTO) {
+        if (!StatusEnums.NORMAL.getCode().equals(shopCartSkuDTO.getStatus())) {
+            throw new ValidateException(ResponseEnum.SKU_IS_OFF_THE_SHELVES);
+        }
     }
 
     private IShopCartService proxy() {

@@ -24,6 +24,11 @@ public enum ResponseEnum {
      */
     SKU_IS_NOT_EXISTS(10100, "数据库不存在此sku"),
 
+    /**
+     * sku已下架
+     */
+    SKU_IS_OFF_THE_SHELVES(10101, "sku已下架"),
+
     ;
 
     private Integer code;

@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
  */
 public class OversoldProblemTests extends Chapter31ApplicationTests {
 
-    // 设置库存为10，AtomicInteger的所有方法都具有原子性
+    // 设置库存为1000，AtomicInteger的所有方法都具有原子性
     private AtomicInteger stock = new AtomicInteger(1000);
 
     // 模拟一万并发

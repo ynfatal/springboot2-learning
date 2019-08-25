@@ -25,7 +25,7 @@ public class BusinessServiceImpl implements IBusinessService {
                 e.printStackTrace();
             }
         } else {
-            System.out.println(Thread.currentThread().getName() + ": 活动已结束");
+            System.out.println(Thread.currentThread().getName() + ": 库存不足");
         }
     }
 

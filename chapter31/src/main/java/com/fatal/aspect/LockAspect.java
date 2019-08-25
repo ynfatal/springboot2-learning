@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Fatal
@@ -28,6 +29,11 @@ public class LockAspect {
     @Around("point()")
     public Object lock(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] args = joinPoint.getArgs();
+        AtomicInteger stock = (AtomicInteger) args[0];
+        if (stock.get() == 0) {
+            System.out.println(Thread.currentThread().getName() + ": 库存不足");
+            return null;
+        }
         RLock fairLock = redisson.getFairLock("lock");
         boolean isLock = fairLock.tryLock(10, 2, TimeUnit.SECONDS);
         if (isLock) {
@@ -36,8 +42,8 @@ public class LockAspect {
             return result;
         }
         // 这里可以改为自定义异常
-//        throw new RuntimeException("没有获得锁");
-        System.out.println(Thread.currentThread().getName() + ": 没有获得锁");
+//        throw new RuntimeException("人太多，请重试");
+        System.out.println(Thread.currentThread().getName() + ": 人太多，请重试");
         return null;
     }
 

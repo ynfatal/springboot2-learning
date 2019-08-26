@@ -18,7 +18,7 @@ import java.util.stream.IntStream;
  *      不影响的），没有必要考虑线程安全与否，从实体属性的角度出发，不需要用原子类。真正需要考虑线程安全的是
  *      对数据库的操作，数据库中的数据当然是共享数据，笑了。这里的疑问应该就是概念混淆了。不过可以想象一下，
  *      AtomicInteger 所有方法具有原子性，数据库的所有语句也具有原子性，AtomicInteger <-> 数据库 ？
- *      我们倒可以用 AtomicInteger 来模拟对数据库的操作呢。于是接下来就投个懒了，不建数据库，new 个
+ *      我们倒可以用 AtomicInteger 来模拟对数据库的操作呢。于是接下来就偷个懒了，不建数据库，new 个
  *      AtomicInteger来做Demo就行。
  * @author Fatal
  * @date 2019/8/23 0023 10:52
@@ -29,11 +29,11 @@ public class OversoldProblemTests extends Chapter31ApplicationTests {
     private AtomicInteger stock = new AtomicInteger(10);
 
     // 模拟一百并发
-    private CountDownLatch start = new CountDownLatch(200);
-    private CountDownLatch end = new CountDownLatch(200);
+    private CountDownLatch start = new CountDownLatch(100);
+    private CountDownLatch end = new CountDownLatch(100);
 
     // 创建定长线程池，可控制最大并发数，超出的线程会在队列中等待
-    private ExecutorService executorService = Executors.newFixedThreadPool(200);
+    private ExecutorService executorService = Executors.newFixedThreadPool(100);
 
     @Autowired
     private IBusinessService businessService;
@@ -43,7 +43,7 @@ public class OversoldProblemTests extends Chapter31ApplicationTests {
      */
     @Test
     public void oversold() throws InterruptedException {
-        IntStream.range(0, 200).forEach(i ->
+        IntStream.range(0, 100).forEach(i ->
             executorService.execute(() -> {
                 start.countDown();
                 try {

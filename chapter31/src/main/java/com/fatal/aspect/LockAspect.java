@@ -31,18 +31,22 @@ public class LockAspect {
         Object[] args = joinPoint.getArgs();
         AtomicInteger stock = (AtomicInteger) args[0];
         if (stock.get() == 0) {
+//            throw new RuntimeException("库存不足");
+            // 这里方便看日志，改成输出，实际抛个异常就行
             System.out.println(Thread.currentThread().getName() + ": 库存不足");
             return null;
         }
         RLock fairLock = redisson.getFairLock("lock");
         boolean isLock = fairLock.tryLock(10, 2, TimeUnit.SECONDS);
         if (isLock) {
-            Object result = joinPoint.proceed(args);
-            fairLock.unlock();
-            return result;
+            try {
+                return joinPoint.proceed(args);
+            } finally {
+                fairLock.unlock();
+            }
         }
-        // 这里可以改为自定义异常
 //        throw new RuntimeException("人太多，请重试");
+        // 这里方便看日志，改成输出，实际抛个异常就行
         System.out.println(Thread.currentThread().getName() + ": 人太多，请重试");
         return null;
     }

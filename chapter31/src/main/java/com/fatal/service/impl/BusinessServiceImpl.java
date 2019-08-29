@@ -14,8 +14,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class BusinessServiceImpl implements IBusinessService {
 
+    // 设置库存为10，AtomicInteger的所有方法都具有原子性
+    private AtomicInteger stock = new AtomicInteger(10);
+
     @Override
-    public void businessWithoutLock(AtomicInteger stock) {
+    public void businessWithoutLock() {
         if (stock.get() > 0) {
             try {
                 // 1ms 秒执行业务逻辑。当然这是假设，1ms肯定执行不完的。以此为例子，就算是业务很快完成，也会出现超卖
@@ -25,13 +28,18 @@ public class BusinessServiceImpl implements IBusinessService {
                 e.printStackTrace();
             }
         } else {
-            System.out.println(Thread.currentThread().getName() + ": 库存不足");
+            System.out.println(Thread.currentThread().getName() + ": 抱歉，库存不足");
         }
     }
 
     @Override
     @Lock
-    public void businessWithLock(AtomicInteger stock) {
-        businessWithoutLock(stock);
+    public void businessWithLock() {
+        businessWithoutLock();
+    }
+
+    @Override
+    public AtomicInteger getStock() {
+        return this.stock;
     }
 }

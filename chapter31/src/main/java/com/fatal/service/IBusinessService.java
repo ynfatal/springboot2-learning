@@ -11,14 +11,18 @@ public interface IBusinessService {
 
     /**
      * 无锁业务
-     * @param stock 库存
      */
-    void businessWithoutLock(AtomicInteger stock);
+    void businessWithoutLock();
 
     /**
      * 带锁业务
-     * @param stock 库存
      */
-    void businessWithLock(AtomicInteger stock);
+    void businessWithLock();
+
+    /**
+     * 获取库存
+     * @return
+     */
+    AtomicInteger getStock();
 
 }

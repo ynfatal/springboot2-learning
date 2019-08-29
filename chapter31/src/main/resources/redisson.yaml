@@ -1,25 +1,70 @@
-# 单redis节点模式配置文件样本 可用了再来看看每个配置项的意思
+# 单redis节点模式配置文件样本
 singleServerConfig:
+  # 连接空闲超时，单位：毫秒。默认值：10000
+  #  如果当前连接池里的连接数量超过了最小空闲连接数，而同时有部分连接的空闲时间超过了该数值，
+  #  那么这些连接将会自动被关闭，并从连接池里去掉。时间单位是毫秒。
   idleConnectionTimeout: 10000
+  # Ping timeout used in Node.ping and Node.pingAll operation。单位：毫秒。默认值：1000
   pingTimeout: 1000
+  # 连接超时，单位：毫秒。默认值：10000
   connectTimeout: 10000
+  # 命令等待超时，单位：毫秒。默认值：3000
   timeout: 3000
+  # 命令失败重试次数，默认值：3
+  #  如果尝试达到 retryAttempts（命令失败重试次数） 仍然不能将命令发送至某个指定的节点时，将抛出错误。
+  #  如果尝试在此限制次数之内（默认3次嘛）发送成功，则开始启用 timeout（命令等待超时） 计时。
   retryAttempts: 3
+  # 命令重试发送时间间隔，单位：毫秒。默认值：1500。在一条命令发送失败以后，等待重试发送的时间间隔。
   retryInterval: 1500
+  # 重新连接时间间隔，单位：毫秒。默认值：3000。当与某个节点的连接断开时，等待与该节点重新建立连接的时间间隔。
   reconnectionTimeout: 3000
-  # 失败重试次数
+  # 执行失败最大次数
+  #  在某个节点执行相同或不同命令时，连续失败 failedAttempts 时，该节点将被从可用节点列表里清除，
+  #  直到 reconnectionTimeout（重新连接时间间隔） 超时以后再次尝试。
   failedAttempts: 3
   password: 123456
+  # 单个连接最大订阅数量。默认值：5
   subscriptionsPerConnection: 5
+  # 客户端名称。默认值：null。在Redis节点里显示的客户端名称。
   clientName: null
   address: redis://127.0.0.1:6379
+  # 启用SSL终端识别。开启SSL终端识别能力。默认值：true
+  sslEnableEndpointIdentification: true
+  # SSL实现方式。确定采用哪种方式（JDK或OPENSSL）来实现SSL连接。默认值：JDK
+  sslProvider: JDK
+  # SSL信任证书库路径。指定SSL信任证书库的路径。默认值：null
+  sslTruststore: null
+  # SSL信任证书库密码。指定SSL信任证书库的密码。默认值：null
+  sslTruststorePassword: null
+  # SSL钥匙库路径。指定SSL钥匙库的路径。默认值：null
+  sslKeystore: null
+  # SSL钥匙库密码。指定SSL钥匙库的密码。默认值：null
+  sslKeystorePassword: null
+  # 发布和订阅连接的最小空闲连接数，默认值：1
   subscriptionConnectionMinimumIdleSize: 1
+  # 发布和订阅连接池大小，默认值：50
   subscriptionConnectionPoolSize: 50
+  # 最小空闲连接数，默认值：32。最小保持连接数（长连接）。长期保持一定数量的连接有利于提高瞬时写入反应速度。
   connectionMinimumIdleSize: 32
+  # 连接池大小，默认值：64。连接池的连接数量自动弹性伸缩。
   connectionPoolSize: 64
+  # 数据库编号。默认值：4
   database: 4
+  # DNS监测时间间隔，单位：毫秒。默认值：5000
   dnsMonitoringInterval: 5000
+# 所有redis节点客户端之间共享的线程数。默认值：16
 threads: 0
+# Netty线程池数量。默认值：32
 nettyThreads: 0
-#codec: !<org.redisson.codec.JsonJacksonCodec> {}
+# 编码。默认值：org.redisson.codec.JsonJacksonCodec。Redis用于读取和存储的序列化、反序列化的方式。
+codec:
+  class: org.redisson.codec.JsonJacksonCodec
+# 传输模式。默认值：NIO
 transportMode: NIO
+# 监控锁的看门狗超时，单位：毫秒。默认值：30 * 1000
+#  监控锁的看门狗超时时间单位为毫秒。该参数只适用于分布式锁的加锁请求中未明确使用leaseTimeout参数的情况。
+#  如果该看门狗未使用lockWatchdogTimeout去重新调整一个分布式锁的lockWatchdogTimeout超时，那么这个锁将变为失效状态。
+#  这个参数可以用来避免由Redisson客户端节点宕机或其他原因造成死锁的情况。
+lockWatchdogTimeout: 30000
+# 保持订阅发布顺序。默认值：true
+keepPubSubOrder: true

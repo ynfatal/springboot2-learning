@@ -2,6 +2,7 @@ package com.fatal.controller;
 
 import com.fatal.service.IBusinessService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -30,6 +31,11 @@ public class OversoldController {
     @GetMapping("/query")
     public String query() {
         return "剩余库存：" + businessService.getStock().get();
+    }
+
+    @GetMapping("/supply/{increment}")
+    public Integer supply(@PathVariable(value = "increment") Integer increment) {
+        return businessService.supplyStock(increment);
     }
 
 }

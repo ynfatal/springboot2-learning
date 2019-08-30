@@ -1,5 +1,6 @@
 package com.fatal.aspect;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -10,12 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author Fatal
  * @date 2019/8/24 0024 20:06
  */
+@Slf4j
 @Component
 @Aspect
 @Order(1)
@@ -24,6 +28,8 @@ public class LockAspect {
     @Autowired
     private RedissonClient redisson;
 
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+
     @Pointcut("@annotation(com.fatal.annotation.Lock)")
     public void point() {}
 
@@ -31,7 +37,7 @@ public class LockAspect {
     public Object lock(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] args = joinPoint.getArgs();
         RLock fairLock = redisson.getFairLock("lock");
-        boolean isLock = fairLock.tryLock(10, 2, TimeUnit.SECONDS);
+        boolean isLock = fairLock.tryLock(4, 2, TimeUnit.SECONDS);
         if (isLock) {
             try {
                 return joinPoint.proceed(args);
@@ -39,10 +45,14 @@ public class LockAspect {
                 fairLock.unlock();
             }
         }
+        log.info("{} -- {}: 系统繁忙，请重试", now(), Thread.currentThread().getName());
+        // 这里为了方便查看日志，把下面一行注释掉了，实际还需要抛个异常就行
 //        throw new RuntimeException("系统繁忙，请重试");
-        // 这里方便看日志，改成输出，实际抛个异常就行
-        System.out.println(Thread.currentThread().getName() + ": 系统繁忙，请重试");
         return null;
+    }
+
+    private String now() {
+        return formatter.format(LocalDateTime.now());
     }
 
 }

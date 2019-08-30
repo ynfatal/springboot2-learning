@@ -2,8 +2,11 @@ package com.fatal.service.impl;
 
 import com.fatal.annotation.Lock;
 import com.fatal.service.IBusinessService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -11,11 +14,14 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Fatal
  * @date 2019/8/24 0024 20:24
  */
+@Slf4j
 @Service
 public class BusinessServiceImpl implements IBusinessService {
 
     // 设置库存为10，AtomicInteger的所有方法都具有原子性
     private AtomicInteger stock = new AtomicInteger(10);
+
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
     @Override
     public void businessWithoutLock() {
@@ -24,11 +30,12 @@ public class BusinessServiceImpl implements IBusinessService {
                 // 1ms 秒执行业务逻辑。当然这是假设，1ms肯定执行不完的。以此为例子，就算是业务很快完成，也会出现超卖
                 Thread.sleep(1);
                 stock.decrementAndGet();
+                log.info("{} -- {}: 成功购买", now(), Thread.currentThread().getName());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         } else {
-            System.out.println(Thread.currentThread().getName() + ": 抱歉，库存不足");
+            log.info("{} -- {}: 抱歉，库存不足", now(), Thread.currentThread().getName());
         }
     }
 
@@ -41,5 +48,14 @@ public class BusinessServiceImpl implements IBusinessService {
     @Override
     public AtomicInteger getStock() {
         return this.stock;
+    }
+
+    @Override
+    public Integer supplyStock(Integer increment) {
+        return this.stock.addAndGet(increment);
+    }
+
+    private String now() {
+        return formatter.format(LocalDateTime.now());
     }
 }

@@ -25,4 +25,10 @@ public interface IBusinessService {
      */
     AtomicInteger getStock();
 
+    /**
+     * 补充库存
+     * @param increment
+     */
+    Integer supplyStock(Integer increment);
+
 }

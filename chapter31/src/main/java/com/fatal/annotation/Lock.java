@@ -25,13 +25,13 @@ public @interface Lock {
      * 等待获取锁的最长时间
      * @return
      */
-    long waitTime() default 4000L;
+    long waitTime() default 4L;
 
     /**
      * 授予锁后持有锁的最长时间。该时间根据业务也行量而定
      * @return
      */
-    long leaseTime() default 2000L;
+    long leaseTime() default 2L;
 
     /**
      * 时间单位

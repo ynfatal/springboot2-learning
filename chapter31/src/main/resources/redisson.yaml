@@ -27,7 +27,8 @@ singleServerConfig:
   subscriptionsPerConnection: 5
   # 客户端名称。默认值：null。在Redis节点里显示的客户端名称。
   clientName: null
-  address: redis://192.168.0.107:6379
+  address: redis://127.0.0.1:6379
+#  address: redis://192.168.0.107:6379
   # 启用SSL终端识别。开启SSL终端识别能力。默认值：true
   sslEnableEndpointIdentification: true
   # SSL实现方式。确定采用哪种方式（JDK或OPENSSL）来实现SSL连接。默认值：JDK
@@ -48,7 +49,7 @@ singleServerConfig:
   connectionMinimumIdleSize: 32
   # 连接池大小，默认值：64。连接池的连接数量自动弹性伸缩。
   connectionPoolSize: 64
-  # 数据库编号。默认值：4
+  # 数据库编号。默认值：0
   database: 4
   # DNS监测时间间隔，单位：毫秒。默认值：5000
   dnsMonitoringInterval: 5000

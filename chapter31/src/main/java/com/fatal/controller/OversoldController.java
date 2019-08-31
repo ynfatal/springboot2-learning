@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * @desc 为了方便测试，我下面都用 @GetMapping 了
  * @author Fatal
  * @date 2019/8/29 0029 17:07
  */

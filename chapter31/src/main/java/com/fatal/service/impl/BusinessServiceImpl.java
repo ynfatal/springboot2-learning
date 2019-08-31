@@ -36,7 +36,7 @@ public class BusinessServiceImpl implements IBusinessService {
     }
 
     @Override
-    @Lock
+    @Lock(name = "buckleInventoryLock")
     public void businessWithLock() {
         businessWithoutLock();
     }

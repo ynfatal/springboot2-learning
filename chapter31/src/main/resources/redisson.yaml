@@ -27,7 +27,6 @@ singleServerConfig:
   subscriptionsPerConnection: 5
   # 客户端名称。默认值：null。在Redis节点里显示的客户端名称。
   clientName: null
-#  address: redis://127.0.0.1:6379
   address: redis://192.168.0.107:6379
   # 启用SSL终端识别。开启SSL终端识别能力。默认值：true
   sslEnableEndpointIdentification: true

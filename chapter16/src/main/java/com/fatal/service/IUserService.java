@@ -12,8 +12,8 @@ import java.util.List;
  */
 public interface IUserService {
 
-    /** 增或改 */
-    User insertOrUpdate(User user);
+    /** 修改 */
+    User update(User user);
 
     /** 删 */
     User remove(Long id);
@@ -26,5 +26,11 @@ public interface IUserService {
 
     /** 根据DTO查询集合 */
     List<User> listUser(ParamDTO paramDTO);
+
+    /** 修改（解决低流量下，缓存数据库双写一致性问题） */
+    User lowFlowRateWithUpdate(User user);
+
+    /** 修改（解决高并发下，缓存数据库双写一致性问题） */
+    User highConcurrencyWithUpdate(User user);
 
 }

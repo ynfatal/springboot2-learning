@@ -12,8 +12,8 @@ import java.util.List;
  */
 public interface IUserDao {
 
-    /** 增或改 */
-    User insertOrUpdate(User user);
+    /** 改 */
+    User update(User user);
 
     /** 删 */
     User remove(Long id);

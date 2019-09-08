@@ -47,10 +47,7 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public User insertOrUpdate(User user) {
-        if (user.getId() == null) {
-            user.setId(System.currentTimeMillis());
-        }
+    public User update(User user) {
         db.put(user.getId(), user);
         return user;
     }

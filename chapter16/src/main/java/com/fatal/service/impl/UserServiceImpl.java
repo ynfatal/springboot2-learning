@@ -33,15 +33,15 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     @CachePut(cacheNames = "user", key = "#user.id")
-    public User insertOrUpdate(User user) {
+    public User update(User user) {
         // 健壮性判断...
-        log.info("进入【insertOrUpdate】方法");
-        return dao.insertOrUpdate(user);
+        log.info("进入【update】方法");
+        return dao.update(user);
     }
 
     @Override
     @Caching(evict = {
-            @CacheEvict(cacheNames = "user", key = "#id")
+            @CacheEvict(cacheNames = "user", key = "#id", beforeInvocation = true)
     })
     public User remove(Long id) {
         // 健壮性判断...
@@ -95,6 +95,25 @@ public class UserServiceImpl implements IUserService {
         // 健壮性判断...
         log.info("进入【listUser(ParamDTO paramDTO)】方法");
         return dao.listUser(paramDTO);
+    }
+
+    @Override
+    @CacheEvict(cacheNames = "user", key = "#user.id", beforeInvocation = true)
+    public User lowFlowRateWithUpdate(User user) {
+        // 健壮性判断...
+        log.info("进入【update】方法");
+        return dao.update(user);
+    }
+
+    @Override
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "user", key = "#user.id", beforeInvocation = true),
+            @CacheEvict(cacheNames = "user", key = "#user.id")
+    })
+    public User highConcurrencyWithUpdate(User user) {
+        // 健壮性判断...
+        log.info("进入【update】方法");
+        return dao.update(user);
     }
 
     /**

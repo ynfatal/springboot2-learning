@@ -28,33 +28,29 @@ public class Chapter16ApplicationTests {
     @Test
     public void testCache() {
         /**
-         * 测试添加
-         */
-        User user = new User()
-                .setId(1L)
-                .setUsername("fatal")
-                .setPassword("21")
-                .setCreateTime(LocalDateTime.now())
-                .setUpdateTime(LocalDateTime.now());
-        User result = userService.insertOrUpdate(user);
-        log.info("【添加成功】 = [{}]", result);
-
-        /**
          * 测试查询（有缓存，没有显示进入【selectById】方法）
          */
-        User selectAfterInsert = userService.selectById(result.getId());
-        log.info("【查询成功】 = [{}]", selectAfterInsert);
+        User search = userService.selectById(1L);
+        log.info("【查询成功】 = [{}]", search);
+
+        /**
+         * 测试更新
+         */
+        search.setUsername("fatal")
+                .setUpdateTime(LocalDateTime.now());
+        User update = userService.update(search);
+        log.info("【更新成功】 = [{}]", update);
 
         /**
          * 测试删除（缓存也一同被删除了）
          */
-        User remove = userService.remove(result.getId());
+        User remove = userService.remove(search.getId());
         log.info("【删除成功】 = [{}]", remove);
 
         /**
          * 测试删除后查询（缓存没了，显示进入【selectById】方法）
          */
-        User selectAfterDelete = userService.selectById(result.getId());
+        User selectAfterDelete = userService.selectById(search.getId());
         log.info("【查询成功】 = [{}]", selectAfterDelete);
     }
 
@@ -78,14 +74,37 @@ public class Chapter16ApplicationTests {
 
     @Test
     public void testSelectById() {
-        User selectAfterInsert = userService.selectById(1L);
-        log.info("【查询成功】 = [{}]", selectAfterInsert);
+        User search = userService.selectById(1L);
+        log.info("【查询成功】 = [{}]", search);
     }
 
     @Test
     public void testRemove() {
         User remove = userService.remove(1L);
         log.info("【删除成功】 = [{}]", remove);
+    }
+
+
+    /**
+     * 测试低流量情况下更新数据缓存与数据库双写一致性问题
+     */
+    @Test
+    public void testLowFlowRateWithUpdate() {
+        User search = userService.selectById(1L);
+        search.setPassword("123456");
+        userService.lowFlowRateWithUpdate(search);
+        log.info("【更新成功】 = [{}]", search);
+    }
+
+    /**
+     * 测试高并发情况下更新数据缓存与数据库双写一致性问题
+     */
+    @Test
+    public void testHighConcurrencyWithUpdate() {
+        User search = userService.selectById(1L);
+        search.setPassword("123456");
+        userService.highConcurrencyWithUpdate(search);
+        log.info("【更新成功】 = [{}]", search);
     }
 
     /**

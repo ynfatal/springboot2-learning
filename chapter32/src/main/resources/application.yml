@@ -1,4 +1,5 @@
 spring:
   data:
     elasticsearch:
+      cluster-name: my-application
       cluster-nodes: localhost:9300

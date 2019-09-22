@@ -11,11 +11,11 @@ import org.springframework.data.elasticsearch.annotations.Document;
  */
 @Data
 @Accessors(chain = true)
-@Document(indexName = "city_search", type = "address", replicas = 0)
+@Document(indexName = "city", type = "city_search", replicas = 0)
 public class City {
 
     @Id
-    private Long id;
+    private String id;
 
     private String name;
 

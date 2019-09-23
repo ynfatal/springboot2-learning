@@ -12,7 +12,7 @@ import java.util.List;
  * @author Fatal
  * @date 2019/9/3 0003 18:47
  */
-public class CityRepositoryTest extends Chapter32ApplicationTests {
+public class CityRepositoryTests extends Chapter32ApplicationTests {
 
     @Autowired
     private CityRepository repository;
@@ -20,6 +20,7 @@ public class CityRepositoryTest extends Chapter32ApplicationTests {
     @Test
     public void saveTest() {
         City city = repository.save(new City()
+                .setId("1")
                 .setName("北京")
                 .setCulture("帝都文化"));
         System.out.println(city);
@@ -57,16 +58,22 @@ public class CityRepositoryTest extends Chapter32ApplicationTests {
                 new City().setName("汕头").setCulture("汕头文化 潮汕美食，牛肉火锅"),
                 new City().setName("上海").setCulture("上海文化"),
                 new City().setName("深圳").setCulture("深圳文化"),
-                new City().setName("广州").setCulture("广州文化")
+                new City().setName("广州").setCulture("广州文化，与上海的差异很大")
         );
         Iterable<City> result = repository.saveAll(cities);
         result.forEach(System.out::println);
     }
 
     @Test
-    public void findAll() {
+    public void findAllTest() {
         Iterable<City> all = repository.findAll();
         all.forEach(System.out::println);
+    }
+
+    @Test
+    public void findByCultureTest() {
+        City city = repository.findByCulture("美");
+        System.out.println(city);
     }
 
 }

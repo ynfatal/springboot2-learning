@@ -8,4 +8,7 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
  * @date 2019/9/3 0003 18:46
  */
 public interface CityRepository extends ElasticsearchRepository<City, String> {
+
+    City findByCulture(String culture);
+
 }

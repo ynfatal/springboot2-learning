@@ -1,4 +1,7 @@
 spring:
+  output:
+    ansi:
+      enabled: always
   data:
     elasticsearch:
       cluster-name: my-application

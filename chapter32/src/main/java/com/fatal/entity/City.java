@@ -5,6 +5,7 @@ import lombok.experimental.Accessors;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 /**
  * @author Fatal
@@ -18,9 +19,10 @@ public class City {
     @Id
     private String id;
 
+    @Field(type = FieldType.Keyword)
     private String name;
 
-    @Field
+    @Field(type = FieldType.Text)
     private String culture;
 
 }

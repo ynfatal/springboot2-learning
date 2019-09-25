@@ -22,9 +22,6 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * 这边的也能用，但是会报错
- * 2019-09-24 08:31:02.310 ERROR 1696 --- [           main] .d.e.r.s.AbstractElasticsearchRepository : failed to load elasticsearch nodes : org.elasticsearch.index.mapper.MapperParsingException: No type specified for field [culture]
- * 待解决
  * @author Fatal
  * @date 2019/9/23 0023 9:55
  */
@@ -38,12 +35,12 @@ public class TransportClientTests extends Chapter32ApplicationTests {
      */
     @Test
     public void prepareGetTest() {
-        GetResponse getResponse = client.prepareGet("city", "city_search", "PN9pXG0BcxTx4VkVjRV7").get();
+        GetResponse getResponse = client.prepareGet("city", "city_search", "1d90Zm0BEkPQvsGlQXmi").get();
         Map<String, Object> source = getResponse.getSourceAsMap();
         if (!CollectionUtils.isEmpty(source)) {
             System.out.println(source.get("id"));
             System.out.println(source.get("name"));
-            System.out.println(source.get("culture"));
+            System.out.println(source.get("theDetail"));
         }
     }
 
@@ -56,7 +53,7 @@ public class TransportClientTests extends Chapter32ApplicationTests {
             XContentBuilder xContentBuilder = XContentFactory.jsonBuilder()
                     .startObject()
                     .field("name", "佛山")
-                    .field("culture", "佛山文化")
+                    .field("theDetail", "佛山文化")
                     .endObject();
             IndexResponse indexResponse = client.prepareIndex("city", "city_search")
                     .setSource(xContentBuilder)
@@ -72,12 +69,12 @@ public class TransportClientTests extends Chapter32ApplicationTests {
      */
     @Test
     public void updateTest() {
-        UpdateRequest updateRequest = new UpdateRequest("city", "city_search", "Lj-rYG0BB4ilQ1fpGd4Z");
+        UpdateRequest updateRequest = new UpdateRequest("city", "city_search", "uN_0ZW0BEkPQvsGlN3m_");
         try {
             XContentBuilder xContentBuilder = XContentFactory.jsonBuilder()
                     .startObject()
                     .field("name", "北京")
-                    .field("culture", "北京文化")
+                    .field("theDetail", "北京文化")
                     .endObject();
             updateRequest.doc(xContentBuilder);
             UpdateResponse updateResponse = null;
@@ -97,7 +94,7 @@ public class TransportClientTests extends Chapter32ApplicationTests {
      */
     @Test
     public void prepareDeleteTest() {
-        DeleteResponse deleteResponse = client.prepareDelete("city", "city_search", "1").get();
+        DeleteResponse deleteResponse = client.prepareDelete("city", "city_search", "ud_-ZW0BEkPQvsGlBnl1").get();
         System.out.println(deleteResponse.getResult());
     }
 
@@ -107,26 +104,25 @@ public class TransportClientTests extends Chapter32ApplicationTests {
     @Test
     public void idsQueryTest() {
         IdsQueryBuilder queryBuilder = QueryBuilders.idsQuery()
-                .addIds("M6V7W20B1zKc37rNFWcv", "MqV7W20B1zKc37rNFWcv");
+                .addIds("uN_0ZW0BEkPQvsGlN3m_", "tN_uZW0BEkPQvsGlu3m_");
         analysis(search(queryBuilder));
     }
 
     /**
-     * 单个字段精确匹配查询
-     * termQuery 的第一个参数 name 必须是`字段名 + ".keyword"`(暂时不知道原因)
+     * 单个字段匹配查询
      */
     @Test
     public void termQueryTest() {
-        TermQueryBuilder queryBuilder = QueryBuilders.termQuery("culture.keyword", "深圳文化");
+        TermQueryBuilder queryBuilder = QueryBuilders.termQuery("theDetail", "汕头");
         analysis(search(queryBuilder));
     }
 
     /**
-     * 单个字段模糊匹配查询
+     * 单个字段匹配查询
      */
     @Test
     public void matchQueryTest() {
-        MatchQueryBuilder queryBuilder = QueryBuilders.matchQuery("culture", "潮汕美食");
+        MatchQueryBuilder queryBuilder = QueryBuilders.matchQuery("theDetail", "潮汕美食");
         analysis(search(queryBuilder));
     }
 
@@ -140,21 +136,54 @@ public class TransportClientTests extends Chapter32ApplicationTests {
     }
 
     /**
-     * 多个字段模糊匹配某个值
+     * 多个字段匹配某个值
      */
     @Test
     public void multiMatchQueryTest() {
-        MultiMatchQueryBuilder queryBuilder = QueryBuilders.multiMatchQuery("上海", "name", "culture");
+        MultiMatchQueryBuilder queryBuilder = QueryBuilders.multiMatchQuery("上海", "name", "theDetail");
         analysis(search(queryBuilder));
     }
 
+    /**
+     * 测试 term 和 match_phrase
+     * term: 不分词
+     * match_phrase: 分词之后逐一搜索，返回各个结果的并集
+     */
+    @Test
+    public void termQueryWithMatchPhraseQueryTest() {
+        TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("theDetail", "我是中国人");
+        System.out.println("  ============  termQuery  ==========  ");
+        analysis(search(termQueryBuilder));
+        MatchPhraseQueryBuilder matchPhraseQueryBuilder = QueryBuilders.matchPhraseQuery("theDetail", "我是中国人");
+        System.out.println("  ============  matchPhraseQuery  ==========  ");
+        analysis(search(matchPhraseQueryBuilder));
+    }
+
+    /**
+     * 测试 match_phrase 和 match_phrase_prefix
+     * match_phrase: 分词之后逐一搜索，返回各个结果的并集
+     * match_phrase_prefix: 分词之后逐一搜索，返回各个结果的并集。与 match_phrase 不同的是，
+     *      它支持最后一个词项（term）的前缀匹配（即以最后一个词项为前缀的关键字的文档）。
+     */
+    @Test
+    public void MatchPhraseQueryWithMatchPhrasePrefixQueryTest() {
+        MatchPhraseQueryBuilder matchPhraseQueryBuilder = QueryBuilders.matchPhraseQuery("theDetail", "潮汕美");
+        System.out.println("  ============  matchPhraseQuery  ==========  ");
+        analysis(search(matchPhraseQueryBuilder));
+        MatchPhrasePrefixQueryBuilder matchPhrasePrefixQueryBuilder = QueryBuilders.matchPhrasePrefixQuery("theDetail", "潮汕美");
+        System.out.println("  ============  matchPhrasePrefixQuery  ==========  ");
+        analysis(search(matchPhrasePrefixQueryBuilder));
+    }
+
+    /**
+     * 测试高亮显示
+     */
     @Test
     public void highLightTest() {
-        TermQueryBuilder queryBuilder = QueryBuilders.termQuery("name", "汕头");
+        QueryStringQueryBuilder queryBuilder = QueryBuilders.queryStringQuery("汕头");
         HighlightBuilder highlightBuilder = new HighlightBuilder()
                 .field("name")
-                .preTags("<h2>")
-                .postTags("</h2>");
+                .field("theDetail");
         SearchResponse searchResponse = client.prepareSearch("city")
                 .setQuery(queryBuilder)
                 .highlighter(highlightBuilder)
@@ -167,9 +196,10 @@ public class TransportClientTests extends Chapter32ApplicationTests {
             Map<String, Object> source = hit.getSourceAsMap();
             Map<String, HighlightField> highlightFields = hit.getHighlightFields();
             System.out.println(highlightFields.get("name").getFragments()[0].toString());
+            System.out.println(highlightFields.get("theDetail").getFragments()[0].toString());
             System.out.println(source.get("id"));
             System.out.println(source.get("name"));
-            System.out.println(source.get("culture"));
+            System.out.println(source.get("theDetail"));
         });
     }
 
@@ -198,7 +228,7 @@ public class TransportClientTests extends Chapter32ApplicationTests {
             Map<String, Object> source = hit.getSourceAsMap();
             System.out.println(source.get("id"));
             System.out.println(source.get("name"));
-            System.out.println(source.get("culture"));
+            System.out.println(source.get("theDetail"));
         });
     }
 

@@ -25,9 +25,8 @@ public class CityRepositoryTests extends Chapter32ApplicationTests {
     @Test
     public void saveTest() {
         City city = repository.save(new City()
-                .setId("1")
-                .setName("北京")
-                .setCulture("帝都文化"));
+                .setName("中国城市")
+                .setTheDetail("我是中国人"));
         System.out.println(city);
     }
 
@@ -42,7 +41,7 @@ public class CityRepositoryTests extends Chapter32ApplicationTests {
     public void updateTest() {
         City find = repository.findById("1")
                 .orElseThrow(RuntimeException::new);
-        City city = repository.save(find.setCulture("帝都文化~~"));
+        City city = repository.save(find.setTheDetail("帝都文化~~"));
         System.out.println(city);
     }
 
@@ -59,11 +58,11 @@ public class CityRepositoryTests extends Chapter32ApplicationTests {
     @Test
     public void saveAllTest() {
         List<City> cities = Arrays.asList(
-                new City().setName("天津").setCulture("天津文化"),
-                new City().setName("汕头").setCulture("汕头文化 潮汕美食，牛肉火锅"),
-                new City().setName("上海").setCulture("上海文化"),
-                new City().setName("深圳").setCulture("深圳文化"),
-                new City().setName("广州").setCulture("广州文化，与上海的差异很大")
+                new City().setName("天津").setTheDetail("天津文化"),
+                new City().setName("汕头").setTheDetail("汕头文化 潮汕美食，牛肉火锅"),
+                new City().setName("上海").setTheDetail("上海文化"),
+                new City().setName("深圳").setTheDetail("深圳文化"),
+                new City().setName("广州").setTheDetail("广州文化，与上海的差异很大")
         );
         Iterable<City> result = repository.saveAll(cities);
         result.forEach(System.out::println);
@@ -76,21 +75,21 @@ public class CityRepositoryTests extends Chapter32ApplicationTests {
     }
 
     @Test
-    public void findByCultureTest() {
-        City city = repository.findByCulture("美");
+    public void findByTheDetailTest() {
+        City city = repository.findByTheDetail("美");
         System.out.println(city);
     }
 
     @Test
     public void matchQueryTest() {
-        MatchQueryBuilder queryBuilder = QueryBuilders.matchQuery("culture", "汕头文化");
+        MatchQueryBuilder queryBuilder = QueryBuilders.matchQuery("theDetail", "汕头文化");
         Iterable<City> cities = repository.search(queryBuilder);
         print(cities);
     }
 
     @Test
     public void matchPhraseQueryTest() {
-        MatchPhraseQueryBuilder queryBuilder = QueryBuilders.matchPhraseQuery("culture", "汕头文化");
+        MatchPhraseQueryBuilder queryBuilder = QueryBuilders.matchPhraseQuery("theDetail", "汕头文化");
         Iterable<City> cities = repository.search(queryBuilder);
         print(cities);
     }
@@ -102,9 +101,12 @@ public class CityRepositoryTests extends Chapter32ApplicationTests {
         print(cities);
     }
 
+    /**
+     * term查询的时候不被解析，只有查询词和文档中的词精确匹配才能被查到
+     */
     @Test
     public void termQueryTest() {
-        TermQueryBuilder queryBuilder = QueryBuilders.termQuery("name", "汕头");
+        TermQueryBuilder queryBuilder = QueryBuilders.termQuery("name", "深圳");
         Iterable<City> cities = repository.search(queryBuilder);
         print(cities);
     }
@@ -116,7 +118,7 @@ public class CityRepositoryTests extends Chapter32ApplicationTests {
     public void compoundConditionalQueryTest() {
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
                 .should(QueryBuilders.matchQuery("name", "汕头"))
-                .should(QueryBuilders.matchQuery("culture", "帝都"));
+                .should(QueryBuilders.matchQuery("theDetail", "帝都"));
         Iterable<City> cities = repository.search(queryBuilder);
         print(cities);
     }
@@ -125,7 +127,7 @@ public class CityRepositoryTests extends Chapter32ApplicationTests {
     public void highLightTest() {
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
                 .should(QueryBuilders.matchQuery("name", "汕头"))
-                .should(QueryBuilders.matchQuery("culture", "帝都"));
+                .should(QueryBuilders.matchQuery("theDetail", "帝都"));
         HighlightBuilder highlightBuilder = new HighlightBuilder()
                 .field("name")
                 .preTags("<h2>")

@@ -23,6 +23,6 @@ public class City {
     private String name;
 
     @Field(type = FieldType.Text)
-    private String culture;
+    private String theDetail;
 
 }

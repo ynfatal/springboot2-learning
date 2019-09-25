@@ -5,10 +5,10 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 
 /**
  * @author Fatal
- * @date 2019/9/3 0003 18:46
+ * @date 2019/9/25 0025 20:38
  */
 public interface CityRepository extends ElasticsearchRepository<City, String> {
 
-    City findByCulture(String culture);
+    City findByTheDetail(String theDetail);
 
 }

@@ -71,7 +71,7 @@ public class CustomResultMapper extends DefaultResultMapper {
 
 	/**
 	 * 连接多个片段的值，片段数量对应 Stream#readVInt，片段值对应 StreamInput#readText
-	 * 文本字数太多的话，不会全部存储，只是将包含有关键字的部分一小段一小段保存起来。当然，保存到es中的文字数目要不要现在就看场景吧
+	 * 文本字数太多的话，不会一整块，而是将包含有关键字的部分一小段一小段放数组中。当然，保存到es中的文字数目要不要限制就看场景吧
 	 * @param fragments
 	 * @return
 	 */

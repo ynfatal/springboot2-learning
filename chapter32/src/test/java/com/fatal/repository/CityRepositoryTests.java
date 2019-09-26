@@ -29,14 +29,14 @@ public class CityRepositoryTests extends Chapter32ApplicationTests {
 
     @Test
     public void findByIdTest() {
-        City city = repository.findById("1")
+        City city = repository.findById("mA4zbG0Bm_JGdCcRf3TO")
                 .orElseThrow(RuntimeException::new);
         System.out.println(city);
     }
 
     @Test
     public void updateTest() {
-        City find = repository.findById("1")
+        City find = repository.findById("mQ54bG0Bm_JGdCcRjHRA")
                 .orElseThrow(RuntimeException::new);
         find.setTheDetail("帝都文化~~");
         City city = repository.save(find);
@@ -53,6 +53,9 @@ public class CityRepositoryTests extends Chapter32ApplicationTests {
         repository.deleteAll();
     }
 
+    /**
+     * 底层也是 bulkIndex
+     */
     @Test
     public void saveAllTest() {
         List<City> cities = Arrays.asList(
@@ -72,9 +75,12 @@ public class CityRepositoryTests extends Chapter32ApplicationTests {
         all.forEach(System.out::println);
     }
 
+    /**
+     * 底层也是dsl，也会根据@Document决定是否需要分词
+     */
     @Test
     public void findByTheDetailTest() {
-        City city = repository.findByTheDetail("美");
+        City city = repository.findByTheDetail("美食");
         System.out.println(city);
     }
 
@@ -116,7 +122,7 @@ public class CityRepositoryTests extends Chapter32ApplicationTests {
     public void compoundConditionalQueryTest() {
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
                 .should(QueryBuilders.matchQuery("name", "汕头"))
-                .should(QueryBuilders.matchQuery("theDetail", "帝都"));
+                .should(QueryBuilders.matchQuery("theDetail", "差异"));
         Iterable<City> cities = repository.search(queryBuilder);
         print(cities);
     }

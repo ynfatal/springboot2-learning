@@ -3,6 +3,10 @@ package com.fatal.template;
 import com.fatal.Chapter32ApplicationTests;
 import com.fatal.component.CustomResultMapper;
 import com.fatal.entity.City;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
@@ -11,11 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.query.IndexQuery;
-import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.*;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -88,7 +90,7 @@ public class ElasticsearchTemplateTests extends Chapter32ApplicationTests {
      */
     @Test
     public void highLightTest() {
-        MatchQueryBuilder queryBuilder = QueryBuilders.matchQuery("theDetail", "富士电");
+        MatchQueryBuilder queryBuilder = QueryBuilders.matchQuery("theDetail", "美食");
         // 指定高亮的class属性值之后，具体样式交给前端设计。支持设置多种class属性值。
         HighlightBuilder highlightBuilder = new HighlightBuilder()
                 .preTags(HighlightBuilder.DEFAULT_STYLED_PRE_TAG)

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 自定义 CustomResultMapper
+ * 自定义 ResultMapper
  * @author Fatal
  * @date 2019/9/3 0003 18:31
  * @desc: 对返回结果进行高亮加工

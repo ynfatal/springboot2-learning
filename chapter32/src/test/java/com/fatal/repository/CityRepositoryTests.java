@@ -3,12 +3,8 @@ package com.fatal.repository;
 import com.fatal.Chapter32ApplicationTests;
 import com.fatal.entity.City;
 import org.elasticsearch.index.query.*;
-import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,9 +20,10 @@ public class CityRepositoryTests extends Chapter32ApplicationTests {
 
     @Test
     public void saveTest() {
-        City city = repository.save(new City()
-                .setName("中国城市")
-                .setTheDetail("我是中国人"));
+        City city = repository.save(City.builder()
+                .name("北京")
+                .theDetail("帝都文化")
+                .build());
         System.out.println(city);
     }
 
@@ -41,7 +38,8 @@ public class CityRepositoryTests extends Chapter32ApplicationTests {
     public void updateTest() {
         City find = repository.findById("1")
                 .orElseThrow(RuntimeException::new);
-        City city = repository.save(find.setTheDetail("帝都文化~~"));
+        find.setTheDetail("帝都文化~~");
+        City city = repository.save(find);
         System.out.println(city);
     }
 
@@ -58,11 +56,11 @@ public class CityRepositoryTests extends Chapter32ApplicationTests {
     @Test
     public void saveAllTest() {
         List<City> cities = Arrays.asList(
-                new City().setName("天津").setTheDetail("天津文化"),
-                new City().setName("汕头").setTheDetail("汕头文化 潮汕美食，牛肉火锅"),
-                new City().setName("上海").setTheDetail("上海文化"),
-                new City().setName("深圳").setTheDetail("深圳文化"),
-                new City().setName("广州").setTheDetail("广州文化，与上海的差异很大")
+                City.builder().name("天津").theDetail("天津文化").build(),
+                City.builder().name("汕头").theDetail("汕头文化 潮汕美食，牛肉火锅").build(),
+                City.builder().name("上海").theDetail("上海文化").build(),
+                City.builder().name("深圳").theDetail("深圳文化").build(),
+                City.builder().name("广州").theDetail("广州文化，与上海的差异很大").build()
         );
         Iterable<City> result = repository.saveAll(cities);
         result.forEach(System.out::println);
@@ -112,7 +110,7 @@ public class CityRepositoryTests extends Chapter32ApplicationTests {
     }
 
     /**
-     * 复合查询
+     * 复合条件查询
      */
     @Test
     public void compoundConditionalQueryTest() {
@@ -121,26 +119,6 @@ public class CityRepositoryTests extends Chapter32ApplicationTests {
                 .should(QueryBuilders.matchQuery("theDetail", "帝都"));
         Iterable<City> cities = repository.search(queryBuilder);
         print(cities);
-    }
-
-    @Test
-    public void highLightTest() {
-        BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
-                .should(QueryBuilders.matchQuery("name", "汕头"))
-                .should(QueryBuilders.matchQuery("theDetail", "帝都"));
-        HighlightBuilder highlightBuilder = new HighlightBuilder()
-                .field("name")
-                .preTags("<h2>")
-                .postTags("</h2>");
-        List<HighlightBuilder.Field> fields = highlightBuilder.fields();
-        HighlightBuilder.Field[] fieldArray = fields.toArray(new HighlightBuilder.Field[1]);
-        NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
-                .withQuery(queryBuilder)
-                .withHighlightBuilder(highlightBuilder)
-                .withHighlightFields(fieldArray)
-                .build();
-        Page<City> page = repository.search(searchQuery);
-        page.forEach(System.out::println);
     }
 
     private void print(Iterable<City> cities) {

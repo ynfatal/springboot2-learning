@@ -12,13 +12,19 @@
     <artifactId>chapter32</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>chapter32</name>
-    <description>SpringBoot2 | 第三十一篇: 整合 Elasticsearch</description>
+    <description>SpringBoot2 | 第三十二篇: 整合 Elasticsearch</description>
 
     <properties>
         <java.version>1.8</java.version>
     </properties>
 
     <dependencies>
+        <!-- 反射工具类`PropertyUtils`在此包 -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.3</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>

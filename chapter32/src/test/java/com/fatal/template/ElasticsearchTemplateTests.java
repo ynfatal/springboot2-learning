@@ -1,9 +1,10 @@
 package com.fatal.template;
 
 import com.fatal.Chapter32ApplicationTests;
+import com.fatal.component.CustomResultMapper;
 import com.fatal.entity.City;
+import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +28,18 @@ public class ElasticsearchTemplateTests extends Chapter32ApplicationTests {
     @Autowired
     private ElasticsearchTemplate template;
 
+    @Autowired
+    private CustomResultMapper customResultMapper;
+
     /**
      * 新增文档
      */
     @Test
     public void indexTest() {
-        City city = new City()
-                .setName("惠州")
-                .setTheDetail("惠州文化");
+        City city = City.builder()
+                .name("海贼王")
+                .theDetail("《航海王》是日本漫画家尾田荣一郎作画的少年漫画作品，在《周刊少年Jump》1997年第34号开始连载，电子版由漫番漫画连载。改编的电视动画《航海王》于1999年10月20日起在富士电...")
+                .build();
         IndexQuery indexQuery = new IndexQueryBuilder()
                 .withObject(city)
                 .build();
@@ -42,14 +47,17 @@ public class ElasticsearchTemplateTests extends Chapter32ApplicationTests {
         System.out.println(documentId);
     }
 
+    /**
+     * 批量新增文档
+     */
     @Test
     public void bulkIndexTest() {
         List<IndexQuery> queries = Arrays.asList(
                 new IndexQueryBuilder()
-                        .withObject(new City().setName("重庆").setTheDetail("重庆文化"))
+                        .withObject(City.builder().name("重庆").theDetail("重庆文化"))
                         .build(),
                 new IndexQueryBuilder()
-                        .withObject(new City().setName("长沙").setTheDetail("长沙文化"))
+                        .withObject(City.builder().name("长沙").theDetail("长沙文化"))
                         .build()
         );
         template.bulkIndex(queries);
@@ -75,22 +83,24 @@ public class ElasticsearchTemplateTests extends Chapter32ApplicationTests {
         cities.forEach(System.out::println);
     }
 
+    /**
+     * 测试高亮查询
+     */
     @Test
     public void highLightTest() {
-        TermQueryBuilder queryBuilder = QueryBuilders.termQuery("name", "汕头");
+        MatchQueryBuilder queryBuilder = QueryBuilders.matchQuery("theDetail", "富士电");
+        // 指定高亮的class属性值之后，具体样式交给前端设计。支持设置多种class属性值。
         HighlightBuilder highlightBuilder = new HighlightBuilder()
-                .field("name")
-                .preTags("<h2>")
-                .postTags("</h2>");
-        List<HighlightBuilder.Field> fields = highlightBuilder.fields();
-        HighlightBuilder.Field[] fieldArray = fields.toArray(new HighlightBuilder.Field[1]);
+                .preTags(HighlightBuilder.DEFAULT_STYLED_PRE_TAG)
+                .postTags(HighlightBuilder.DEFAULT_STYLED_POST_TAGS);
         NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(queryBuilder)
+                .withHighlightFields(new HighlightBuilder.Field("theDetail"))
                 .withHighlightBuilder(highlightBuilder)
-                .withHighlightFields(fieldArray)
                 .build();
-        Page<City> page = template.queryForPage(searchQuery, City.class);
+        Page<City> page = template.queryForPage(searchQuery, City.class, customResultMapper);
         page.forEach(System.out::println);
     }
+
 
 }

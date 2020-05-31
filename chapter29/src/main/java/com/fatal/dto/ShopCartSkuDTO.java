@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 /**
  * 购物车skuDTO，包含了购物车需要显示的所有数据
  * @desc @EqualsAndHashCode 这里只选择了两个属性，是为了后面去重；先去重后map，可以减少大部分操作。
+ *      注：这个属于 ISkuService 对外交互的DTO，是必不可少的。
  * @author Fatal
  * @date 2019/8/15 0015 17:45
  */
@@ -17,12 +18,10 @@ import org.springframework.beans.BeanUtils;
 @EqualsAndHashCode(of = {"shopId", "shopName"})
 public class ShopCartSkuDTO {
 
-    private Long id;
-
     /**
-     * 商品ID
+     * skuID
      */
-    private Long goodsId;
+    private Long id;
 
     /**
      * 店铺ID
@@ -35,7 +34,7 @@ public class ShopCartSkuDTO {
     private String shopName;
 
     /**
-     * 商品名称（冗余字段）
+     * 商品名称
      */
     private String goodsName;
 
@@ -43,11 +42,6 @@ public class ShopCartSkuDTO {
      * sku单价（单位：分）
      */
     private Long price;
-
-    /**
-     * sku库存
-     */
-    private Integer stock;
 
     /**
      * sku图片
@@ -63,11 +57,6 @@ public class ShopCartSkuDTO {
      * 单种sku允许添加到购物车的最大数额
      */
     private Integer max;
-
-    /**
-     * sku个数
-     */
-    private Integer count;
 
     /**
      * sku状态：-1 下架; 0 删除; 1 在架

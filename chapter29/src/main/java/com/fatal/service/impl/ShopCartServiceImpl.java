@@ -57,9 +57,7 @@ public class ShopCartServiceImpl implements IShopCartService {
      */
     @Override
     public void increment(Long userId, Long skuId, Long increment) {
-        // 校验 skuId 是否存在（保证数据库存在该sku，且该sku的状态为正常）
-        ShopCartSkuDTO shopCartSkuDTO = skuService.getShopCartSkuById(skuId);
-        isNormal(shopCartSkuDTO);
+        ShopCartSkuDTO shopCartSkuDTO = checkSkuIfExists(skuId);
         Integer value = (Integer) hashOperations.get(ShopCartConstant.getCartKey(userId), skuId);
         if (ObjectUtils.isEmpty(value)) {
             if (hashOperations.size(ShopCartConstant.getCartKey(userId)) >= ShopCartConstant.TYPE_MAX) {
@@ -186,23 +184,6 @@ public class ShopCartServiceImpl implements IShopCartService {
                     shopCartDTO.setItems(shopCartItemDTOs);
                 })
                 .collect(Collectors.toList());
-
-        /*List<ShopCartSkuDTO> shopCartSkuDTOs = skuIds.stream()
-                .map(skuId -> {
-                    Integer count = (Integer) hashOperations.get(ShopCartConstant.getCartKey(userId), skuId);
-                    return skuService.getShopCartSkuById(skuId).setCount(count);
-                })
-                .collect(Collectors.toList());
-        Map<Long, List<ShopCartSkuDTO>> shopMap = shopCartSkuDTOs.stream()
-                .collect(Collectors.groupingBy(ShopCartSkuDTO::getShopId));
-        return shopCartSkuDTOs.stream()
-                .distinct()
-                .map(ShopCartDTO::of)
-                .peek(shopCartDTO -> {
-                    List<ShopCartSkuDTO> subShopCartSkuDTOs = shopMap.get(shopCartDTO.getShopId());
-                    shopCartDTO.setItems(ShopCartItemDTO.of(subShopCartSkuDTOs));
-                })
-                .collect(Collectors.toList());*/
     }
 
     /**
@@ -255,12 +236,15 @@ public class ShopCartServiceImpl implements IShopCartService {
 
     /**
      * `加入购物车`和`移出购物车`都检验sku是否`上架`
-     * @param shopCartSkuDTO
+     * @param skuId
      */
-    private void isNormal(ShopCartSkuDTO shopCartSkuDTO) {
+    private ShopCartSkuDTO checkSkuIfExists(Long skuId) {
+        // 校验 skuId 是否存在（保证数据库存在该sku，且该sku的状态为正常）
+        ShopCartSkuDTO shopCartSkuDTO = skuService.getShopCartSkuById(skuId);
         if (!StatusEnums.NORMAL.getCode().equals(shopCartSkuDTO.getStatus())) {
             throw new ValidateException(ResponseEnum.SKU_IS_OFF_THE_SHELVES);
         }
+        return shopCartSkuDTO;
     }
 
     private IShopCartService proxy() {

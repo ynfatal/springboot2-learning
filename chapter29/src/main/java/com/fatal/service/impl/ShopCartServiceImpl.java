@@ -62,18 +62,18 @@ public class ShopCartServiceImpl implements IShopCartService {
         isNormal(shopCartSkuDTO);
         Integer value = (Integer) hashOperations.get(ShopCartConstant.getCartKey(userId), skuId);
         if (ObjectUtils.isEmpty(value)) {
-            hashOperations.put(ShopCartConstant.getGroupingKey(userId), skuId, shopCartSkuDTO.getShopId());
             if (hashOperations.size(ShopCartConstant.getCartKey(userId)) >= ShopCartConstant.TYPE_MAX) {
                 throw new ValidateException(ResponseEnum.SHOP_CART_SKU_TYPE_COUNT_FULL);
             }
+            hashOperations.put(ShopCartConstant.getGroupingKey(userId), skuId, shopCartSkuDTO.getShopId());
         }
-        boolean overflow = increment > ShopCartConstant.MAX ||
-                !ObjectUtils.isEmpty(value) && value + increment > ShopCartConstant.MAX;
+        Integer max = ShopCartConstant.MAX > shopCartSkuDTO.getMax() ? shopCartSkuDTO.getMax() : ShopCartConstant.MAX;
+        boolean overflow = increment > max || !ObjectUtils.isEmpty(value) && value + increment > max;
         if (overflow) {
-            hashOperations.put(ShopCartConstant.getCartKey(userId), skuId, ShopCartConstant.MAX);
-            throw new ValidateException(ResponseEnum.SHOP_CART_SKU_COUNT_OUT_OF_RANGE);
+            hashOperations.put(ShopCartConstant.getCartKey(userId), skuId, max);
+        } else {
+            hashOperations.increment(ShopCartConstant.getCartKey(userId), skuId, increment);
         }
-        hashOperations.increment(ShopCartConstant.getCartKey(userId), skuId, increment);
     }
 
     /**
@@ -107,6 +107,7 @@ public class ShopCartServiceImpl implements IShopCartService {
     }
 
     /**
+     * 购物车(skuId)分页缓存
      * @Cacheable unless排除对空集和null的缓存
      * @param userId 用户ID
      * @param currentPage 当前页码

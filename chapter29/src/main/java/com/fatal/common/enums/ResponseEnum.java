@@ -10,14 +10,9 @@ import lombok.Getter;
 public enum ResponseEnum {
 
     /**
-     * 购物车sku数量超出范围
-     */
-    SHOP_CART_SKU_COUNT_OUT_OF_RANGE(10000, "购物车sku数量超出范围"),
-
-    /**
      * 购物车已满，不能添加新sku
      */
-    SHOP_CART_SKU_TYPE_COUNT_FULL(10001, "购物车已满，不能添加新sku"),
+    SHOP_CART_SKU_TYPE_COUNT_FULL(10000, "购物车已满，不能添加新sku"),
 
     /**
      * 数据库不存在此sku

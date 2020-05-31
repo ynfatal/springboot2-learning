@@ -83,8 +83,6 @@ public class ShopCartServiceImpl implements IShopCartService {
      */
     @Override
     public void removeOne(Long userId, Long skuId) {
-        // 校验 skuId 是否存在（保证数据库存在该sku）
-        isNormal(skuService.getShopCartSkuById(skuId));
         Long value = hashOperations.increment(ShopCartConstant.getCartKey(userId), skuId, -1L);
         if (value <= 0) {
             // 如果购物车中该sku的数量小于或等于0，就将该sku从购物车中删除
@@ -100,15 +98,14 @@ public class ShopCartServiceImpl implements IShopCartService {
      */
     @Override
     public List<ShopCartDTO> shopCarts(Long userId, Integer currentPage) {
-        List<Long> skuIds = proxy().currentPageSkuId(userId, currentPage).stream()
-                .map(this::toLong)
-                .collect(Collectors.toList());
+        List<Long> skuIds = proxy().currentPageSkuIds(userId, currentPage);
         return CollectionUtils.isEmpty(skuIds) ? new ArrayList<>() : shopCarts(userId, skuIds);
     }
 
     /**
      * 购物车(skuId)分页缓存
      * @Cacheable unless排除对空集和null的缓存
+     * @desc 使用 Stream#skip + Stream#limit 在流中实现分页
      * @param userId 用户ID
      * @param currentPage 当前页码
      * @return
@@ -116,16 +113,23 @@ public class ShopCartServiceImpl implements IShopCartService {
     @Override
     @Cacheable(unless = "#result == null || #result.size() == 0", cacheNames = ShopCartConstant.SHOP_CART_PAGE,
             key = "#userId + ':' + #currentPage")
-    public List<Object> currentPageSkuId(Long userId, Integer currentPage) {
+    public List<Long> currentPageSkuIds(Long userId, Integer currentPage) {
         return proxy().shopCartGrouping(userId).stream()
                 .skip((currentPage - 1) * ShopCartConstant.PAGE_SIZE)
                 .limit(ShopCartConstant.PAGE_SIZE)
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 获得分组摊平后的购物车（未分页的列表）
+     * [7,6,4,11,10,8,9,1,12,3,2]
+     * 对应三个店铺：[7,6,4],[11,10,8,9],[1,12,3,2]
+     * @param userId 用户ID
+     * @return
+     */
     @Override
     @Cacheable(unless = "#result == null", cacheNames = ShopCartConstant.SORT_SHOP_CART, key = "#userId")
-    public List<Object> shopCartGrouping(Long userId) {
+    public List<Long> shopCartGrouping(Long userId) {
         Map<Object, Object> entries = hashOperations.entries(ShopCartConstant.getGroupingKey(userId));
         List<Map.Entry<Object, Object>> entryList = new ArrayList<>(entries.entrySet());
         // 最新加入购物的sku在最后，所以这里得先反序
@@ -142,27 +146,51 @@ public class ShopCartServiceImpl implements IShopCartService {
                 );
         return collect.values().stream()
                 .flatMap(Collection::stream)
+                .map(this::toLong)
                 .collect(Collectors.toList());
     }
 
     /**
      * @step
-     *   1. 获得 shopCartSkuDTOs
+     *   1. 根据 skuIds 获得 shopCartSkuDTOs（封装购物车中sku数量 -> count）
      *   2. 根据 店铺ID 对 shopCartSkuDTOs 进行分组
-     *   3. 获得 店铺集合，遍历填充数据
-     * @desc 带顺序的购物车列表，店铺顺序由旗下最新添加的商品顺序决定。展示给前端后，临界值看看是否操作，不需要的话
-     *      他可以直接拿去展示。
+     *   3. 根据 shopCartSkuDTOs 获得店铺集合（已去重），遍历填充数据
+     *      1)去重：这里使用 Stream#distinct 的方式去重，以 "shopId", "shopName" 为标识去除标识重复的数据。在 ShopCartSkuDTO 类上
+     *      加上 @EqualsAndHashCode(of = {"shopId", "shopName"}) 可以实现，后边调用 Stream#distinct 会在底层使用
+     *      equals() 和 hashCode() 方法进行去重。
+     *      2)封装：这里使用 Stream#peek 的方式封装，其实可以使用 Stream#map，但是返回类型如果没有改变的话，使用 peek 更直观。
+     * @desc 这个方法的作用就是封装购物车需要展示的数据，参数为带顺序的购物车列表，店铺的顺序由旗下最新添加的商品顺序决定。
+     *      展示给前端后，临界值看看是否操作，不需要的话他可以直接拿去展示。
      * @param userId 用户ID
-     * @param skuIds
+     * @param skuIds skuIds
      * @return
      */
     @Override
     public List<ShopCartDTO> shopCarts(Long userId, List<Long> skuIds) {
         List<ShopCartSkuDTO> shopCartSkuDTOs = skuIds.stream()
+                .map(skuService::getShopCartSkuById)
+                .collect(Collectors.toList());
+        // Map<Long, List<ShopCartSkuDTO>> -> Map<shopId, List<ShopCartSkuDTO>>
+        Map<Long, List<ShopCartSkuDTO>> shopMap = shopCartSkuDTOs.stream()
+                .collect(Collectors.groupingBy(ShopCartSkuDTO::getShopId));
+        return shopCartSkuDTOs.stream()
+                .distinct()
+                .map(ShopCartDTO::of)
+                .peek(shopCartDTO -> {
+                    List<ShopCartSkuDTO> subShopCartSkuDTOs = shopMap.get(shopCartDTO.getShopId());
+                    List<ShopCartItemDTO> shopCartItemDTOs = ShopCartItemDTO.of(subShopCartSkuDTOs).stream()
+                            .peek(shopCartItemDTO -> {
+                                Integer count = (Integer) hashOperations.get(ShopCartConstant.getCartKey(userId), shopCartItemDTO.getId());
+                                shopCartItemDTO.setCount(count);
+                            }).collect(Collectors.toList());
+                    shopCartDTO.setItems(shopCartItemDTOs);
+                })
+                .collect(Collectors.toList());
+
+        /*List<ShopCartSkuDTO> shopCartSkuDTOs = skuIds.stream()
                 .map(skuId -> {
                     Integer count = (Integer) hashOperations.get(ShopCartConstant.getCartKey(userId), skuId);
-                    return skuService.getShopCartSkuById(skuId)
-                            .setCount(count);
+                    return skuService.getShopCartSkuById(skuId).setCount(count);
                 })
                 .collect(Collectors.toList());
         Map<Long, List<ShopCartSkuDTO>> shopMap = shopCartSkuDTOs.stream()
@@ -174,10 +202,11 @@ public class ShopCartServiceImpl implements IShopCartService {
                     List<ShopCartSkuDTO> subShopCartSkuDTOs = shopMap.get(shopCartDTO.getShopId());
                     shopCartDTO.setItems(ShopCartItemDTO.of(subShopCartSkuDTOs));
                 })
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
     }
 
     /**
+     * 将指定的 sku 从购物车移除。SORT_SHOP_CART 和 SHOP_CART_PAGE 一定会变的，所以需要清除缓存。
      * @CacheEvict allEntries = true: 清除当前`cacheNames`下的所有缓存
      * @param userId 用户ID
      * @param skuIds skuID数组（该参数必须是可变参数或者数组，后面需要转为 byte[][] 类型，如果
@@ -192,6 +221,11 @@ public class ShopCartServiceImpl implements IShopCartService {
         hashOperations.delete(ShopCartConstant.getGroupingKey(userId), skuIds);
     }
 
+    /**
+     * 清空购物车。
+     * 将属于该用户的购物车数据全部删除。
+     * @param userId 用户ID
+     */
     @Override
     @Caching(evict = {
             @CacheEvict(cacheNames = ShopCartConstant.SORT_SHOP_CART, key = "#userId", beforeInvocation = true),
@@ -234,7 +268,7 @@ public class ShopCartServiceImpl implements IShopCartService {
     }
 
     private Long toLong(Object id) {
-        return id instanceof  Long?
+        return id instanceof Long?
                 (Long) id :
                 Long.valueOf(((Integer) id).longValue());
     }

@@ -4,7 +4,6 @@ import com.fatal.Chapter29ApplicationTests;
 import com.fatal.common.utils.JsonUtil;
 import com.fatal.dto.ShopCartDTO;
 import com.fatal.service.IShopCartService;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,16 +16,14 @@ import java.util.List;
 public class ShopCartServiceImplTest extends Chapter29ApplicationTests {
 
     private Long userId = 999999L;
-    private Long skuId = 1L;
-    private Long[] skuIds;
-
-    @Before
-    public void before() {
-        skuIds = new Long[]{7L, 10L, 2L};
-    }
 
     @Autowired
     private IShopCartService shopCartService;
+
+    @Test
+    public void incrementOne() {
+        shopCartService.increment(userId, 1L, 101L);
+    }
 
     @Test
     public void increment() {
@@ -57,6 +54,7 @@ public class ShopCartServiceImplTest extends Chapter29ApplicationTests {
 
     @Test
     public void delete() {
+        Long[] skuIds = new Long[]{7L, 10L, 2L};
         shopCartService.remove(userId, skuIds);
     }
 
@@ -73,7 +71,7 @@ public class ShopCartServiceImplTest extends Chapter29ApplicationTests {
 
     @Test
     public void shopCartGrouping() {
-        List<Object> list = shopCartService.shopCartGrouping(userId);
+        List<Long> list = shopCartService.shopCartGrouping(userId);
         System.out.println(list);
     }
 

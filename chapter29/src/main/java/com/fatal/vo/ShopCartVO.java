@@ -3,7 +3,9 @@ package com.fatal.vo;
 import com.fatal.dto.ShopCartDTO;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,8 +41,10 @@ public class ShopCartVO {
     }
 
     public static List<ShopCartVO> of(List<ShopCartDTO> shopCartDTOs) {
-        return shopCartDTOs.stream()
-                .map(ShopCartVO::of)
-                .collect(Collectors.toList());
+        return CollectionUtils.isEmpty(shopCartDTOs) ?
+                new ArrayList<>() :
+                shopCartDTOs.stream()
+                    .map(ShopCartVO::of)
+                    .collect(Collectors.toList());
     }
 }

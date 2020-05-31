@@ -69,12 +69,13 @@ public interface IShopCartService {
      * @param currentPage 当前页码
      * @return
      */
-    List<Object> currentPageSkuId(Long userId, Integer currentPage);
+    List<Long> currentPageSkuIds(Long userId, Integer currentPage);
 
     /**
+     * 获得分组摊平后的购物车
      * @param userId 用户ID
-     * @return 分组摊平后的购物车
+     * @return
      */
-    List<Object> shopCartGrouping(Long userId);
+    List<Long> shopCartGrouping(Long userId);
 
 }

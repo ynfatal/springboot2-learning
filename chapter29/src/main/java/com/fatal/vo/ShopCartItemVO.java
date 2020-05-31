@@ -17,15 +17,13 @@ import java.util.stream.Collectors;
 @Accessors(chain = true)
 public class ShopCartItemVO {
 
+    /**
+     * skuID
+     */
     private Long id;
 
     /**
-     * 商品ID
-     */
-    private Long goodsId;
-
-    /**
-     * 商品名称（冗余字段）
+     * 商品名称
      */
     private String goodsName;
 
@@ -33,11 +31,6 @@ public class ShopCartItemVO {
      * sku单价（单位：分）
      */
     private Long price;
-
-    /**
-     * sku库存
-     */
-    private Integer stock;
 
     /**
      * sku图片
@@ -51,11 +44,18 @@ public class ShopCartItemVO {
 
     /**
      * 单种sku允许添加到购物车的最大数额
+     * @desc 前端用于判断，不给用户随便输入
      */
     private Integer max;
 
     /**
+     * sku个数
+     */
+    private Integer count;
+
+    /**
      * sku状态：-1 下架; 0 删除; 1 在架
+     * @desc 前端用于判断，下架的sku不允许移出购物车（count减1），只给用户移除整个sku。
      */
     private Integer status;
 

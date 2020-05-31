@@ -16,15 +16,13 @@ import java.util.stream.Collectors;
 @Accessors(chain = true)
 public class ShopCartItemDTO {
 
+    /**
+     * skuID
+     */
     private Long id;
 
     /**
-     * 商品ID
-     */
-    private Long goodsId;
-
-    /**
-     * 商品名称（冗余字段）
+     * 商品名称
      */
     private String goodsName;
 
@@ -32,11 +30,6 @@ public class ShopCartItemDTO {
      * sku单价（单位：分）
      */
     private Long price;
-
-    /**
-     * sku库存
-     */
-    private Integer stock;
 
     /**
      * sku图片

@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 /**
- * 单例模式
  * @author Fatal
  * @date 2019/8/9 0009 22:47
  */
@@ -13,11 +12,9 @@ public class JsonUtil {
     private static Gson gson;
 
     static {
-        if (gson == null) {
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            gsonBuilder.setPrettyPrinting();
-            gson = gsonBuilder.create();
-        }
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setPrettyPrinting();
+        gson = gsonBuilder.create();
     }
 
     private JsonUtil() {}

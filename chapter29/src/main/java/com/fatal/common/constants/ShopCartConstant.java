@@ -38,7 +38,7 @@ public interface ShopCartConstant {
     Integer TYPE_MAX = 120;
 
     /**
-     * 购物车每页显示条数
+     * 购物车每页显示条数（以淘宝为例，每次下拉都会刷新 31 条记录）
      */
 //    Integer PAGE_SIZE = 16;
     Integer PAGE_SIZE = 4;

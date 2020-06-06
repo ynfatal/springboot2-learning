@@ -39,7 +39,7 @@ public class Sku implements Serializable {
     private Long shopId;
 
     /**
-     * 店铺名称
+     * 店铺名称（冗余字段）
      */
     private String shopName;
 

@@ -48,9 +48,10 @@ public class ShopCartServiceImpl implements IShopCartService {
     }
 
     /**
-     * 操作：1. 购物车sku项点击 “-”，`购物车sku总数count`减一，前端做判断，等于1的时候不能执行该操作
-     *      2. 购物车sku项点击 “+”，`购物车sku总数count`加一
-     *      3. 购物车sku项手动填`购物车sku总数count`
+     * 操作：1. 新增一个sku
+     *      2. 购物车sku项点击 “-”，`购物车sku总数count`减一，前端做判断，等于1的时候不能执行该操作
+     *      3. 购物车sku项点击 “+”，`购物车sku总数count`加一
+     *      4. 购物车sku项手动填`购物车sku总数count`
      *      其中2和3，都要要求前端根据sku的max限制count（finalValue = count > max ? max : count）
      *      以上的操作，都调用该方法，将`购物车sku总数count`作为第三参数
      * @desc 该方法会对购物车单种sku总个数以及购物车sku种类数量进行控制，并且维护后面用于分组的购物车信息

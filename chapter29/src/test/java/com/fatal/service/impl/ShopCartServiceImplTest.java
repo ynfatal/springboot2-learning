@@ -22,27 +22,22 @@ public class ShopCartServiceImplTest extends Chapter29ApplicationTests {
 
     @Test
     public void incrementOne() {
-        shopCartService.increment(userId, 1L, 101L);
+        shopCartService.put(userId, 1L, 101L);
     }
 
     @Test
     public void increment() {
-        shopCartService.increment(userId,2L, 100L);
-        shopCartService.increment(userId,4L, 100L);
-        shopCartService.increment(userId,9L, 100L);
-        shopCartService.increment(userId,3L, 100L);
-        shopCartService.increment(userId,8L, 100L);
-        shopCartService.increment(userId,12L, 100L);
-        shopCartService.increment(userId,1L, 100L);
-        shopCartService.increment(userId,6L, 100L);
-        shopCartService.increment(userId,10L, 100L);
-        shopCartService.increment(userId,11L, 100L);
-        shopCartService.increment(userId,7L, 100L);
-    }
-
-    @Test
-    public void removeOne() {
-        shopCartService.removeOne(userId, 7L);
+        shopCartService.put(userId,2L, 100L);
+        shopCartService.put(userId,4L, 100L);
+        shopCartService.put(userId,9L, 100L);
+        shopCartService.put(userId,3L, 100L);
+        shopCartService.put(userId,8L, 100L);
+        shopCartService.put(userId,12L, 100L);
+        shopCartService.put(userId,1L, 100L);
+        shopCartService.put(userId,6L, 100L);
+        shopCartService.put(userId,10L, 100L);
+        shopCartService.put(userId,11L, 100L);
+        shopCartService.put(userId,7L, 100L);
     }
 
     @Test

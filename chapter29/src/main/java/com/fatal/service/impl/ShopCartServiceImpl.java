@@ -48,18 +48,18 @@ public class ShopCartServiceImpl implements IShopCartService {
     }
 
     /**
-     * 操作一：购物车sku项点击 “+”，`购物车sku总数`加一
-     * 操作二：购物车sku项输入框填充数字，这个数是总数；前端拿到总数，先将它与商家定义的max比较，
-     *      若总数小于 max，则 `总数 - 数据库总数`作为`增量`，输入框显示总数
-     *      若总数大于或等于 max，则 `max - 数据库总数`作为`增量`，输入框显示 max
-     * 操作三：商品详情页添加到购物车
+     * 操作：1. 购物车sku项点击 “-”，`购物车sku总数count`减一，前端做判断，等于1的时候不能执行该操作
+     *      2. 购物车sku项点击 “+”，`购物车sku总数count`加一
+     *      3. 购物车sku项手动填`购物车sku总数count`
+     *      其中2和3，都要要求前端根据sku的max限制count（finalValue = count > max ? max : count）
+     *      以上的操作，都调用该方法，将`购物车sku总数count`作为第三参数
      * @desc 该方法会对购物车单种sku总个数以及购物车sku种类数量进行控制，并且维护后面用于分组的购物车信息
      * @param userId 用户ID
      * @param skuId skuID
-     * @param increment 增量
+     * @param finalValue count 的最终值
      */
     @Override
-    public void increment(Long userId, Long skuId, Long increment) {
+    public void put(Long userId, Long skuId, Long finalValue) {
         ShopCartSkuDTO shopCartSkuDTO = checkSkuIfExists(skuId);
         Integer value = (Integer) hashOperations.get(ShopCartConstant.getCartKey(userId), skuId);
         if (ObjectUtils.isEmpty(value)) {
@@ -69,26 +69,7 @@ public class ShopCartServiceImpl implements IShopCartService {
             hashOperations.put(ShopCartConstant.getGroupingKey(userId), skuId, shopCartSkuDTO.getShopId());
         }
         Integer max = ShopCartConstant.MAX > shopCartSkuDTO.getMax() ? shopCartSkuDTO.getMax() : ShopCartConstant.MAX;
-        boolean overflow = increment > max || !ObjectUtils.isEmpty(value) && value + increment > max;
-        if (overflow) {
-            hashOperations.put(ShopCartConstant.getCartKey(userId), skuId, max);
-        } else {
-            hashOperations.increment(ShopCartConstant.getCartKey(userId), skuId, increment);
-        }
-    }
-
-    /**
-     * 操作：购物车sku项点击 “-”，`购物车sku总数`减一
-     * @param userId 用户ID
-     * @param skuId skuID
-     */
-    @Override
-    public void removeOne(Long userId, Long skuId) {
-        Long value = hashOperations.increment(ShopCartConstant.getCartKey(userId), skuId, -1L);
-        if (value <= 0) {
-            // 如果购物车中该sku的数量小于或等于0，就将该sku从购物车中删除
-            proxy().remove(userId, skuId);
-        }
+        hashOperations.put(ShopCartConstant.getCartKey(userId), skuId, finalValue > max ? max : finalValue);
     }
 
     /**
@@ -254,7 +235,7 @@ public class ShopCartServiceImpl implements IShopCartService {
      * Redis 命令 `hgetall` 的时间复杂度为 O(n)，最坏的情况下为 O(120)，所以频繁使用会造成线上服务阻塞
      * Redis 命令 `scan` 的时间复杂度为 O(1)，可以无阻塞的匹配出列表，缺点是可能出现重复数据，这里用 Map 接收
      *      刚好可以解决这个问题，因为要求匹配的数据必须带顺序，所以在本方法中直接用 LinkedHashMap 来实现。
-     * Spring Data Redis 中的 scan 方法都帮我维护了 Cursor 游标值了。
+     * Spring Data Redis 中的 scan 方法都帮我们维护了 Cursor 游标值了。
      * @param key
      * @return
      */
@@ -269,6 +250,7 @@ public class ShopCartServiceImpl implements IShopCartService {
                 Map.Entry<Object, Object> entry = cursor.next();
                 linkedHashMap.put(entry.getKey(), entry.getValue());
             }
+            // 关闭游标，释放资源
             cursor.close();
         } catch (IOException e) {
             e.printStackTrace();

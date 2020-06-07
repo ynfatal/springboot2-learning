@@ -27,19 +27,12 @@ public class ShopCartController {
         this.shopCartService = shopCartService;
     }
 
-    @PostMapping("/increment")
-    public ResponseEntity<Void> increment(@NotNull(message = "userId不能为空") Long userId,
-                                          @NotNull(message = "skuId不能为空") Long skuId,
-                                          @NotNull(message = "increment不能为空")
-                                          @Min(value = 1, message = "increment不能小于{value}") Long increment) {
-        shopCartService.increment(userId, skuId, increment);
-        return ResponseEntity.ok().build();
-    }
-
-    @PutMapping("/decrement")
-    public ResponseEntity<Void> decrement(@NotNull(message = "userId不能为空") Long userId,
-                          @NotNull(message = "skuId不能为空") Long skuId) {
-        shopCartService.removeOne(userId, skuId);
+    @PutMapping("/put")
+    public ResponseEntity<Void> put(@NotNull(message = "userId不能为空") Long userId,
+                                    @NotNull(message = "skuId不能为空") Long skuId,
+                                    @NotNull(message = "finalValue不能为空")
+                                    @Min(value = 1, message = "finalValue不能小于{value}") Long finalValue) {
+        shopCartService.put(userId, skuId, finalValue);
         return ResponseEntity.ok().build();
     }
 
@@ -52,7 +45,7 @@ public class ShopCartController {
     }
 
     @DeleteMapping("/remove")
-    public ResponseEntity<Void> delete(@NotNull(message = "userId不能为空") Long userId,
+    public ResponseEntity<Void> remove(@NotNull(message = "userId不能为空") Long userId,
                                        @NotEmpty(message = "skuIds不能为空") Long... skuIds) {
         shopCartService.remove(userId, skuIds);
         return ResponseEntity.ok().build();

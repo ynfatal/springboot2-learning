@@ -12,19 +12,12 @@ import java.util.List;
 public interface IShopCartService {
 
     /**
-     * 将指定数量的sku加入购物车
+     * 改变指定 sku 的 count
      * @param userId 用户ID
      * @param skuId skuID
-     * @param increment 增量
+     * @param finalValue count 的最终值
      */
-    void increment(Long userId, Long skuId, Long increment);
-
-    /**
-     * 移出购物车，移出数量为 1
-     * @param userId 用户ID
-     * @param skuId skuID
-     */
-    void removeOne(Long userId, Long skuId);
+    void put(Long userId, Long skuId, Long finalValue);
 
     /**
      * 购物车列表分页

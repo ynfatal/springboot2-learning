@@ -13,12 +13,15 @@ import org.springframework.aop.framework.AopContext;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -128,8 +131,8 @@ public class ShopCartServiceImpl implements IShopCartService {
     @Override
     @Cacheable(unless = "#result == null", cacheNames = ShopCartConstant.SORT_SHOP_CART, key = "#userId")
     public List<Long> shopCartGrouping(Long userId) {
-        Map<Object, Object> entries = hashOperations.entries(ShopCartConstant.getGroupingKey(userId));
-        List<Map.Entry<Object, Object>> entryList = new ArrayList<>(entries.entrySet());
+        Map<Object, Object> map = scan(ShopCartConstant.getGroupingKey(userId));
+        List<Map.Entry<Object, Object>> entryList = new ArrayList<>(map.entrySet());
         // 最新加入购物的sku在最后，所以这里得先反序
         Collections.reverse(entryList);
         Map<Object, List<Object>> collect = entryList.stream()
@@ -245,6 +248,32 @@ public class ShopCartServiceImpl implements IShopCartService {
             throw new ValidateException(ResponseEnum.SKU_IS_OFF_THE_SHELVES);
         }
         return shopCartSkuDTO;
+    }
+
+    /**
+     * Redis 命令 `hgetall` 的时间复杂度为 O(n)，最坏的情况下为 O(120)，所以频繁使用会造成线上服务阻塞
+     * Redis 命令 `scan` 的时间复杂度为 O(1)，可以无阻塞的匹配出列表，缺点是可能出现重复数据，这里用 Map 接收
+     *      刚好可以解决这个问题，因为要求匹配的数据必须带顺序，所以在本方法中直接用 LinkedHashMap 来实现。
+     * Spring Data Redis 中的 scan 方法都帮我维护了 Cursor 游标值了。
+     * @param key
+     * @return
+     */
+    private Map<Object, Object> scan(String key) {
+        Map<Object, Object> linkedHashMap = new LinkedHashMap<>();
+        try {
+            // 设置 count 选项来指定每次迭代返回元素的最大值，设置 match 指定 field 需要匹配的 pattern
+            Cursor<Map.Entry<Object, Object>> cursor = hashOperations.scan(key,
+                    ScanOptions.scanOptions().count(ShopCartConstant.TYPE_MAX).match("*").build());
+            // 带顺序的 HashMap，同一个元素就算被返回多次也不影响。
+            while (cursor.hasNext()) {
+                Map.Entry<Object, Object> entry = cursor.next();
+                linkedHashMap.put(entry.getKey(), entry.getValue());
+            }
+            cursor.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return linkedHashMap;
     }
 
     private IShopCartService proxy() {

@@ -23,7 +23,7 @@ public interface ShopCartConstant {
     String SORT_SHOP_CART = "SORT_SHOP_CART";
 
     /**
-     * 购物车分页（根据排序购物车计算出的分页）
+     * 购物车分页所包含的SkuIds（根据排序购物车计算得出）
      */
     String SHOP_CART_PAGE = "SHOP_CART_PAGE";
 

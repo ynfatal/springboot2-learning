@@ -173,14 +173,13 @@ public class ShopCartServiceImpl implements IShopCartService {
 
     /**
      * 将指定的 sku 从购物车移除。SORT_SHOP_CART 和 SHOP_CART_PAGE 一定会变的，所以需要清除缓存。
-     * @CacheEvict allEntries = true: 清除当前`cacheNames`下的所有缓存
      * @param userId 用户ID
      * @param skuIds skuID数组（该参数必须是可变参数或者数组，后面需要转为 byte[][] 类型，如果
      */
     @Override
     @Caching(evict = {
             @CacheEvict(cacheNames = ShopCartConstant.SORT_SHOP_CART, key = "#userId", beforeInvocation = true),
-            @CacheEvict(cacheNames = ShopCartConstant.SHOP_CART_PAGE, beforeInvocation = true, allEntries = true)
+            @CacheEvict(cacheNames = ShopCartConstant.SHOP_CART_PAGE, key = "#userId", beforeInvocation = true)
     })
     public void remove(Long userId, Long... skuIds) {
         hashOperations.delete(ShopCartConstant.getCartKey(userId), skuIds);
@@ -195,7 +194,7 @@ public class ShopCartServiceImpl implements IShopCartService {
     @Override
     @Caching(evict = {
             @CacheEvict(cacheNames = ShopCartConstant.SORT_SHOP_CART, key = "#userId", beforeInvocation = true),
-            @CacheEvict(cacheNames = ShopCartConstant.SHOP_CART_PAGE, beforeInvocation = true, allEntries = true)
+            @CacheEvict(cacheNames = ShopCartConstant.SHOP_CART_PAGE, key = "#userId", beforeInvocation = true)
     })
     public void clear(Long userId) {
         redisTemplate.delete(ShopCartConstant.getCartKey(userId));

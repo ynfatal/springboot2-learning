@@ -18,6 +18,4 @@ public class RedisTestDTO implements Serializable {
 
     private Integer count;
 
-    private Long shopId;
-
 }

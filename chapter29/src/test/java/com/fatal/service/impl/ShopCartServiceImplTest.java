@@ -26,7 +26,7 @@ public class ShopCartServiceImplTest extends Chapter29ApplicationTests {
     }
 
     @Test
-    public void increment() {
+    public void init() {
         shopCartService.put(userId,2L, 100L);
         shopCartService.put(userId,4L, 100L);
         shopCartService.put(userId,9L, 100L);

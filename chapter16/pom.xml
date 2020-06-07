@@ -25,10 +25,11 @@
     </properties>
 
     <dependencies>
-        <dependency>
+        <!-- 不需要引入 Cache 依赖了，下边 redis 已经依赖了 spring-boot-starter -->
+        <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
-        </dependency>
+        </dependency>-->
         <!-- web starter关联依赖 spring-boot-starter-json -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

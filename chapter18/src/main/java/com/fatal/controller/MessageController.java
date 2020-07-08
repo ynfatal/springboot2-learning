@@ -28,7 +28,7 @@ public class MessageController {
     @PostMapping("/sendRedisMessage")
     public void sendRedisMessage(String message) throws InterruptedException {
         log.info("【控制器 MessageController】：生产者发布了<" + message + ">");
-        stringRedisTemplate.convertAndSend("config", message);
+        stringRedisTemplate.convertAndSend("topic", message);
 
         // 使当前线程等待直到闩锁计数为零，除非线程被中断。
         latch.await();
